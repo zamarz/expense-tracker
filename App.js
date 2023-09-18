@@ -3,27 +3,42 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import react, { useContext } from "react";
+import Register from "./pages/Register";
+import { useEffect, useState } from "react";
+import { authFire } from "./firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Stack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
+const LoginStack = createNativeStackNavigator();
 
 const login = false; //change this later to context
 
 export default function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(authFire, (user) => {
+      console.log(user, "#####USER####");
+      setUser(user);
+    });
+  });
+
   return (
     <NavigationContainer>
       {/* if user is not logged in, show login screeen */}
       <Stack.Navigator initialRouteName="Login">
-        {!login ? (
-          <Stack.Group>
-            <Stack.Screen name="Login" component={Login} />
-          </Stack.Group>
+        {!user ? (
+          <LoginStack.Group>
+            <LoginStack.Screen name="Login" component={Login} />
+            <LoginStack.Screen name="Register" component={Register} />
+          </LoginStack.Group>
         ) : (
-          <Stack.Group>
+          <HomeStack.Group>
             {/* if user is logged in, show home screeen */}
 
-            <Stack.Screen name="Home" component={Home} />
-          </Stack.Group>
+            <HomeStack.Screen name="Home" component={Home} />
+          </HomeStack.Group>
         )}
       </Stack.Navigator>
     </NavigationContainer>
