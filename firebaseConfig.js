@@ -2,17 +2,26 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import {
+  FIREBASE_API,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_DB_URL,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGING_ID,
+  FIREBASE_APP_ID,
+  FIREBASE_MEASUREMENT_ID,
+} from "@env";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API,
-  authDomain: "test2-c87e5.firebaseapp.com",
-  databaseURL:
-    "https://test2-c87e5-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "test2-c87e5",
-  storageBucket: "test2-c87e5.appspot.com",
-  messagingSenderId: "914137622961",
-  appId: "1:914137622961:web:e95a69f971ae35e6d93590",
-  measurementId: "G-HBVECC64FZ",
+  apiKey: FIREBASE_API,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  databaseURL: FIREBASE_DB_URL,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_ID,
+  appId: FIREBASE_APP_ID,
+  measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
 export const app = initializeApp(firebaseConfig);

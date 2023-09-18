@@ -19,7 +19,6 @@ export default function App() {
 
   useEffect(() => {
     onAuthStateChanged(authFire, (user) => {
-      console.log(user, "#####USER####");
       setUser(user);
     });
   });
@@ -30,14 +29,25 @@ export default function App() {
       <Stack.Navigator initialRouteName="Login">
         {!user ? (
           <LoginStack.Group>
-            <LoginStack.Screen name="Login" component={Login} />
-            <LoginStack.Screen name="Register" component={Register} />
+            <LoginStack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <LoginStack.Screen
+              name="Register"
+              component={Register}
+              options={{ headerShown: false }}
+            />
           </LoginStack.Group>
         ) : (
           <HomeStack.Group>
             {/* if user is logged in, show home screeen */}
-
-            <HomeStack.Screen name="Home" component={Home} />
+            <HomeStack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
           </HomeStack.Group>
         )}
       </Stack.Navigator>
