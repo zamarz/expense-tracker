@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import react, { useContext } from "react";
+import Settings from "./pages/Settings";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
             {/* if user is logged in, show home screeen */}
 
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Settings" component={Settings} />
           </Stack.Group>
         )}
       </Stack.Navigator>
