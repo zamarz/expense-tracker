@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
 
-const login = false; //change this later to context
+const login = true; //change this later to context
 
 export default function App() {
   const [user, setUser] = useState(null);
