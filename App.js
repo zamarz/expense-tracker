@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./pages/Home";
@@ -26,7 +26,18 @@ export default function App() {
   return (
     <NavigationContainer>
       {/* if user is not logged in, show login screeen */}
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#f4511e",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      >
         {!user ? (
           <LoginStack.Group>
             <LoginStack.Screen
@@ -46,7 +57,16 @@ export default function App() {
             <HomeStack.Screen
               name="Home"
               component={Home}
-              options={{ headerShown: false }}
+              options={{
+                title: "My Home",
+                headerShown: false,
+                headerLeft: () => (
+                  <Image
+                    style={{ width: 50, height: 50 }}
+                    source={require("./assets/android-chrome-192x192.png")}
+                  />
+                ),
+              }}
             />
           </HomeStack.Group>
         )}
