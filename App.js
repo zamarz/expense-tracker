@@ -7,7 +7,7 @@ import react, { useContext } from "react";
 
 const Stack = createNativeStackNavigator();
 
-const login = false; //change this later to context
+const login = true; //change this later to context
 
 export default function App() {
   return (
