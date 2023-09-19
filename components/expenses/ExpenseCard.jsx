@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
-export default function ExpenseCard({ exp }) {
-  const { id, amount, merchant, category, date } = exp;
+export default function ExpenseCard({ item }) {
+  const { id, amount, merchant, category, date } = item;
   return (
     <View style={styles.container}>
       <Text>{id}.</Text>

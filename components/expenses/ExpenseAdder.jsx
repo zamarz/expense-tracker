@@ -1,5 +1,14 @@
-import { View, StyleSheet, TextInput, Button, Text } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Button,
+  Text,
+  SafeAreaView,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { authFire, dbFire } from "../../firebaseConfig";
+import { addDoc, collection } from "@firebase/firestore";
 
 export default function ExpenseAdder() {
   const [amount, setAmount] = useState("");
@@ -9,46 +18,91 @@ export default function ExpenseAdder() {
   const [receipt, setReceipt] = useState(null);
   const [account, setAccount] = useState(null);
   const [location, setLocation] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const expenses = {
+    amount,
+    category,
+    merchant,
+    date,
+    receipt,
+    account,
+    location,
+    user,
+  };
+
+  function getCurrentUser() {
+    // console.log(authFire.currentUser.uid);
+    return authFire.currentUser.uid;
+  }
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const userId = getCurrentUser();
+    setUser(userId);
+    try {
+      setDate(Date());
+      navigator.geolocation.getCurrentPosition((position) => {
+        setLocation(
+          `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
+        );
+      });
+      const res = await addDoc(collection(dbFire, "expenses"), expenses);
+      console.log(res, "#####response#####");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text>Add a new expense by filling in the fields below</Text>
-      <View style={styles.inputContainer}>
+      <SafeAreaView style={styles.inputContainer}>
         <TextInput
           placeholder="Amount"
           value={amount}
           onChangeText={(text) => setAmount(text)}
           style={styles.input}
-        />
-        <TextInput
-          placeholder="Category"
-          value={category}
-          onChangeText={(text) => setCategory(text)}
-          style={styles.input}
+          inputMode="decimal"
         />
         <TextInput
           placeholder="Merchant"
           value={merchant}
           onChangeText={(text) => setMerchant(text)}
           style={styles.input}
+          inputMode="text"
         />
         <TextInput
-          placeholder="Date"
-          value={date}
-          onChangeText={(text) => setDate(text)}
+          placeholder="Category"
+          value={category}
+          onChangeText={(text) => setCategory(text)}
           style={styles.input}
+          defaultValue="CHANGETHISTODROPDOWN"
         />
         <TextInput
           placeholder="Account"
           value={account}
           onChangeText={(text) => setAccount(text)}
           style={styles.input}
+          defaultValue="CHANGETHISTODROPDOWN"
+        />
+        <TextInput
+          placeholder="Date"
+          value={date}
+          onChangeText={(text) => setDate(text)}
+          style={styles.input}
+          defaultValue="CHANGETHISTODROPDOWN"
         />
         <TextInput
           placeholder="Location"
           value={location}
           onChangeText={(text) => setLocation(text)}
           style={styles.input}
+          defaultValue="CHANGETHISTODROPDOWN"
         />
         <Button
           title="Add Receipt"
@@ -59,18 +113,14 @@ export default function ExpenseAdder() {
         />
         <Button
           title="Add New Expense"
-          onPress={() => {
-            alert("Link to Receipt Scanner");
-            setReceipt(true);
-            setDate(Date());
-            navigator.geolocation.getCurrentPosition((position) => {
-              setLocation(
-                `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
-              );
-            });
+          onPress={(e) => {
+            // alert("Link to Receipt Scanner");
+            // setReceipt(true);
+
+            submitHandler(e);
           }}
         />
-      </View>
+      </SafeAreaView>
       <Button
         onPress={() => navigation.navigate("Home")}
         title="Go back"
