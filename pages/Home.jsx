@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import Layout from "../components/modules/Layout";
 import { Loading } from "../components/loading/Loading";
 import Logout from "../components/buttons/Logout";
+import ExpenseList from "../components/expenses/ExpenseList";
 
 // const Separator = () => <View style={styles.separator} />;
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [balance, setBalance] = useState(0);
@@ -32,9 +33,11 @@ export default function Home() {
             <Text style={styles.title}>Expenses Card</Text>
           </View>
           <View>
-            <Text style={styles.title}>Add Expense</Text>
+            <ExpenseList />
+          </View>
+          <View>
             <Button
-              onPress={() => {}}
+              onPress={() => navigation.navigate("ExpenseAdder")}
               title="Add expense"
               accessibilityLabel="Add a new expense to an account manually"
             ></Button>
@@ -68,11 +71,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    marginHorizontal: 16,
   },
   title: {
     textAlign: "center",
-    marginVertical: 8,
   },
   separator: {
     marginVertical: 8,

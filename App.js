@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import { useEffect, useState } from "react";
 import { authFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import ExpenseAdder from "./components/expenses/ExpenseAdder";
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -30,7 +31,7 @@ export default function App() {
         initialRouteName="Login"
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#f4511e",
+            backgroundColor: "#fff",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -43,12 +44,12 @@ export default function App() {
             <LoginStack.Screen
               name="Login"
               component={Login}
-              options={{ headerShown: false }}
+              // options={{ headerShown: false }}
             />
             <LoginStack.Screen
               name="Register"
               component={Register}
-              options={{ headerShown: false }}
+              // options={{ headerShown: false }}
             />
           </LoginStack.Group>
         ) : (
@@ -59,7 +60,21 @@ export default function App() {
               component={Home}
               options={{
                 title: "My Home",
-                headerShown: false,
+                // headerShown: false,
+                headerLeft: () => (
+                  <Image
+                    style={{ width: 50, height: 50 }}
+                    source={require("./assets/android-chrome-192x192.png")}
+                  />
+                ),
+              }}
+            />
+            <HomeStack.Screen
+              name="ExpenseAdder"
+              component={ExpenseAdder}
+              options={{
+                title: "Add a new Expense",
+                // headerShown: false,
                 headerLeft: () => (
                   <Image
                     style={{ width: 50, height: 50 }}

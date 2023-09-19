@@ -40,9 +40,10 @@ const LoginScreen = () => {
         email,
         password
       ).then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        alert("Check your emails to verify your account!");
+        const { user } = userCredential;
+        if (user) {
+          alert("Check your emails to verify your account!");
+        }
       });
     } catch (error) {
       console.log(error);
