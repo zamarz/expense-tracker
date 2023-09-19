@@ -6,7 +6,7 @@ import Logout from "../components/buttons/Logout";
 
 // const Separator = () => <View style={styles.separator} />;
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [balance, setBalance] = useState(0);
@@ -52,7 +52,7 @@ export default function Home() {
           <View>
             {/* Button to navigate to viewing/adding account(s) */}
             <Button
-              onPress={() => {}}
+              onPress={() => navigation.navigate('AccountsList')}
               title="View / Add Account"
               accessibilityLabel="View a list of accounts or add a new account"
             ></Button>

@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import { useEffect, useState } from "react";
 import { authFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import AccountsList from "./components/account/AccountsList";
+import AccountsAdder from "./components/account/AccountsAdder";
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -66,6 +68,22 @@ export default function App() {
                     source={require("./assets/android-chrome-192x192.png")}
                   />
                 ),
+              }}
+            />
+            <HomeStack.Screen
+              name="AccountsList"
+              component={AccountsList}
+              options={{
+                title: "Accounts",
+                headerShown: false,
+              }}
+            />
+            <HomeStack.Screen
+              name="AccountsAdder"
+              component={AccountsAdder}
+              options={{
+                title: "Accounts Adder",
+                headerShown: false,
               }}
             />
           </HomeStack.Group>
