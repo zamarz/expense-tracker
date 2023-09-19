@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
 
-export default function ExpenseAdder() {
+export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [merchant, setMerchant] = useState("");
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: "20px",
-    borderWidth: "2px",
   },
   inputContainer: {
     width: "80%",

@@ -18,9 +18,7 @@ const styles = StyleSheet.create({
   container: {
     display: "grid",
     gridTemplate: "75px / auto auto auto auto",
-    gap: "20px",
     justifyContent: "center",
     alignItems: "center",
-    border: "5px",
   },
 });
