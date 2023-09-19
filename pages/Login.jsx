@@ -53,6 +53,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Text>Welcome! Please sign in, or register your email!</Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"

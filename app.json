@@ -4,6 +4,7 @@
     "slug": "cc-expenses-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
+    "owner": "code-crafters",
     "icon": "",
     "userInterfaceStyle": "light",
     "splash": {
@@ -24,7 +25,7 @@
     "web": {},
     "extra": {
       "eas": {
-        "projectId": "81b652df-06b2-4df7-a92a-25a1c2d9eebc"
+        "projectId": "04285a9f-2887-45a0-95af-ad2e68735439"
       }
     }
   }
