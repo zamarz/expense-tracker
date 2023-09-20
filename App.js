@@ -20,7 +20,7 @@ import Profile from "./pages/Profle";
 import Settings from "./pages/Settings";
 import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
-import Receipts from "./pages/Receipts";
+import Receipts from "./components/receipts/Receipts";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
 
@@ -40,40 +40,33 @@ export default function App() {
     });
   });
 
-  return (
-    <NavigationContainer>
-      {/* if user is not logged in, show login screeen */}
-      <Drawer.Navigator initialRouteName="Home">
-        {/* {!user ? (
-          <LoginStack.Group>
-            <LoginStack.Screen
-              name="Login"
-              component={Login}
-              // options={{ headerShown: false }}
-            />
-            <LoginStack.Screen
-              name="Register"
-              component={Register}
-              // options={{ headerShown: false }}
-            />
-          </LoginStack.Group>
-        ) : ( */}
-        {/* if user is logged in, show home screeen */}
+  const LoginNavigator = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+      </Stack.Navigator>
+    );
+  };
+
+  const DrawerNavigator = () => {
+    return (
+      <Drawer.Navigator>
         <Drawer.Screen
           name="Home"
           component={Footer}
-          options={
-            {
-              // title: "My Home",
-              //headerShown: false,
-              // headerLeft: () => (
-              //   <Image
-              //     style={{ width: 50, height: 50 }}
-              //     source={require("./assets/android-chrome-192x192.png")}
-              //   />
-              // ),
-            }
-          }
+          // options={
+          //   {
+          //     // title: "My Home",
+          //     //headerShown: false,
+          //     // headerLeft: () => (
+          //     //   <Image
+          //     //     style={{ width: 50, height: 50 }}
+          //     //     source={require("./assets/android-chrome-192x192.png")}
+          //     //   />
+          //     // ),
+          //   }
+          // }
         />
         <Drawer.Screen name="Profile" component={Profile} />
         <Drawer.Screen name="Settings" component={Settings} />
@@ -94,7 +87,14 @@ export default function App() {
         <Drawer.Screen name="Analysis" component={Analysis} />
         <Drawer.Screen name="Receipts" component={Receipts} />
         <Drawer.Screen name="Map" component={Map} />
+        {/* )} */}
       </Drawer.Navigator>
+    );
+  };
+
+  return (
+    <NavigationContainer>
+      {!user ? <LoginNavigator /> : <DrawerNavigator />}
     </NavigationContainer>
   );
 }
