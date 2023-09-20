@@ -7,13 +7,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { authFire } from "../firebaseConfig";
+import { authFire, dbFire } from "../firebaseConfig";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  getAuth,
 } from "firebase/auth";
 import ErrorHandler from "../components/error/ErrorHandler";
 import { Loading } from "../components/loading/Loading";
+import { addDoc, collection, doc, setDoc } from "@firebase/firestore";
 // import { getCurrentUserId } from "../utils/helpers";
 
 const auth = authFire;
@@ -25,6 +28,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [userID, setUserID] = useState("");
 
   const signIn = async () => {
     setLoading(true);
@@ -45,16 +49,51 @@ const LoginScreen = () => {
 
   const register = async () => {
     try {
-      const res = await createUserWithEmailAndPassword(
+      setLoading(true);
+      const credentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
-      ).then((userCredential) => {
-        const { user } = userCredential;
-        if (user) {
-          alert("Check your emails to verify your account!");
-        }
-      });
+      );
+
+      // const newUser = new User(email, userRole, []);
+      // await setDoc(doc(dbFire, "users", credentials.user.uid), { ...newUser });
+
+      // const res = await createUserWithEmailAndPassword(auth, email, password)
+      //   .then((userCredential) => {
+      //     const { user } = userCredential;
+      //     console.log(user);
+      //     return user;
+      //   })
+      //   .then((user) => {
+      //     const { uid } = user;
+      //     setUserID(uid);
+      //     console.log(userID);
+      //     if (userID.length > 1) {
+      //       addDoc(collection(dbFire, "users"), { userID, email });
+      //       setLoading(false);
+      //       alert("Check your emails to verify your account!");
+      //     }
+      //   });
+
+      // setLoading(true);
+      // const res = await createUserWithEmailAndPassword(auth, email, password);
+
+      // const { uid } = res.user;
+      //  addDoc(collection(dbFire, "users"), res.user);
+
+      // (userCredential) => {
+      // const { user } = userCredential;
+      // if (user) {
+      //   //console.log(user)
+      //   addDoc(collection(dbFire, "users"), user.uid)
+      //   .then((data) => {
+      //     console.log(data)
+      //   })
+      //   //alert("Check your emails to verify your account!");
+
+      // }
+      //  });
     } catch (error) {
       setError(error);
     }
@@ -98,6 +137,16 @@ const LoginScreen = () => {
     </View>
   );
 };
+
+const userAuth = getAuth();
+onAuthStateChanged(userAuth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    console.log(uid, "working");
+  } else {
+    console.log("User has signed out");
+  }
+});
 
 export default LoginScreen;
 const styles = StyleSheet.create({
