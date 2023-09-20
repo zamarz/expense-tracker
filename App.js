@@ -17,11 +17,12 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./pages/Profle";
-import Settings from "./pages/Profle";
+import Settings from "./pages/Settings";
 import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
 import Receipts from "./pages/Receipts";
 import Map from "./components/map/Map";
+import Footer from "./components/footer/Footer";
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -60,17 +61,19 @@ export default function App() {
         {/* if user is logged in, show home screeen */}
         <Drawer.Screen
           name="Home"
-          component={Home}
-          options={{
-            title: "My Home",
-            //headerShown: false,
-            // headerLeft: () => (
-            //   <Image
-            //     style={{ width: 50, height: 50 }}
-            //     source={require("./assets/android-chrome-192x192.png")}
-            //   />
-            // ),
-          }}
+          component={Footer}
+          options={
+            {
+              // title: "My Home",
+              //headerShown: false,
+              // headerLeft: () => (
+              //   <Image
+              //     style={{ width: 50, height: 50 }}
+              //     source={require("./assets/android-chrome-192x192.png")}
+              //   />
+              // ),
+            }
+          }
         />
         <Drawer.Screen name="Profile" component={Profile} />
         <Drawer.Screen name="Settings" component={Settings} />
