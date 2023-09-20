@@ -14,9 +14,14 @@ import Register from "./pages/Register";
 import { useEffect, useState } from "react";
 import { authFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import ExpenseAdder from "./components/expenses/ExpenseAdder";
-import NavMenu from "./components/navigation/NavMenu";
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import Profile from "./pages/Profle";
+import Settings from "./pages/Profle";
+import ExpenseList from "./components/expenses/ExpenseList";
+import Analysis from "./pages/Analysis";
+import Receipts from "./pages/Receipts";
+import Map from "./components/map/Map";
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -67,11 +72,13 @@ export default function App() {
             // ),
           }}
         />
+        <Drawer.Screen name="Profile" component={Profile} />
+        <Drawer.Screen name="Settings" component={Settings} />
         <Drawer.Screen
-          name="ExpenseAdder"
-          component={ExpenseAdder}
+          name="ExpenseList"
+          component={ExpenseList}
           options={{
-            title: "Add a new Expense",
+            title: "See all expenses",
             // headerShown: false,
             // headerLeft: () => (
             //   <Image
@@ -81,6 +88,9 @@ export default function App() {
             // ),
           }}
         />
+        <Drawer.Screen name="Analysis" component={Analysis} />
+        <Drawer.Screen name="Receipts" component={Receipts} />
+        <Drawer.Screen name="Map" component={Map} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
