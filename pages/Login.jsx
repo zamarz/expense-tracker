@@ -12,28 +12,38 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import ErrorHandler from "../components/error/ErrorHandler";
+import { Loading } from "../components/loading/Loading";
+// import { getCurrentUserId } from "../utils/helpers";
 
 const auth = authFire;
+
+// const uid = getCurrentUserId();
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const signIn = async ({ navigation }) => {
+  const signIn = async () => {
+    setLoading(true);
+
     try {
       const res = await signInWithEmailAndPassword(auth, email, password).then(
         (userCredential) => {
           const user = userCredential.user;
-          console.log(user);
+          if (user) {
+            setLoading(false);
+          }
         }
       );
     } catch (error) {
-      console.log(error);
-      alert(error.message);
+      setError(error);
     }
   };
 
-  const register = async ({ navigation }) => {
+  const register = async () => {
     try {
       const res = await createUserWithEmailAndPassword(
         auth,
@@ -46,10 +56,12 @@ const LoginScreen = () => {
         }
       });
     } catch (error) {
-      console.log(error);
-      alert(error.message);
+      setError(error);
     }
   };
+
+  if (error) return <ErrorHandler error={error} />;
+  if (loading) return <Loading />;
 
   return (
     <View style={styles.container}>

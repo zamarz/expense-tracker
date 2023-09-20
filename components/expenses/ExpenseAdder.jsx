@@ -9,16 +9,17 @@ import {
 import React, { useEffect, useState } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
+import { getCurrentUserId } from "../../utils/helpers";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [merchant, setMerchant] = useState("");
-  const [date, setDate] = useState(null);
-  const [receipt, setReceipt] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [user, setUser] = useState(null);
+  const [date, setDate] = useState("");
+  const [receipt, setReceipt] = useState("");
+  const [account, setAccount] = useState("");
+  const [location, setLocation] = useState("");
+  const [userId, setUserId] = useState("");
 
   const expenses = {
     amount,
@@ -28,34 +29,30 @@ export default function ExpenseAdder({ navigation }) {
     receipt,
     account,
     location,
-    user,
+    userId,
   };
-
-  function getCurrentUser() {
-    // console.log(authFire.currentUser.uid);
-    return authFire.currentUser.uid;
-  }
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const userId = getCurrentUser();
-    setUser(userId);
+    const userId = getCurrentUserId();
+    setUserId(userId);
+    console.log(userId);
     try {
-      setDate(Date());
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLocation(
-          `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
-        );
-      });
-      const res = await addDoc(collection(dbFire, "expenses"), expenses);
-      console.log(res, "#####response#####");
+      //   setDate(Date());
+      //   navigator.geolocation.getCurrentPosition((position) => {
+      //     setLocation(
+      //       `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
+      //     );
+      //   });
+      // const res = await addDoc(collection(dbFire, "expenses"), expenses);
+      // console.log(res, "#####response#####");
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getCurrentUser();
+    getCurrentUserId();
   }, []);
 
   return (
@@ -81,28 +78,24 @@ export default function ExpenseAdder({ navigation }) {
           value={category}
           onChangeText={(text) => setCategory(text)}
           style={styles.input}
-          defaultValue="CHANGETHISTODROPDOWN"
         />
         <TextInput
           placeholder="Account"
           value={account}
           onChangeText={(text) => setAccount(text)}
           style={styles.input}
-          defaultValue="CHANGETHISTODROPDOWN"
         />
         <TextInput
           placeholder="Date"
           value={date}
           onChangeText={(text) => setDate(text)}
           style={styles.input}
-          defaultValue="CHANGETHISTODROPDOWN"
         />
         <TextInput
           placeholder="Location"
           value={location}
           onChangeText={(text) => setLocation(text)}
           style={styles.input}
-          defaultValue="CHANGETHISTODROPDOWN"
         />
         <Button
           title="Add Receipt"
