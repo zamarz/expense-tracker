@@ -15,6 +15,9 @@ import { onAuthStateChanged } from "@firebase/auth";
 import ErrorHandler from "../error/ErrorHandler";
 import { Loading } from "../loading/Loading";
 import { Formik } from "formik";
+import { stringifyValueWithProperty } from "react-native-web/dist/cjs/exports/StyleSheet/compiler";
+import { object, string, number } from "yup";
+import * as yup from "yup";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -27,6 +30,7 @@ export default function ExpenseAdder({ navigation }) {
   const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({});
 
   const regAmount = /^[0-9]*\.[0-9]{2}$/;
 
@@ -49,33 +53,85 @@ export default function ExpenseAdder({ navigation }) {
       setUserId(uid);
     }
   });
+  // const loginValidationSchema = yup.object().shape({
+  //   email: yup
+  //     .string()
+  //     .email("Please enter valid email")
+  //     .required('Email Address is Required'),
 
-  // const submitHandler = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   try {
-  //     setDate("Today");
-  //     setLocation("Here");
-  //     const res = await addDoc(collection(dbFire, "expenses"), expenses);
-  //     console.log(res, "#####response#####");
-  //     setLoading(false);
-  //     console.log("here!!");
-  //   } catch {
-  //     setError(error);
-  //     setLoading(false);
-  //   }
-  // };
+  const expenseSchema = yup.object().shape({
+    amount: yup
+      .number("")
+      .typeError("Amount should be a number")
+      .required("Amount is required!")
+      .positive()
+      .test(
+        "maxDigitsAfterDecimal",
+        "number field must have 2 digits after decimal or less",
+        (number) => /^\d+(.\d{1,2})?$/.test(number)
+      ),
+    merchant: yup.string().required(),
+    account: yup.string().required(),
+    location: yup.string().required(),
+    category: yup.string().required(),
+    date: yup.string().required(),
+  });
+  //Need to change location, category and date
+
+  // setAmount(values.amount);
+  // setCategory(values.category);
+  // setMerchant(values.merchant);
+  // setDate(values.date);
+  // setReceipt(values.receipt);
+  // setLocation(values.location);
+  // setAccount(values.account);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    try {
+      const res = await addDoc(collection(dbFire, "expenses"), expenses);
+      console.log(expenses);
+
+      console.log(formData);
+    } catch (error) {
+      console.log(error);
+    }
+    // setLoading(true);
+    // try {
+    //   setDate("Today");
+    //   setLocation("Here");
+    //   const res = await addDoc(collection(dbFire, "expenses"), expenses);
+    //   console.log(res, "#####response#####");
+    //   setLoading(false);
+    //   console.log("here!!");
+    // } catch {
+    //   setError(error);
+    //   setLoading(false);
+    // }
+  };
 
   if (error) return <ErrorHandler error={error} />;
-
+  // setFormData(values);
   return (
     <Formik
-      initialValues={{}}
+      initialValues={{
+        amount: "",
+        category: "",
+        merchant: "",
+        date: "",
+        receipt: "",
+        account: "",
+        location: "",
+      }}
+      validationSchema={expenseSchema}
       onSubmit={(values) => {
         console.log(values);
+        setFormData({ formData });
+        console.log(formData);
       }}
     >
-      {({ handleChange, handleBlur, handleSubmit, values }) => {
+      {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
         return (
           <View style={styles.container}>
             <View style={styles.inputRow}>
@@ -88,6 +144,7 @@ export default function ExpenseAdder({ navigation }) {
                 value={values.amount}
                 placeholder="Amount"
               />
+              {errors.amount && <Text>{errors.amount}</Text>}
             </View>
             <TextInput
               aria-label="Merchant"
@@ -97,6 +154,7 @@ export default function ExpenseAdder({ navigation }) {
               value={values.merchant}
               placeholder="Merchant"
             />
+            {errors.merchant && <Text>{errors.merchant}</Text>}
             <TextInput
               aria-label="Category"
               placeholder="Category"
@@ -105,6 +163,7 @@ export default function ExpenseAdder({ navigation }) {
               onBlur={handleBlur("category")}
               value={values.category}
             />
+            {errors.category && <Text>{errors.category}</Text>}
             <TextInput
               aria-label="Account"
               placeholder="Account"
@@ -113,6 +172,7 @@ export default function ExpenseAdder({ navigation }) {
               onBlur={handleBlur("account")}
               value={values.account}
             />
+            {errors.account && <Text>{errors.account}</Text>}
             <TextInput
               aria-label="Date"
               placeholder="Date"
@@ -121,6 +181,7 @@ export default function ExpenseAdder({ navigation }) {
               onBlur={handleBlur("date")}
               value={values.date}
             />
+            {errors.date && <Text>{errors.date}</Text>}
             <TextInput
               aria-label="Location"
               placeholder="Location"
@@ -129,6 +190,7 @@ export default function ExpenseAdder({ navigation }) {
               onBlur={handleBlur("location")}
               value={values.location}
             />
+            {errors.location && <Text>{errors.location}</Text>}
             <Button title="Submit" onPress={handleSubmit} />
           </View>
         );
