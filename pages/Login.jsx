@@ -16,7 +16,7 @@ import {
 } from "firebase/auth";
 import ErrorHandler from "../components/error/ErrorHandler";
 import { Loading } from "../components/loading/Loading";
-import { addDoc, collection, doc, setDoc } from "@firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 // import { getCurrentUserId } from "../utils/helpers";
 
 const auth = authFire;
@@ -48,33 +48,28 @@ const LoginScreen = () => {
   };
 
   const register = async () => {
+    setLoading(true);
+    // const credentials = await createUserWithEmailAndPassword(
+    //   auth,
+    //   email,
+    //   password
+    // );
+
+    // const newUser = new User(email, userRole, []);
+    // await setDoc(doc(dbFire, "users", credentials.user.uid), { ...newUser });
     try {
-      setLoading(true);
-      const credentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      // const newUser = new User(email, userRole, []);
-      // await setDoc(doc(dbFire, "users", credentials.user.uid), { ...newUser });
-
-      // const res = await createUserWithEmailAndPassword(auth, email, password)
-      //   .then((userCredential) => {
-      //     const { user } = userCredential;
-      //     console.log(user);
-      //     return user;
-      //   })
-      //   .then((user) => {
-      //     const { uid } = user;
-      //     setUserID(uid);
-      //     console.log(userID);
-      //     if (userID.length > 1) {
-      //       addDoc(collection(dbFire, "users"), { userID, email });
-      //       setLoading(false);
-      //       alert("Check your emails to verify your account!");
-      //     }
-      //   });
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const { user } = res;
+      console.log(user).then((user) => {
+        const { uid } = user;
+        setUserID(uid);
+        console.log(userID);
+        if (userID.length > 1) {
+          addDoc(collection(dbFire, "users"), { userID, email });
+          setLoading(false);
+          alert("Check your emails to verify your account!");
+        }
+      });
 
       // setLoading(true);
       // const res = await createUserWithEmailAndPassword(auth, email, password);
