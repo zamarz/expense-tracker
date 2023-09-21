@@ -17,11 +17,8 @@ import {
 import ErrorHandler from "../components/error/ErrorHandler";
 import { Loading } from "../components/loading/Loading";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-// import { getCurrentUserId } from "../utils/helpers";
 
 const auth = authFire;
-
-// const uid = getCurrentUserId();
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -49,46 +46,11 @@ const LoginScreen = () => {
 
   const register = async () => {
     setLoading(true);
-    // const credentials = await createUserWithEmailAndPassword(
-    //   auth,
-    //   email,
-    //   password
-    // );
 
-    // const newUser = new User(email, userRole, []);
-    // await setDoc(doc(dbFire, "users", credentials.user.uid), { ...newUser });
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       const { user } = res;
-      console.log(user).then((user) => {
-        const { uid } = user;
-        setUserID(uid);
-        console.log(userID);
-        if (userID.length > 1) {
-          addDoc(collection(dbFire, "users"), { userID, email });
-          setLoading(false);
-          alert("Check your emails to verify your account!");
-        }
-      });
-
-      // setLoading(true);
-      // const res = await createUserWithEmailAndPassword(auth, email, password);
-
-      // const { uid } = res.user;
-      //  addDoc(collection(dbFire, "users"), res.user);
-
-      // (userCredential) => {
-      // const { user } = userCredential;
-      // if (user) {
-      //   //console.log(user)
-      //   addDoc(collection(dbFire, "users"), user.uid)
-      //   .then((data) => {
-      //     console.log(data)
-      //   })
-      //   //alert("Check your emails to verify your account!");
-
-      // }
-      //  });
+      if (user) setLoading(false);
     } catch (error) {
       setError(error);
     }
