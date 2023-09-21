@@ -22,6 +22,7 @@ import Analysis from "./pages/Analysis";
 import Receipts from "./components/receipts/Receipts";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
+import ExpenseAdder from "./components/expenses/ExpenseAdder";
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -68,6 +69,7 @@ export default function App() {
         />
         <Drawer.Screen name="Profile" component={Profile} />
         <Drawer.Screen name="Settings" component={Settings} />
+        <Drawer.Screen name="ExpenseAdder" component={ExpenseAdder} />
         <Drawer.Screen
           name="ExpenseList"
           component={ExpenseList}

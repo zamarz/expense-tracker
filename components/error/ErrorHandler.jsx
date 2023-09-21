@@ -1,7 +1,7 @@
 import { View, Text, Button } from "react-native";
 import React from "react";
 
-const ErrorHandler = ({ error }) => {
+const ErrorHandler = ({ navigation, error }) => {
   console.log(error);
   if (error.message.includes("in-use")) {
     return (
@@ -32,6 +32,18 @@ const ErrorHandler = ({ error }) => {
       <View>
         <Text>Error: 400 - Bad Request</Text>
         <Text>Message: You have entered an incorrect email address</Text>
+        <Button
+          onPress={() => alert("add navigation to login page")}
+          title="Go back"
+          accessibilityLabel="Go back to Login/Register Page"
+        />
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <Text>Error: 500 - Oh no! Something went wrong!!</Text>
+        <Text>Message: You have done something inconceivable!</Text>
         <Button
           onPress={() => alert("add navigation to login page")}
           title="Go back"
