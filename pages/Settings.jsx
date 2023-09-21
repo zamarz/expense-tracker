@@ -16,51 +16,49 @@ const Settings = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Layout>
-          <View>
-            <Text style={styles.title}>
-              Monitor how much you can spend each month
-            </Text>
-            <Button
-              title="Set Budget"
-              onPress={() => navigation.navigate("Budget")}
-            />
-          </View>
-          <View>
-            <Text style={styles.title}>Stay on top of upcoming bills</Text>
-            <Button
-              title="Set your reminders"
-              onPress={() => navigation.navigate("Reminders")}
-            />
-          </View>
-          <View>
-            <Text style={styles.title}>Take a look at your spending map</Text>
-            <Button
-              title="View here"
-              onPress={() => navigation.navigate("Map")}
-            />
-          </View>
-          <View>
-            <Text style={styles.title}>Set your currency</Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder={"Choose a currency"}
-            />
-          </View>
-          <View>
-            <Text style={styles.title}>Delete your account</Text>
-            <Button
-              title="Delete account"
-              color="red"
-              onPress={() => navigation.navigate("Delete Account")}
-            />
-          </View>
-        </Layout>
+        <View>
+          <Text style={styles.title}>
+            Monitor how much you can spend each month
+          </Text>
+          <Button
+            title="Set Budget"
+            onPress={() => navigation.navigate("Budget")}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}>Stay on top of upcoming bills</Text>
+          <Button
+            title="Set your reminders"
+            onPress={() => navigation.navigate("Reminders")}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}>Take a look at your spending map</Text>
+          <Button
+            title="View here"
+            onPress={() => navigation.navigate("Map")}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}>Set your currency</Text>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            placeholder={"Choose a currency"}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}>Delete your account</Text>
+          <Button
+            title="Delete account"
+            color="red"
+            onPress={() => navigation.navigate("Delete Account")}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -1,3 +1,10 @@
+import "react-native-gesture-handler";
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  Easing,
+} from "react-native-reanimated";
 import { Image, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -7,11 +14,20 @@ import Register from "./pages/Register";
 import { useEffect, useState } from "react";
 import { authFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import ExpenseAdder from "./components/expenses/ExpenseAdder";
+
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Profile from "./pages/Profle";
+import Settings from "./pages/Settings";
+import ExpenseList from "./components/expenses/ExpenseList";
+import Analysis from "./pages/Analysis";
+import Receipts from "./components/receipts/Receipts";
+import Map from "./components/map/Map";
+import Footer from "./components/footer/Footer";
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const login = true; //change this later to context
 
@@ -24,68 +40,61 @@ export default function App() {
     });
   });
 
+  const LoginNavigator = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+      </Stack.Navigator>
+    );
+  };
+
+  const DrawerNavigator = () => {
+    return (
+      <Drawer.Navigator>
+        <Drawer.Screen
+          name="Home"
+          component={Footer}
+          // options={
+          //   {
+          //     // title: "My Home",
+          //     //headerShown: false,
+          //     // headerLeft: () => (
+          //     //   <Image
+          //     //     style={{ width: 50, height: 50 }}
+          //     //     source={require("./assets/android-chrome-192x192.png")}
+          //     //   />
+          //     // ),
+          //   }
+          // }
+        />
+        <Drawer.Screen name="Profile" component={Profile} />
+        <Drawer.Screen name="Settings" component={Settings} />
+        <Drawer.Screen
+          name="ExpenseList"
+          component={ExpenseList}
+          options={{
+            title: "See all expenses",
+            // headerShown: false,
+            // headerLeft: () => (
+            //   <Image
+            //     style={{ width: 50, height: 50 }}
+            //     source={require("./assets/android-chrome-192x192.png")}
+            //   />
+            // ),
+          }}
+        />
+        <Drawer.Screen name="Analysis" component={Analysis} />
+        <Drawer.Screen name="Receipts" component={Receipts} />
+        <Drawer.Screen name="Map" component={Map} />
+        {/* )} */}
+      </Drawer.Navigator>
+    );
+  };
+
   return (
     <NavigationContainer>
-      {/* if user is not logged in, show login screeen */}
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#fff",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      >
-        {!user ? (
-          <LoginStack.Group>
-            <LoginStack.Screen
-              name="Login"
-              component={Login}
-              // options={{ headerShown: false }}
-            />
-            <LoginStack.Screen
-              name="Register"
-              component={Register}
-              // options={{ headerShown: false }}
-            />
-          </LoginStack.Group>
-        ) : (
-          <HomeStack.Group>
-            {/* if user is logged in, show home screeen */}
-            <HomeStack.Screen
-              name="Home"
-              component={Home}
-              options={{
-                title: "My Home",
-                // headerShown: false,
-                headerLeft: () => (
-                  <Image
-                    style={{ width: 50, height: 50 }}
-                    source={require("./assets/android-chrome-192x192.png")}
-                  />
-                ),
-              }}
-            />
-            <HomeStack.Screen
-              name="ExpenseAdder"
-              component={ExpenseAdder}
-              options={{
-                title: "Add a new Expense",
-                // headerShown: false,
-                headerLeft: () => (
-                  <Image
-                    style={{ width: 50, height: 50 }}
-                    source={require("./assets/android-chrome-192x192.png")}
-                  />
-                ),
-              }}
-            />
-          </HomeStack.Group>
-        )}
-      </Stack.Navigator>
+      {!user ? <LoginNavigator /> : <DrawerNavigator />}
     </NavigationContainer>
   );
 }
