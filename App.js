@@ -22,6 +22,7 @@ import Analysis from "./pages/Analysis";
 import Receipts from "./components/receipts/Receipts";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
+import ErrorHandler from "./components/error/ErrorHandler";
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -43,6 +44,7 @@ export default function App() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Error" component={ErrorHandler} />
       </Stack.Navigator>
     );
   };

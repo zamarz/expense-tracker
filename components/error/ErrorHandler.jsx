@@ -1,7 +1,8 @@
 import { View, Text, Button } from "react-native";
 import React from "react";
 
-const ErrorHandler = ({ error }) => {
+const ErrorHandler = ({ route, navigation }) => {
+  const { error } = route.params;
   console.log(error);
   if (error.message.includes("in-use")) {
     return (
@@ -11,6 +12,11 @@ const ErrorHandler = ({ error }) => {
           Message: This email address is already in use, please use another one
           or sign in / forgot your password
         </Text>
+        <Button
+          title="Go back"
+          accessibilityLabel="Go back to Login/Register Page"
+          onPress={() => navigation.navigate("Login")}
+        />
       </View>
     );
   } else if (error.message.includes("user-not-found")) {
@@ -18,6 +24,11 @@ const ErrorHandler = ({ error }) => {
       <View>
         <Text>Error: 400 - Bad Request</Text>
         <Text>Message: This user does not exist. Please sign up!</Text>
+        <Button
+          title="Go back"
+          accessibilityLabel="Go back to Login/Register Page"
+          onPress={() => navigation.navigate("Login")}
+        />
       </View>
     );
   } else if (error.message.includes("password")) {
@@ -25,6 +36,11 @@ const ErrorHandler = ({ error }) => {
       <View>
         <Text>Error: 400 - Bad Request</Text>
         <Text>Message: You have entered an incorrect password</Text>
+        <Button
+          title="Go back"
+          accessibilityLabel="Go back to Login/Register Page"
+          onPress={() => navigation.navigate("Login")}
+        />
       </View>
     );
   } else if (error.message.includes("email")) {
@@ -33,7 +49,7 @@ const ErrorHandler = ({ error }) => {
         <Text>Error: 400 - Bad Request</Text>
         <Text>Message: You have entered an incorrect email address</Text>
         <Button
-          onPress={() => alert("add navigation to login page")}
+          onPress={() => navigation.navigate("Login")}
           title="Go back"
           accessibilityLabel="Go back to Login/Register Page"
         />
