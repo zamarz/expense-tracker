@@ -63,7 +63,7 @@ export default function ExpenseList() {
       <FlatList
         data={data}
         renderItem={({ item }) => <ExpenseCard item={item} />}
-        keyExtractor={(item) => item.id}
+        // keyExtractor={(item) => item.id}
       />
       {/* {data.expenses.map((exp) => {
         return <ExpenseCard key={exp.id} exp={exp} />;
