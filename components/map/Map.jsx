@@ -1,10 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-export default function Register() {
+const Map = () => {
   return (
     <View>
-      <Text>Register</Text>
+      <Text>Map</Text>
     </View>
   );
-}
+};
+
+export default Map;

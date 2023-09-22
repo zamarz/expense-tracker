@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button, FlatList } from "react-native";
+import {
+  SafeAreaView,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+} from "react-native";
 import AccountsCard from "./AccountsCard";
 import { dbFire } from "../../firebaseConfig";
 import { collection, query, getDocs, doc, deleteDoc } from "firebase/firestore";
@@ -23,7 +31,7 @@ export default function AccountList({ navigation }) {
         return totalBalance;
     };
 
-    const totalBalance = calculateTotalBalance();
+  const totalBalance = calculateTotalBalance();
 
     const calculateTotalBudget = () => {
         let totalBudget = 0;
@@ -109,20 +117,19 @@ export default function AccountList({ navigation }) {
             </View>
         </SafeAreaView>
     );
-}
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 50,
-        flex: 1,
-    },
-    item: {
-        padding: 20,
-        fontSize: 15,
-        marginTop: 5,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-    }
+  container: {
+    padding: 50,
+    flex: 1,
+  },
+  item: {
+    padding: 20,
+    fontSize: 15,
+    marginTop: 5,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 });
