@@ -1,17 +1,22 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, { useContext } from "react";
 import ExpenseCard from "./ExpenseCard";
+import { ExpensesContext } from "../../context/ExpensesContext";
 
-export default function ExpenseList() {
+const ExpenseListHome = () => {
+  const expenses = useContext(ExpensesContext);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Expenses List</Text>
-      {/* <FlatList
-        data={expenses}
+      <Text style={styles.title}>Most Recent Expenses </Text>
+      <FlatList
+        data={expenses.slice(0, 3)}
         renderItem={({ item }) => <ExpenseCard item={item} />}
-      /> */}
+      />
     </View>
   );
-}
+};
+
+export default ExpenseListHome;
 
 const styles = StyleSheet.create({
   container: {
@@ -21,10 +26,5 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     marginTop: 20,
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: "#737373",
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });

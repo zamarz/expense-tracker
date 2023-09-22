@@ -3,6 +3,7 @@ import React from "react";
 
 export default function ExpenseCard({ item }) {
   const { id, amount, merchant, category, date } = item;
+
   return (
     <View style={styles.container} key={id}>
       <Text>Amount Spent: £{(+amount).toFixed(2)}</Text>

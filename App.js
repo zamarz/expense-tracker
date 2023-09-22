@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./pages/Login";
 import { useContext, useEffect, useState } from "react";
-import { authFire } from "./firebaseConfig";
+import { authFire, dbFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./pages/Profle";
@@ -16,23 +16,82 @@ import Receipts from "./components/receipts/Receipts";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
-import { BudgetProvider } from "./context/BudgetContext";
+import { BudgetContext, BudgetProvider } from "./context/BudgetContext";
 import AccountsList from "./components/account/AccountsList";
 import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
+import { BalanceContext } from "./context/BalanceContext";
+import { ExpensesContext } from "./context/ExpensesContext";
+import { collection, getDocs, query, where } from "@firebase/firestore";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [user, setUser] = useState({ name: "", email: "", uid: "" });
+  const [budget, setBudget] = useState(0);
+  const [balance, setBalance] = useState(0);
+  const [expenseList, setExpenseList] = useState([]);
+  const [accountList, setAccountList] = useState([]);
+
+  const fetchExpensesData = async () => {
+    const expensesQuery = query(
+      collection(dbFire, "expenses"),
+      where(user.uid === uid)
+    );
+    const querySnapshot = await getDocs(expensesQuery);
+    const expensesData = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setExpenseList(expensesData);
+  };
+
+  const fetchAccountsData = async () => {
+    const accountsQuery = query(collection(dbFire, "account"));
+    const querySnapshot = await getDocs(accountsQuery);
+    const accountsData = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setAccountList(accountsData);
+    if (accountsData) {
+      const calculateBudget = () => {
+        const data = accountsData.reduce((total, item) => {
+          console.log(item);
+          return (total += +item.budget);
+        }, +budget);
+        return data.toFixed(2);
+      };
+      const calculateBalance = () => {
+        const data = accountsData.reduce((total, item) => {
+          console.log(item);
+          return (total += +item.balance);
+        }, +balance);
+        return data.toFixed(2);
+      };
+      const budgetTotal = calculateBudget();
+      const balanceTotal = calculateBalance();
+      setBudget(budgetTotal);
+      setBalance(balanceTotal);
+    }
+  };
+
+  useEffect(() => {
+    fetchExpensesData();
+    fetchAccountsData();
+  }, []);
+
+  // console.log(accountList);
+  console.log(budget);
 
   useEffect(() => {
     onAuthStateChanged(authFire, (user) => {
       setUser(user);
     });
   }, [user]);
+  console.log(user);
 
   const LoginNavigator = () => {
     return (
@@ -45,7 +104,7 @@ export default function App() {
 
   const AccountsNavigator = () => {
     return (
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="AccountList">
         <Stack.Screen name="Account List" component={AccountList} />
         <Stack.Screen name="Accounts Adder" component={AccountsAdder} />
       </Stack.Navigator>
@@ -86,7 +145,7 @@ export default function App() {
           name="Expense List"
           component={ExpensesNavigator}
           options={{
-            title: "See all expenses",
+            title: "Expenses List",
             // headerShown: false,
             // headerLeft: () => (
             //   <Image
@@ -111,9 +170,13 @@ export default function App() {
         {!user ? (
           <LoginNavigator />
         ) : (
-          <BudgetProvider>
-            <DrawerNavigator />
-          </BudgetProvider>
+          <ExpensesContext.Provider value={expenseList}>
+            <BudgetContext.Provider value={budget}>
+              <BalanceContext.Provider value={balance}>
+                <DrawerNavigator />
+              </BalanceContext.Provider>
+            </BudgetContext.Provider>
+          </ExpensesContext.Provider>
         )}
       </NavigationContainer>
     </UserContext.Provider>
