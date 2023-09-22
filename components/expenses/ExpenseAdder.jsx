@@ -18,7 +18,6 @@ import { Formik } from "formik";
 import { stringifyValueWithProperty } from "react-native-web/dist/cjs/exports/StyleSheet/compiler";
 import { object, string, number } from "yup";
 import * as yup from "yup";
-import DatePicker from "react-native-date-picker";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");

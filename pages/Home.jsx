@@ -1,9 +1,10 @@
 import { View, Text, Button, StyleSheet, SafeAreaView } from "react-native";
-import React, { useState } from "react";
-import Layout from "../components/modules/Layout";
+import React, { useContext, useState } from "react";
 import { Loading } from "../components/loading/Loading";
 import Logout from "../components/buttons/Logout";
 import ExpenseList from "../components/expenses/ExpenseList";
+import BudgetPlanner from "../components/budget/BudgetPlanner";
+import { UserContext } from "../context/UserContext";
 
 // const Separator = () => <View style={styles.separator} />;
 
@@ -11,6 +12,7 @@ export default function Home({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [balance, setBalance] = useState(0);
+  const user = useContext(UserContext);
 
   {
     /* Handle onPress App Demo */
@@ -29,15 +31,17 @@ export default function Home({ navigation }) {
           <Text style={styles.title}>Balance: {balance}</Text>
         </View>
         <View>
-          <Text style={styles.title}>Expenses List</Text>
-          <Text style={styles.title}>Expenses Card</Text>
+          {/* Viewing current budget, remaning budget and total spent */}
+          <BudgetPlanner />
         </View>
         <View>
           <ExpenseList />
         </View>
         <View>
           <Button
-            onPress={() => navigation.navigate("ExpenseAdder")}
+            onPress={() =>
+              navigation.navigate("Expense List", { screen: "Expense Adder" })
+            }
             title="Add expense"
             accessibilityLabel="Add a new expense to an account manually"
           ></Button>

@@ -24,6 +24,7 @@ export default function AccountsAdder({ navigation }) {
   const [userId, setUserId] = useState("");
   const [formData, setFormData] = useState({});
 
+
   if (isLoading) return <Loading />;
   if (isError) return <p>Something went wrong!</p>;
 
@@ -36,6 +37,7 @@ export default function AccountsAdder({ navigation }) {
   });
 
   const newAccount = {
+    id: Date.now().toString(36) + Math.random().toString(36).substring(2),
     bank,
     balance,
     type,
@@ -49,6 +51,7 @@ export default function AccountsAdder({ navigation }) {
     type: yup.string().required(),
     budget: yup.number().required().typeError("Budget should be a number"),
   });
+
 
   const handleSubmit = async (values) => {
     values.userId = newAccount.userId;

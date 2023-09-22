@@ -1,12 +1,11 @@
 import { View, Text, Button } from "react-native";
 import React from "react";
 
-<<<<<<< HEAD
-const ErrorHandler = ({ navigation, error }) => {
-=======
 const ErrorHandler = ({ route, navigation }) => {
   const { error } = route.params;
->>>>>>> 74be41f24ca3491f5542e3c4cb62943bfc0e1a77
+  alert(
+    "Change this to a modal instead of a new screeen - should fix Android bug"
+  );
   console.log(error);
   if (error.message.includes("in-use")) {
     return (

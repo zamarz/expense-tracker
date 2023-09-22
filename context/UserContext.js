@@ -1,4 +1,3 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
-export const UserContext = createContext(null);
-export const [user, setUser] = useContext({ userUID: null });
+export const UserContext = createContext();
