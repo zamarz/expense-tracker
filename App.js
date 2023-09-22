@@ -22,7 +22,14 @@ import Analysis from "./pages/Analysis";
 import Receipts from "./components/receipts/Receipts";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
+<<<<<<< HEAD
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
+=======
+import ErrorHandler from "./components/error/ErrorHandler";
+import AccountsList from "./components/account/AccountsList";
+import AccountsAdder from "./components/account/AccountsAdder";
+import AccountList from "./components/account/AccountsList";
+>>>>>>> 74be41f24ca3491f5542e3c4cb62943bfc0e1a77
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -44,6 +51,16 @@ export default function App() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Error" component={ErrorHandler} />
+      </Stack.Navigator>
+    );
+  };
+
+  const AccountsNavigator = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Account List" component={AccountList} />
+        <Stack.Screen name="Accounts Adder" component={AccountsAdder} />
       </Stack.Navigator>
     );
   };
@@ -84,6 +101,7 @@ export default function App() {
             // ),
           }}
         />
+        <Drawer.Screen name="Accounts List" component={AccountsNavigator} />
         <Drawer.Screen name="Analysis" component={Analysis} />
         <Drawer.Screen name="Receipts" component={Receipts} />
         <Drawer.Screen name="Map" component={Map} />
