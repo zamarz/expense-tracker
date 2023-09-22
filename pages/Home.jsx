@@ -39,7 +39,9 @@ export default function Home({ navigation }) {
         </View>
         <View>
           <Button
-            onPress={() => navigation.navigate("ExpenseAdder")}
+            onPress={() =>
+              navigation.navigate("Expense List", { screen: "Expense Adder" })
+            }
             title="Add expense"
             accessibilityLabel="Add a new expense to an account manually"
           ></Button>
