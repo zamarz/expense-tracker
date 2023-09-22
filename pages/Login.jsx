@@ -20,10 +20,9 @@ import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const auth = authFire;
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userID, setUserID] = useState("");
 
@@ -40,7 +39,8 @@ const LoginScreen = () => {
         }
       );
     } catch (error) {
-      setError(error);
+      navigation.navigate("Error", { error: error });
+      setLoading(false);
     }
   };
 
@@ -52,11 +52,11 @@ const LoginScreen = () => {
       const { user } = res;
       if (user) setLoading(false);
     } catch (error) {
-      setError(error);
+      navigation.navigate("Error", { error: error });
+      setLoading(false);
     }
   };
 
-  if (error) return <ErrorHandler error={error} />;
   if (loading) return <Loading />;
 
   return (
