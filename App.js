@@ -20,6 +20,7 @@ import { BudgetProvider } from "./context/BudgetContext";
 import AccountsList from "./components/account/AccountsList";
 import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
+import ExpenseAdder from "./components/expenses/ExpenseAdder";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -51,11 +52,20 @@ export default function App() {
     );
   };
 
+  const ExpensesNavigator = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Expense List Page" component={ExpenseList} />
+        <Stack.Screen name="Expense Adder" component={ExpenseAdder} />
+      </Stack.Navigator>
+    );
+  };
+
   const DrawerNavigator = () => {
     return (
       <Drawer.Navigator>
         <Drawer.Screen
-          name={`Home - Welcome ${user.displayName}`}
+          name={`Home`}
           component={Footer}
           // options={
           //   {
@@ -73,8 +83,8 @@ export default function App() {
         <Drawer.Screen name="Profile" component={Profile} />
         <Drawer.Screen name="Settings" component={Settings} />
         <Drawer.Screen
-          name="ExpenseList"
-          component={ExpenseList}
+          name="Expense List"
+          component={ExpensesNavigator}
           options={{
             title: "See all expenses",
             // headerShown: false,
