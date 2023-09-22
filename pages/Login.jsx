@@ -7,51 +7,61 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { authFire } from "../firebaseConfig";
+import { authFire, dbFire } from "../firebaseConfig";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  getAuth,
 } from "firebase/auth";
+import ErrorHandler from "../components/error/ErrorHandler";
+import { Loading } from "../components/loading/Loading";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const auth = authFire;
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [userID, setUserID] = useState("");
 
-  const signIn = async ({ navigation }) => {
+  const signIn = async () => {
+    setLoading(true);
+
     try {
       const res = await signInWithEmailAndPassword(auth, email, password).then(
         (userCredential) => {
           const user = userCredential.user;
-          console.log(user);
+          if (user) {
+            setLoading(false);
+          }
         }
       );
     } catch (error) {
-      console.log(error);
-      alert(error.message);
+      navigation.navigate("Error", { error: error });
+      setLoading(false);
     }
   };
 
-  const register = async ({ navigation }) => {
+  const register = async () => {
+    setLoading(true);
+
     try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        alert("Check your emails to verify your account!");
-      });
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const { user } = res;
+      if (user) setLoading(false);
     } catch (error) {
-      console.log(error);
-      alert(error.message);
+      navigation.navigate("Error", { error: error });
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <View style={styles.container}>
+      <Text>Welcome! Please sign in, or register your email!</Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -84,6 +94,16 @@ const LoginScreen = () => {
     </View>
   );
 };
+
+const userAuth = getAuth();
+onAuthStateChanged(userAuth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    console.log(uid, "working");
+  } else {
+    console.log("User has signed out");
+  }
+});
 
 export default LoginScreen;
 const styles = StyleSheet.create({
