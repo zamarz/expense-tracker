@@ -17,6 +17,9 @@ import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
 import { BudgetProvider } from "./context/BudgetContext";
+import AccountsList from "./components/account/AccountsList";
+import AccountsAdder from "./components/account/AccountsAdder";
+import AccountList from "./components/account/AccountsList";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,6 +38,15 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Error" component={ErrorHandler} />
+      </Stack.Navigator>
+    );
+  };
+
+  const AccountsNavigator = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Account List" component={AccountList} />
+        <Stack.Screen name="Accounts Adder" component={AccountsAdder} />
       </Stack.Navigator>
     );
   };
@@ -74,6 +86,7 @@ export default function App() {
             // ),
           }}
         />
+        <Drawer.Screen name="Accounts List" component={AccountsNavigator} />
         <Drawer.Screen name="Analysis" component={Analysis} />
         <Drawer.Screen name="Receipts" component={Receipts} />
         <Drawer.Screen name="Map" component={Map} />
