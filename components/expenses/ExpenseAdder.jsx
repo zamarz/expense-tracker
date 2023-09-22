@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -32,9 +32,13 @@ export default function ExpenseAdder({ navigation }) {
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({});
 
-  const regAmount = /^[0-9]*\.[0-9]{2}$/;
-
   const auth = authFire;
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+      setUserId(uid);
+    }
+  });
 
   const expenses = {
     amount,
@@ -46,18 +50,6 @@ export default function ExpenseAdder({ navigation }) {
     location,
     userId,
   };
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      setUserId(uid);
-    }
-  });
-  // const loginValidationSchema = yup.object().shape({
-  //   email: yup
-  //     .string()
-  //     .email("Please enter valid email")
-  //     .required('Email Address is Required'),
 
   const expenseSchema = yup.object().shape({
     amount: yup
@@ -78,22 +70,13 @@ export default function ExpenseAdder({ navigation }) {
   });
   //Need to change location, category and date
 
-  // setAmount(values.amount);
-  // setCategory(values.category);
-  // setMerchant(values.merchant);
-  // setDate(values.date);
-  // setReceipt(values.receipt);
-  // setLocation(values.location);
-  // setAccount(values.account);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(formData);
+  const handleSubmit = async (values) => {
+    values.userId = expenses.userId;
+    //   e.preventDefault();
+    console.log(values);
     try {
-      const res = await addDoc(collection(dbFire, "expenses"), expenses);
-      console.log(expenses);
-
-      console.log(formData);
+      setLoading(true);
+      const res = await addDoc(collection(dbFire, "expenses"), values);
     } catch (error) {
       console.log(error);
     }
@@ -112,7 +95,7 @@ export default function ExpenseAdder({ navigation }) {
   };
 
   if (error) return <ErrorHandler error={error} />;
-  // setFormData(values);
+
   return (
     <Formik
       initialValues={{
@@ -126,9 +109,19 @@ export default function ExpenseAdder({ navigation }) {
       }}
       validationSchema={expenseSchema}
       onSubmit={(values) => {
-        console.log(values);
-        setFormData({ formData });
+        //loop through our keys - to do for tomorrow?
+        //?mutating state?? Refactor this
+        setFormData(
+          (formData.amount = values.amount),
+          (formData.category = values.category),
+          (formData.account = values.account),
+          (formData.date = values.date),
+          (formData.merchant = values.merchant),
+          (formData.receipt = values.receipt),
+          (formData.location = values.location)
+        );
         console.log(formData);
+        handleSubmit(formData);
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
