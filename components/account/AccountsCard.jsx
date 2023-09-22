@@ -1,12 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Button } from 'react-native';
 
 export default function AccountsCard({ item, onEditBudget, onEditBalance, onAddIncome, onDelete }) {
-    const [accountId, setAccountId] = useState("");
-    const [accountBalance, setAccountBalance] = useState("");
-    const [accountBudget, setAccountBudget] = useState("");
-    const [accountType, setAccountType] = useState("");
 
     return (
         <SafeAreaView style={styles.container}>
