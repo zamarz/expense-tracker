@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { authFire, dbFire } from "../firebaseConfig";
+import { authFire } from "../firebaseConfig";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -16,17 +16,48 @@ import {
 } from "firebase/auth";
 import ErrorHandler from "../components/error/ErrorHandler";
 import { Loading } from "../components/loading/Loading";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { FIREBASE_GUEST_UID, FIREBASE_GUEST_PWD } from "@env";
 
 const auth = authFire;
+const userAuth = getAuth();
+const guestUser = {
+  name: "Guest",
+  email: "guest@email.com",
+  password: FIREBASE_GUEST_PWD,
+  uid: FIREBASE_GUEST_UID,
+};
+
+onAuthStateChanged(userAuth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    if (uid) console.log("User has signed in");
+  } else {
+    console.log("User has signed out");
+  }
+});
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userID, setUserID] = useState("");
 
   const signIn = async () => {
+    setLoading(true);
+    try {
+      const res = await signInWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          const user = userCredential.user;
+          if (user) {
+            setLoading(false);
+          }
+        }
+      );
+    } catch (error) {
+      navigation.navigate("Error", { error: error });
+      setLoading(false);
+    }
+  };
+  const signInAsGuest = async (auth, email, password) => {
     setLoading(true);
 
     try {
@@ -89,21 +120,19 @@ const LoginScreen = ({ navigation }) => {
           >
             <Text style={styles.buttonOutlineText}>Register</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              signInAsGuest(auth, guestUser.email, guestUser.password);
+            }}
+            style={[styles.button, styles.buttonOutline]}
+          >
+            <Text style={styles.buttonOutlineText}>Guest Sign-in</Text>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
     </View>
   );
 };
-
-const userAuth = getAuth();
-onAuthStateChanged(userAuth, (user) => {
-  if (user) {
-    const uid = user.uid;
-    console.log(uid, "working");
-  } else {
-    console.log("User has signed out");
-  }
-});
 
 export default LoginScreen;
 const styles = StyleSheet.create({
