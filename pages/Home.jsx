@@ -55,7 +55,7 @@ export default function Home({ navigation }) {
         <View>
           {/* Button to navigate to viewing/adding account(s) */}
           <Button
-            onPress={() => navigation.navigate("AccountsList")}
+            onPress={() => navigation.navigate("Accounts List")}
             title="View / Add Account"
             accessibilityLabel="View a list of accounts or add a new account"
           ></Button>
