@@ -6,7 +6,7 @@ const Budget = () => {
   const { budget } = useContext(BudgetContext);
   return (
     <View>
-      <Text>Budget: £{budget}</Text>
+      <Text>Budget: £{+budget}</Text>
     </View>
   );
 };

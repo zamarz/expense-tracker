@@ -9,7 +9,7 @@ const Remaining = () => {
   }, 0);
   return (
     <View>
-      <Text>Remaining: £{(+budget - totalExpenses).toFixed(2)}</Text>
+      <Text>Remaining: £{(+budget - +totalExpenses).toFixed(2)}</Text>
     </View>
   );
 };
