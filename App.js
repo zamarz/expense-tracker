@@ -14,14 +14,13 @@ import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
 import Receipts from "./components/receipts/Receipts";
 import Map from "./components/map/Map";
-import Footer from "./components/footer/Footer";;
+import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
 import { BudgetProvider } from "./context/BudgetContext";
 import AccountsList from "./components/account/AccountsList";
 import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
-import ExpenseAdder from "./components/expenses/ExpenseAdder"
-
+import ExpenseAdder from "./components/expenses/ExpenseAdder";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
