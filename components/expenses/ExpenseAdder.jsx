@@ -18,12 +18,13 @@ import { Formik } from "formik";
 import { stringifyValueWithProperty } from "react-native-web/dist/cjs/exports/StyleSheet/compiler";
 import { object, string, number } from "yup";
 import * as yup from "yup";
+import DatePicker from "react-native-date-picker";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [merchant, setMerchant] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
   const [receipt, setReceipt] = useState("");
   const [account, setAccount] = useState("");
   const [location, setLocation] = useState("");
@@ -72,13 +73,16 @@ export default function ExpenseAdder({ navigation }) {
 
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
-    //   e.preventDefault();
+    values.data = expenses.data;
+    //preventDefault();
     console.log(values);
+    setLoading(true);
     try {
-      setLoading(true);
       const res = await addDoc(collection(dbFire, "expenses"), values);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      setError(error);
+      setLoading(false);
     }
     // setLoading(true);
     // try {
@@ -109,13 +113,12 @@ export default function ExpenseAdder({ navigation }) {
       }}
       validationSchema={expenseSchema}
       onSubmit={(values) => {
-        //loop through our keys - to do for tomorrow?
         //?mutating state?? Refactor this
         setFormData(
           (formData.amount = values.amount),
           (formData.category = values.category),
           (formData.account = values.account),
-          (formData.date = values.date),
+          // (formData.date = values.date),
           (formData.merchant = values.merchant),
           (formData.receipt = values.receipt),
           (formData.location = values.location)
@@ -166,14 +169,16 @@ export default function ExpenseAdder({ navigation }) {
               value={values.account}
             />
             {errors.account && <Text>{errors.account}</Text>}
-            <TextInput
+            {/* <TextInput
               aria-label="Date"
               placeholder="Date"
               style={styles.input}
               onChangeText={handleChange("date")}
               onBlur={handleBlur("date")}
               value={values.date}
-            />
+            /> */}
+
+            <DatePicker date={date} onDateChange={setDate} />
             {errors.date && <Text>{errors.date}</Text>}
             <TextInput
               aria-label="Location"
