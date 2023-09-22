@@ -1,12 +1,12 @@
 import { createContext, useReducer } from "react";
 
 const initialState = {
-  total: 2000,
+  budget: 2000,
   expenses: [
     {
       id: 1,
-      amount: 8.25,
-      merchant: "Starbucks",
+      amount: 15.05,
+      merchant: "Nero",
       category: "Food/Beverage",
       date: null,
       receipt: null,
@@ -15,7 +15,7 @@ const initialState = {
     },
     {
       id: 2,
-      amount: 8.25,
+      amount: 6.25,
       merchant: "Starbucks",
       category: "Food/Beverage",
       date: null,
@@ -25,7 +25,7 @@ const initialState = {
     },
     {
       id: 3,
-      amount: 8.25,
+      amount: 18.25,
       merchant: "Starbucks",
       category: "Food/Beverage",
       date: null,
@@ -35,8 +35,8 @@ const initialState = {
     },
     {
       id: 4,
-      amount: 8.25,
-      merchant: "Starbucks",
+      amount: 108.24,
+      merchant: "Restaurant",
       category: "Food/Beverage",
       date: null,
       receipt: null,
@@ -59,7 +59,7 @@ const initialState = {
 export const BudgetContext = createContext();
 
 export const BudgetProvider = ({ children }) => {
-  const [budget, setBudget] = useReducer(BudgetReducer, initialState);
+  const [budget, setBudget] = useReducer(budget, initialState);
 
   return (
     <BudgetContext.Provider

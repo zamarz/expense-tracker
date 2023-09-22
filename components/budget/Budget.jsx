@@ -1,10 +1,12 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
+import { BudgetContext } from "../../context/BudgetContext";
 
 const Budget = () => {
+  const { budget } = useContext(BudgetContext);
   return (
     <View>
-      <Text>Budget: £2000</Text>
+      <Text>Budget: £{budget}</Text>
     </View>
   );
 };
