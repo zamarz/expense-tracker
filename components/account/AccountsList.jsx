@@ -117,6 +117,7 @@ export default function AccountList({ navigation }) {
             </View>
         </SafeAreaView>
     );
+}
 
 const styles = StyleSheet.create({
   container: {
