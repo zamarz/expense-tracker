@@ -19,6 +19,16 @@ import { Loading } from "../components/loading/Loading";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const auth = authFire;
+const userAuth = getAuth();
+
+onAuthStateChanged(userAuth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    console.log(uid, "working");
+  } else {
+    console.log("User has signed out");
+  }
+});
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -94,16 +104,6 @@ const LoginScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const userAuth = getAuth();
-onAuthStateChanged(userAuth, (user) => {
-  if (user) {
-    const uid = user.uid;
-    console.log(uid, "working");
-  } else {
-    console.log("User has signed out");
-  }
-});
 
 export default LoginScreen;
 const styles = StyleSheet.create({

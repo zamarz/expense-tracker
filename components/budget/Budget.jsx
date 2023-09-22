@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Map = () => {
+const Budget = () => {
   return (
     <View>
-      <Text>Map</Text>
+      <Text>Budget: £2000</Text>
     </View>
   );
 };
 
-export default Map;
+export default Budget;

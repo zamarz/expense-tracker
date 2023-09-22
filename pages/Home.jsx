@@ -1,6 +1,5 @@
 import { View, Text, Button, StyleSheet, SafeAreaView } from "react-native";
 import React, { useState } from "react";
-import Layout from "../components/modules/Layout";
 import { Loading } from "../components/loading/Loading";
 import Logout from "../components/buttons/Logout";
 import ExpenseList from "../components/expenses/ExpenseList";
