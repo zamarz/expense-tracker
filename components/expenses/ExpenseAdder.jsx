@@ -24,7 +24,7 @@ export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [merchant, setMerchant] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState("");
   const [receipt, setReceipt] = useState("");
   const [account, setAccount] = useState("");
   const [location, setLocation] = useState("");
@@ -73,13 +73,13 @@ export default function ExpenseAdder({ navigation }) {
 
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
-    values.data = expenses.data;
     //preventDefault();
     console.log(values);
     setLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
       setLoading(false);
+      //To add submission message state
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -118,7 +118,7 @@ export default function ExpenseAdder({ navigation }) {
           (formData.amount = values.amount),
           (formData.category = values.category),
           (formData.account = values.account),
-          // (formData.date = values.date),
+          (formData.date = values.date),
           (formData.merchant = values.merchant),
           (formData.receipt = values.receipt),
           (formData.location = values.location)
@@ -169,16 +169,14 @@ export default function ExpenseAdder({ navigation }) {
               value={values.account}
             />
             {errors.account && <Text>{errors.account}</Text>}
-            {/* <TextInput
+            <TextInput
               aria-label="Date"
               placeholder="Date"
               style={styles.input}
               onChangeText={handleChange("date")}
               onBlur={handleBlur("date")}
               value={values.date}
-            /> */}
-
-            <DatePicker date={date} onDateChange={setDate} />
+            />
             {errors.date && <Text>{errors.date}</Text>}
             <TextInput
               aria-label="Location"
