@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   TextInput,
+  Text,
   Button,
 } from "react-native";
 import { Loading } from "../loading/Loading";
@@ -44,12 +45,12 @@ export default function AccountsAdder({ navigation }) {
 
   const bankSchema = yup.object().shape({
     bank: yup.string().required(),
-    balance: yup.number().required(),
+    balance: yup.number().required().typeError("Balance should be a number"),
     type: yup.string().required(),
-    budget: yup.number().required(),
+    budget: yup.number().required().typeError("Budget should be a number"),
   });
 
-  const handleAddAccount = async (values) => {
+  const handleSubmit = async (values) => {
     values.userId = newAccount.userId;
     setIsLoading(true);
     try {
@@ -69,7 +70,7 @@ export default function AccountsAdder({ navigation }) {
         type: "",
         budget: "",
       }}
-      validationScheme={bankSchema}
+      validationSchema={bankSchema}
       onSubmit={(values) => {
         setFormData(
           (formData.bank = values.bank),
@@ -128,9 +129,7 @@ export default function AccountsAdder({ navigation }) {
 
             <Button
               // Add functionality for account adder button
-              onPress={() => {
-                handleAddAccount();
-              }}
+              onPress={handleSubmit}
               title="Add account"
               accessibilityLabel="Add a new account to the accounts list"
             ></Button>
