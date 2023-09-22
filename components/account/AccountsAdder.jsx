@@ -9,9 +9,9 @@ export default function AccountsAdder({ navigation }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [bank, setBank] = useState("");
-    const [balance, setBalance] = useState(null);
+    const [balance, setBalance] = useState("");
     const [type, setType] = useState("");
-    const [budget, setBudget] = useState(null);
+    const [budget, setBudget] = useState("");
     const [userId, setUserId] = useState("");
 
     if (isLoading) return <Loading />;
@@ -27,6 +27,7 @@ export default function AccountsAdder({ navigation }) {
 
     const handleAddAccount = async () => {
         const newAccount = {
+            id: Date.now().toString(36) + Math.random().toString(36).substring(2),
             bank: bank,
             balance: balance,
             type: type,
@@ -53,7 +54,7 @@ export default function AccountsAdder({ navigation }) {
                     placeholder="Balance"
                     value={balance}
                     onChangeText={text => setBalance(text)}
-                    keyboardType="numeric"
+                    inputMode="numeric"
                     style={styles.input}
                 />
                 <TextInput
@@ -66,7 +67,7 @@ export default function AccountsAdder({ navigation }) {
                     placeholder="Budget"
                     value={budget}
                     onChangeText={text => setBudget(text)}
-                    keyboardType="numeric"
+                    inputMode="numeric"
                     style={styles.input}
                 />
                 <Button

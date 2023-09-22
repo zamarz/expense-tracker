@@ -1,19 +1,25 @@
 import React from 'react';
+import { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Button } from 'react-native';
 
 export default function AccountsCard({ item, onEditBudget, onEditBalance, onAddIncome, onDelete }) {
+    const [accountId, setAccountId] = useState("");
+    const [accountBalance, setAccountBalance] = useState("");
+    const [accountBudget, setAccountBudget] = useState("");
+    const [accountType, setAccountType] = useState("");
+
     return (
         <SafeAreaView style={styles.container}>
             <View>
-                <Text style={styles.item}>{item.bank}: £{item.balance}{'\n'}Budget: {item.budget}{'\n'}Card type: {item.cardType}</Text>
+                <Text style={styles.item}>{item.bank}: £{item.balance}{'\n'}Budget: {item.budget}{'\n'}Card type: {item.type}</Text>
                 <Button title="Edit budget"
-                    accessibilityLabel="Edit budget for the account" onPress={() => onEditBudget(item.id)}></Button>
+                    aria-label="Edit budget for the account" onPress={() => onEditBudget(item.id)}></Button>
                 <Button title="Edit balance"
-                    accessibilityLabel="Edit balance for the account" onPress={() => onEditBalance(item.id)}></Button>
+                    aria-label="Edit balance for the account" onPress={() => onEditBalance(item.id)}></Button>
                 <Button title="Add income"
-                    accessibilityLabel="Ad an income for the account" onPress={() => onAddIncome(item.id)}></Button>
+                    aria-label="Ad an income for the account" onPress={() => onAddIncome(item.id)}></Button>
                 <Button title="Delete account"
-                    accessibilityLabel="Delete this account from the list" color={"red"} onPress={() => onDelete(item.id)}></Button>
+                    aria-label="Delete this account from the list" color={"red"} onPress={() => onDelete(item.id)}></Button>
             </View>
         </SafeAreaView>
     )
