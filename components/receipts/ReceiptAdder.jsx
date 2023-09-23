@@ -1,7 +1,8 @@
-import { View } from "react-native-web";
+import { View, Text } from "react-native";
 
-const Receipts = ({ route, navigation }) => {
+const ReceiptAdder = ({ route, navigation }) => {
   const { imageRef } = route.params;
+  console.log(imageRef, "in adder");
 
   //this is part of the image id... where file = "...images/imageRef"
   return (
@@ -11,4 +12,4 @@ const Receipts = ({ route, navigation }) => {
   );
 };
 
-export default Receipts;
+export default ReceiptAdder;

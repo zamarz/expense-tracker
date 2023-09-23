@@ -9,7 +9,8 @@ import { v4 as uuidv4 } from "uuid";
 const ReceiptScanner = ({ navigation, route }) => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [imageRef, setImageRef] = useState(null);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [nextDisabled, setNextDisabled] = useState(true);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -37,21 +38,20 @@ const ReceiptScanner = ({ navigation, route }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setSubmitDisabled(true);
     try {
       setUploading(true);
 
       const uploadUrl = await uploadImageAsync(image);
       setImage(uploadUrl);
+      alert("Upload successful!");
+      setNextDisabled(false);
     } catch (error) {
       console.log(error);
       alert("Sorry, upload failed");
+      setSubmitDisabled(false);
     } finally {
       setUploading(false);
-      navigation.navigate("Receipt Scanner", {
-        screen: "Receipt Adder",
-        params: { imageRef },
-      });
     }
     // need params here of
   };
@@ -73,7 +73,6 @@ const ReceiptScanner = ({ navigation, route }) => {
 
     const imageRef = ref(storageFire, "images");
     const fileRef = ref(imageRef, uuidv4());
-    setImageRef(fileRef);
     const result = await uploadBytes(fileRef, blob);
 
     blob.close();
@@ -96,7 +95,23 @@ const ReceiptScanner = ({ navigation, route }) => {
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       )}
-      <Button title="Submit Image" onPress={handleSubmit} color="orange" />
+      <Button
+        title="Submit Image"
+        onPress={handleSubmit}
+        color="orange"
+        disabled={submitDisabled}
+      />
+      <Button
+        title="Next"
+        onPress={() =>
+          navigation.navigate("Receipt Navigator", {
+            screen: "Receipt Adder",
+            params: { imageRef: image },
+          })
+        }
+        color="orange"
+        disabled={nextDisabled}
+      />
     </View>
   );
 };
