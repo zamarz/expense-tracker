@@ -1,6 +1,7 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useContext } from "react";
 import { BudgetContext } from "../../context/BudgetContext";
+import { Text, Card } from "react-native-paper";
 
 const Remaining = () => {
   const { expenses, budget } = useContext(BudgetContext);
@@ -8,9 +9,14 @@ const Remaining = () => {
     return (total = total + item.amount);
   }, 0);
   return (
-    <View>
-      <Text>Remaining: £{(+budget - +totalExpenses).toFixed(2)}</Text>
-    </View>
+    <Card>
+      <Card.Title title="Your remaining budget" />
+      <Card.Content>
+        <Text variant="titleLarge">
+          Remaining: £{(+budget - +totalExpenses).toFixed(2)}
+        </Text>
+      </Card.Content>
+    </Card>
   );
 };
 

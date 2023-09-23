@@ -1,17 +1,22 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
 import Budget from "./Budget";
 import Remaining from "./Remaining";
 import ExpenseTotal from "./ExpenseTotal";
+import { Text, Divider, Card } from "react-native-paper";
 
 const BudgetPlanner = () => {
   return (
     <View>
-      <Text>BudgetPlanner</Text>
-
+      <Text variant="titleLarge">BudgetPlanner</Text>
+      <Divider />
       <Budget />
+      <Divider />
       <Remaining />
+      <Divider />
+
       <ExpenseTotal />
+      <Divider />
     </View>
   );
 };

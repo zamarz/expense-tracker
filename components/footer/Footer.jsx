@@ -5,8 +5,9 @@ import Analysis from "../../pages/Analysis";
 import ReceiptScanner from "../receipts/ReceiptScanner";
 import Map from "../map/Map";
 import Profile from "../../pages/Profle";
+import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 export default function Footer() {
   return (
