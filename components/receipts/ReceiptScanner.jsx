@@ -1,5 +1,5 @@
 import { Text, View, Button, Image, Alert } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { storageFire } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -45,6 +45,10 @@ const ReceiptScanner = ({ navigation, route }) => {
       const uploadUrl = await uploadImageAsync(image);
       setImage(uploadUrl);
       alert("Upload successful!");
+      //   navigation.navigate("Receipt Navigator", {
+      //     screen: "Receipt Adder",
+      //     params: { imageRef: image },
+      //   });
       setNextDisabled(false);
     } catch (error) {
       console.log(error);
@@ -103,12 +107,14 @@ const ReceiptScanner = ({ navigation, route }) => {
       />
       <Button
         title="Next"
-        onPress={() =>
+        onPress={() => {
+          setNextDisabled(true);
+          setSubmitDisabled(false);
           navigation.navigate("Receipt Navigator", {
             screen: "Receipt Adder",
             params: { imageRef: image },
-          })
-        }
+          });
+        }}
         color="orange"
         disabled={nextDisabled}
       />
