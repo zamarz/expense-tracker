@@ -16,23 +16,20 @@ import Receipts from "./components/receipts/Receipts";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
-import { BudgetContext } from "./context/BudgetContext";
 import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
-import { BalanceContext } from "./context/BalanceContext";
-import { ExpensesContext } from "./context/ExpensesContext";
-import { AccountsContext } from "./context/AccountsContext";
+import { TrackerProvider } from "./utils/Tracker";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [user, setUser] = useState({ name: "", email: "", uid: "" });
-  const [budget, setBudget] = useState(0);
-  const [balance, setBalance] = useState(0);
-  const [expenseList, setExpenseList] = useState([]);
-  const [accountList, setAccountList] = useState([]);
+  // const [budget, setBudget] = useState(0);
+  // const [balance, setBalance] = useState(0);
+  // const [expenseList, setExpenseList] = useState([]);
+  // const [accountList, setAccountList] = useState([]);
 
   // const fetchExpensesData = async () => {
   //   const expensesQuery = query(
@@ -167,15 +164,9 @@ export default function App() {
         {!user ? (
           <LoginNavigator />
         ) : (
-          <AccountsContext.Provider value={[accountList, setAccountList]}>
-            <ExpensesContext.Provider value={[expenseList, setExpenseList]}>
-              <BudgetContext.Provider value={[budget, setBudget]}>
-                <BalanceContext.Provider value={[balance, setBalance]}>
-                  <DrawerNavigator />
-                </BalanceContext.Provider>
-              </BudgetContext.Provider>
-            </ExpensesContext.Provider>
-          </AccountsContext.Provider>
+          <TrackerProvider>
+            <DrawerNavigator />
+          </TrackerProvider>
         )}
       </NavigationContainer>
     </UserContext.Provider>

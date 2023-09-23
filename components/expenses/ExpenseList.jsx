@@ -4,7 +4,9 @@ import ExpenseCard from "./ExpenseCard";
 export default function ExpenseList() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Expenses List</Text>
+      <Text style={styles.title}>
+        Expenses List - Full List of User Expenses
+      </Text>
       {/* <FlatList
         data={expenses}
         renderItem={({ item }) => <ExpenseCard item={item} />}
