@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 const ReceiptScanner = ({ navigation, route }) => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [imageRef, setImageRef] = useState(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -47,13 +48,12 @@ const ReceiptScanner = ({ navigation, route }) => {
       alert("Sorry, upload failed");
     } finally {
       setUploading(false);
+      navigation.navigate("Receipt Scanner", {
+        screen: "Receipt Adder",
+        params: { imageRef },
+      });
     }
-    // getPictureBlob(image).then((blob) => {
-    //   uploadBytes(imageRef, blob);
-    //   alert("Photo uploaded").catch((err) => console.log(err));
-    // });r
-    // const blob = new Blob([image]);
-    // uploadBytes(imageRef, blob);
+    // need params here of
   };
 
   async function uploadImageAsync(uri) {
@@ -73,6 +73,7 @@ const ReceiptScanner = ({ navigation, route }) => {
 
     const imageRef = ref(storageFire, "images");
     const fileRef = ref(imageRef, uuidv4());
+    setImageRef(fileRef);
     const result = await uploadBytes(fileRef, blob);
 
     blob.close();

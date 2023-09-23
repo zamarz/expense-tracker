@@ -12,7 +12,7 @@ import Profile from "./pages/Profle";
 import Settings from "./pages/Settings";
 import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
-import Receipts from "./components/receipts/Receipts";
+import Receipts from "./components/receipts/ReceiptAdder";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
