@@ -15,14 +15,34 @@ export default function Home({ navigation }) {
   const [isError, setIsError] = useState(false);
   // const [expenseList, setExpenseList] = useState([]);
 
-  const expenses = useContext(ExpensesContext);
-  const budget = useContext(BudgetContext);
-  const balance = useContext(BalanceContext);
+  const [expenseList, setExpenseList] = useContext(ExpensesContext);
+  const [budget, setBudget] = useContext(BudgetContext);
+  const [balance, setBalance] = useContext(BalanceContext);
 
-  {
-    /* Handle onPress App Demo */
+  useEffect(() => {
+    setIsLoading(true);
+    if (isLoading) {
+      fetchExpensesData().then((data) => {
+        if (data) {
+          console.log(data);
+          setExpenseList(data);
+          setIsLoading(false);
+        }
+      });
+    }
+  }, [expenseList]);
+
+  console.log(expenseList);
+
+  async function fetchExpensesData() {
+    const expensesQuery = query(collection(dbFire, "expenses"));
+    const querySnapshot = await getDocs(expensesQuery);
+    const expensesData = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    return expensesData;
   }
-  // const handleAppDemo = () => {}
 
   if (isLoading) return <Loading />;
   if (isError) return <p>Something went wrong!</p>;
@@ -37,10 +57,10 @@ export default function Home({ navigation }) {
         </View>
         <View>
           {/* Viewing current budget, remaning budget and total spent */}
-          <BudgetPlanner expenses={expenses} />
+          <BudgetPlanner expenses={expenseList} />
         </View>
         <View>
-          <ExpenseListHome expenses={expenses} />
+          <ExpenseListHome expenses={expenseList} />
         </View>
         <View>
           <Button
