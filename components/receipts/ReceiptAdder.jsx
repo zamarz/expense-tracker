@@ -59,6 +59,24 @@ const ReceiptAdder = ({ route, navigation }) => {
 
   const searchTerm = "gs://test2-c87e5.appspot.com/images/" + stringifiedMatch;
 
+  const receiptExpenseSchema = yup.object().shape({
+    amount: yup
+      .number("")
+      .typeError("Amount should be a number")
+      .required("Amount is required!")
+      .positive()
+      .test(
+        "maxDigitsAfterDecimal",
+        "number field must have 2 digits after decimal or less",
+        (number) => /^\d+(.\d{1,2})?$/.test(number)
+      ),
+    merchant: yup.string().required(),
+    account: yup.string().required(),
+    location: yup.string().required(),
+    category: yup.string().required(),
+    date: yup.string().required(),
+  });
+
   useEffect(() => {
     downloadText();
   }, [image]);
@@ -106,7 +124,7 @@ const ReceiptAdder = ({ route, navigation }) => {
         account: account,
         location: "",
       }}
-      // validationSchema={expenseSchema}
+      validationSchema={receiptExpenseSchema}
       onSubmit={(values) => {
         console.log(values, "in onsubmit");
         setFormData(
