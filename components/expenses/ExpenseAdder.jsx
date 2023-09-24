@@ -699,7 +699,6 @@ export default function ExpenseAdder({ navigation }) {
         return (
           <View style={styles.container}>
             <View style={styles.inputRow}>
-              <Text>{JSON.stringify(values, null, 2)}</Text>
               <Text>Add a new Expense</Text>
               <TextInput
                 aria-label="Amount"
