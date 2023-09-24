@@ -485,42 +485,6 @@
 //   },
 // });
 
-// function CategoryList({ values, handleChange, handleBlur }) {
-//   const [open, setOpen] = useState(false);
-//   const [value, setValue] = useState(values.category);
-//   const [items, setItems] = useState([
-//     { label: "Pounds", value: "pounds" },
-//     { label: "Euros", value: "euros" },
-//     { label: "Dollars", value: "dollars" },
-//   ]);
-
-//   useEffect(() => {
-//     if (values.category !== value) {
-//       handleChange("category")(value);
-//     }
-//   }, [value]);
-
-//   useEffect(() => {
-//     getCategories().then((categories) => {
-//       setItems(categories);
-//     });
-//   }, []);
-
-//   return (
-//     <DropDownPicker
-//       open={open}
-//       value={value}
-//       items={items}
-//       setOpen={setOpen}
-//       setValue={setValue}
-//       setItems={setItems}
-//       placeholder={"Select a category"}
-//     />
-//   );
-// }
-
-
-
 import {
   Alert,
   View,
