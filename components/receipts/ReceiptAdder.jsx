@@ -109,6 +109,8 @@ const ReceiptAdder = ({ route, navigation }) => {
   // will eventually need to re-render the image in expenses cards so be aware of how it is stored
   //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
   //might need to include URI in fields in the collection to see if the receipt image can be generated easily
+  // need to update with expense confirmation
+  //may need to update Yup fields once date picker etc are implemented
 
   // if (error) return <ErrorHandler error={error} />;
 
