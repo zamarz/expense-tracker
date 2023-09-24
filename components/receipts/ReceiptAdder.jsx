@@ -5,7 +5,14 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import ErrorHandler from "../error/ErrorHandler";
 import { useEffect, useState } from "react";
-import { doc, collection, query, where, getDocs } from "@firebase/firestore";
+import {
+  doc,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+} from "@firebase/firestore";
 
 const ReceiptAdder = ({ route, navigation }) => {
   const [userId, setUserId] = useState("");
@@ -80,23 +87,16 @@ const ReceiptAdder = ({ route, navigation }) => {
     const captureAccount = expenseText.match(/AMERICAN.EXPRESS/g).toString();
     setAccount(captureAccount);
   };
-  // const accountData = querySnapshot.docs.map((doc) => ({
-  //   ...doc.data(),
-  //   id: doc.id,
-  // }));
-  // setAccounts(accountData);
 
-  //this is part of the image id... where file = "...images/imageRef"
-  // need to input the data from the receipt as a placeholder in the form - make call to cloud API
-  // need to work out what to store the image as in the database with user ID
   // will eventually need to re-render the image in expenses cards so be aware of how it is stored
   //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
-  // values aren't being inputted from the placeholders - need to look into this
+  //might need to include URI in fields in the collection to see if the receipt image can be generated easily
 
   // if (error) return <ErrorHandler error={error} />;
 
   return (
     <Formik
+      enableReinitialize
       initialValues={{
         amount: amount,
         category: "",
