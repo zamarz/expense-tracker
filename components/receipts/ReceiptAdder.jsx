@@ -10,12 +10,14 @@ import { doc, collection, query, where, getDocs } from "@firebase/firestore";
 const ReceiptAdder = ({ route, navigation }) => {
   const [userId, setUserId] = useState("");
   const [error, setError] = useState(null);
+  const [amount, setAmount] = useState("");
+  const [merchant, setMerchant] = useState("");
+  const [account, setAccount] = useState("");
+  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const { imageURL, imageURI } = route.params;
   const [image, setImage] = useState(imageURI);
-
-  console.log(imageURL, " irl in adder");
-  console.log(imageURI, " uri in adder");
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -32,7 +34,7 @@ const ReceiptAdder = ({ route, navigation }) => {
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
     //preventDefault();
-    console.log(values);
+    console.log(values, "values");
     setLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
@@ -43,8 +45,6 @@ const ReceiptAdder = ({ route, navigation }) => {
       setLoading(false);
     }
   };
-
-  if (error) return <ErrorHandler error={error} />;
 
   const captureGroup = /(?<=images%2F)(.*)(?=\?)/g;
   const matchedURL = imageURL.match(captureGroup);
@@ -63,38 +63,52 @@ const ReceiptAdder = ({ route, navigation }) => {
     );
 
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.data());
-    });
+
+    const expenseData = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+
+    const expenseText = expenseData[0].text;
+    const captureAmount = expenseText
+      .match(/(?<=\bTOTAL\b).\w..\d..../g)
+      .toString();
+    setAmount(captureAmount);
+
+    const captureMerchant = expenseText.match(/^.SDA/g).toString();
+    setMerchant(captureMerchant);
+
+    const captureAccount = expenseText.match(/AMERICAN.EXPRESS/g).toString();
+    setAccount(captureAccount);
   };
+  // const accountData = querySnapshot.docs.map((doc) => ({
+  //   ...doc.data(),
+  //   id: doc.id,
+  // }));
+  // setAccounts(accountData);
 
-  //   const docRef = doc(db, "cities", "SF");
-  // const docSnap = await getDoc(docRef);
-
-  // if (docSnap.exists()) {
-  //   console.log("Document data:", docSnap.data());
-  // } else {
-  //   // docSnap.data() will be undefined in this case
-  //   console.log("No such document!");
-  // }
   //this is part of the image id... where file = "...images/imageRef"
   // need to input the data from the receipt as a placeholder in the form - make call to cloud API
   // need to work out what to store the image as in the database with user ID
   // will eventually need to re-render the image in expenses cards so be aware of how it is stored
+  //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
+  // values aren't being inputted from the placeholders - need to look into this
+
+  // if (error) return <ErrorHandler error={error} />;
 
   return (
     <Formik
       initialValues={{
-        amount: "",
+        amount: amount,
         category: "",
-        merchant: "",
+        merchant: merchant,
         date: "",
         receipt: imageURL,
-        account: "",
+        account: account,
         location: "",
       }}
       // validationSchema={expenseSchema}
       onSubmit={(values) => {
+        console.log(values, "in onsubmit");
         setFormData(
           (formData.amount = values.amount),
           (formData.category = values.category),
@@ -104,7 +118,7 @@ const ReceiptAdder = ({ route, navigation }) => {
           (formData.receipt = values.receipt),
           (formData.location = values.location)
         );
-        console.log(formData);
+        console.log(formData, "formdata");
         handleSubmit(formData);
       }}
     >
@@ -119,7 +133,7 @@ const ReceiptAdder = ({ route, navigation }) => {
                 onChangeText={handleChange("amount")}
                 onBlur={handleBlur("amount")}
                 value={values.amount}
-                placeholder="Amount"
+                placeholder={amount}
               />
               {errors.amount && <Text>{errors.amount}</Text>}
             </View>
@@ -129,7 +143,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               onChangeText={handleChange("merchant")}
               onBlur={handleBlur("merchant")}
               value={values.merchant}
-              placeholder="Merchant"
+              placeholder={merchant}
             />
             {errors.merchant && <Text>{errors.merchant}</Text>}
             <TextInput
@@ -143,7 +157,7 @@ const ReceiptAdder = ({ route, navigation }) => {
             {errors.category && <Text>{errors.category}</Text>}
             <TextInput
               aria-label="Account"
-              placeholder="Account"
+              placeholder={account}
               style={styles.input}
               onChangeText={handleChange("account")}
               onBlur={handleBlur("account")}
