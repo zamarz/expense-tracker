@@ -11,6 +11,7 @@ const ReceiptScanner = ({ navigation, route }) => {
   const [uploading, setUploading] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(true);
+  const [imageURL, setImageURL] = useState(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -43,12 +44,9 @@ const ReceiptScanner = ({ navigation, route }) => {
       setUploading(true);
 
       const uploadUrl = await uploadImageAsync(image);
-      setImage(uploadUrl);
+      setImageURL(uploadUrl);
       alert("Upload successful!");
-      //   navigation.navigate("Receipt Navigator", {
-      //     screen: "Receipt Adder",
-      //     params: { imageRef: image },
-      //   });
+
       setNextDisabled(false);
     } catch (error) {
       console.log(error);
@@ -57,7 +55,6 @@ const ReceiptScanner = ({ navigation, route }) => {
     } finally {
       setUploading(false);
     }
-    // need params here of
   };
 
   async function uploadImageAsync(uri) {
@@ -89,7 +86,6 @@ const ReceiptScanner = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Upload or take an image of your receipt</Text>
-      {/* <Button title="Take a photo of your receipt" onPress={handleCamera} /> */}
       <Button
         title="Choose an image from your library"
         onPress={pickImage}
@@ -112,7 +108,7 @@ const ReceiptScanner = ({ navigation, route }) => {
           setSubmitDisabled(false);
           navigation.navigate("Receipt Navigator", {
             screen: "Receipt Adder",
-            params: { imageRef: image },
+            params: { imageURL: imageURL, imageURI: image },
           });
         }}
         color="orange"
