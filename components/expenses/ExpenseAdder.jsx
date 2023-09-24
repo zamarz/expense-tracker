@@ -73,11 +73,21 @@ export default function ExpenseAdder({ navigation }) {
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
     //preventDefault();
-    console.log(values);
+    // console.log(values);
     setLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
-      setLoading(false);
+      // console.log(res);
+      // if (res) {
+      //   setAccount("");
+      //   setAmount("");
+      //   setCategory("");
+      //   setDate("");
+      //   setMerchant("");
+      //   setReceipt("");
+      //   setLocation("");
+      //   setLoading(false);
+      // }
       //To add submission message state
     } catch (error) {
       setError(error);
@@ -122,7 +132,7 @@ export default function ExpenseAdder({ navigation }) {
           (formData.receipt = values.receipt),
           (formData.location = values.location)
         );
-        console.log(formData);
+        // console.log(formData);
         handleSubmit(formData);
       }}
     >

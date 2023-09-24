@@ -23,7 +23,6 @@ const guestUser = {
   name: "Guest",
   email: "guest@email.com",
   password: FIREBASE_GUEST_PWD,
-  uid: FIREBASE_GUEST_UID,
 };
 
 onAuthStateChanged(userAuth, (user) => {

@@ -1,15 +1,18 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import React, { useContext } from "react";
 import ExpenseCard from "./ExpenseCard";
-import { ExpensesContext } from "../../context/ExpensesContext";
+import { AppTracker } from "../../context/AppTracker";
 
-const ExpenseListHome = () => {
-  const expenses = useContext(ExpensesContext);
+const ExpenseListHome = ({ expenses }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Most Recent Expenses </Text>
       <FlatList
-        data={expenses.slice(0, 3)}
+        data={
+          expenses.length > 0 && expenses.length < 4
+            ? expenses
+            : expenses.slice(0, 3)
+        }
         renderItem={({ item }) => <ExpenseCard item={item} />}
       />
     </View>

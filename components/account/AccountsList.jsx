@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,16 +7,29 @@ import {
   Button,
   FlatList,
 } from "react-native";
-
 import AccountsCard from "./AccountsCard";
-import { dbFire } from "../../firebaseConfig";
-import { collection, query, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { authFire, dbFire } from "../../firebaseConfig";
+import {
+  collection,
+  query,
+  getDocs,
+  doc,
+  deleteDoc,
+  where,
+} from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { UserContext } from "../../context/UserContext";
 
 export default function AccountList({ navigation }) {
   const [accounts, setAccounts] = useState([]);
+  // const [user, setUser] = useState(UserContext);
+  const [user, setUser] = useContext(UserContext);
 
-  const fetchData = async () => {
-    const q = query(collection(dbFire, "account"));
+  const fetchData = async (userId) => {
+    const q = query(
+      collection(dbFire, "account"),
+      where("userId", "==", userId)
+    );
     const querySnapshot = await getDocs(q);
     const accountData = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
@@ -93,9 +106,12 @@ export default function AccountList({ navigation }) {
   };
 
   useEffect(() => {
-    fetchData();
+    onAuthStateChanged(authFire, (user) => {
+      setUser(user);
+      if (user) fetchData(user.uid);
+    });
     // handleDeleteAccount();
-  }, []);
+  }, [user]);
 
   return (
     <SafeAreaView style={styles.container}>

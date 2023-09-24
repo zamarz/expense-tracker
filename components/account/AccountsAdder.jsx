@@ -81,7 +81,7 @@ export default function AccountsAdder({ navigation }) {
           (formData.type = values.type),
           (formData.budget = values.budget)
         );
-        console.log(formData);
+        // console.log(formData);
         handleSubmit(formData);
       }}
     >
