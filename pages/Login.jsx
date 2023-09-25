@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
-  Text,
   View,
   StyleSheet,
   KeyboardAvoidingView,
-  TextInput,
   TouchableOpacity,
 } from "react-native";
+
+import { Divider, Text, TextInput } from "react-native-paper";
 import { authFire } from "../firebaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -90,21 +90,29 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Welcome! Please sign in, or register your email!</Text>
+      <Text variant="titleLarge">
+        Welcome! Please sign in, or register your email!
+      </Text>
+      <Divider />
+      <Divider />
+
       <View style={styles.inputContainer}>
         <TextInput
+          mode="outlined"
           placeholder="Username"
           value={username}
           onChangeText={(text) => setUsername(text)}
           style={styles.input}
         />
         <TextInput
+          mode="outlined"
           placeholder="Email"
           value={email}
           onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />
         <TextInput
+          mode="outlined"
           placeholder="Password"
           value={password}
           onChangeText={(text) => setPassword(text)}
