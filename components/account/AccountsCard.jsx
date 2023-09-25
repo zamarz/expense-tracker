@@ -1,22 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
-export default function AccountsCard({ item, onEditBudget, onEditBalance, onAddIncome, onDelete }) {
+export default function AccountsCard({ item, onDelete, navigation }) {
 
     return (
-        <SafeAreaView style={styles.container}>
             <View>
                 <Text style={styles.item}>{item.bank}: £{item.balance}{'\n'}Budget: {item.budget}{'\n'}Card type: {item.type}</Text>
                 <Button title="Edit budget"
-                    aria-label="Edit budget for the account" onPress={() => onEditBudget(item.id)}></Button>
-                <Button title="Edit balance"
-                    aria-label="Edit balance for the account" onPress={() => onEditBalance(item.id)}></Button>
+                    aria-label="Edit budget for the account" onPress={() => {}}></Button>
                 <Button title="Add income"
-                    aria-label="Ad an income for the account" onPress={() => onAddIncome(item.id)}></Button>
+                    aria-label="Add an income for the account" onPress={() => navigation.navigate("Income Adder", { item: item })}></Button>
                 <Button title="Delete account"
                     aria-label="Delete this account from the list" color={"red"} onPress={() => onDelete(item.id)}></Button>
             </View>
-        </SafeAreaView>
     )
 }
 

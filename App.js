@@ -21,6 +21,7 @@ import AccountsList from "./components/account/AccountsList";
 import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
+import IncomeAdder from "./components/account/IncomeAdder";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -48,6 +49,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Account List" component={AccountList} />
         <Stack.Screen name="Accounts Adder" component={AccountsAdder} />
+        <Stack.Screen name="Income Adder" component={IncomeAdder} />
       </Stack.Navigator>
     );
   };

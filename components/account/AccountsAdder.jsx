@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   TextInput,
@@ -17,13 +16,13 @@ import * as yup from "yup";
 export default function AccountsAdder({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [bank, setBank] = useState("");
-  const [balance, setBalance] = useState(null);
-  const [type, setType] = useState("");
-  const [budget, setBudget] = useState(null);
-  const [userId, setUserId] = useState("");
-  const [formData, setFormData] = useState({});
 
+  const [bank, setBank] = useState("");
+  const [balance, setBalance] = useState("");
+  const [type, setType] = useState("");
+  const [budget, setBudget] = useState("");
+
+  const [userId, setUserId] = useState("");
 
   if (isLoading) return <Loading />;
   if (isError) return <p>Something went wrong!</p>;
@@ -55,6 +54,7 @@ export default function AccountsAdder({ navigation }) {
 
   const handleSubmit = async (values) => {
     values.userId = newAccount.userId;
+    values.id = newAccount.id;
     setIsLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "account"), values);
@@ -65,6 +65,7 @@ export default function AccountsAdder({ navigation }) {
     }
   };
 
+
   return (
     <Formik
       initialValues={{
@@ -72,17 +73,11 @@ export default function AccountsAdder({ navigation }) {
         balance: "",
         type: "",
         budget: "",
+        id: "",
       }}
       validationSchema={bankSchema}
       onSubmit={(values) => {
-        setFormData(
-          (formData.bank = values.bank),
-          (formData.balance = values.balance),
-          (formData.type = values.type),
-          (formData.budget = values.budget)
-        );
-        console.log(formData);
-        handleSubmit(formData);
+        handleSubmit(values);
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
@@ -137,9 +132,9 @@ export default function AccountsAdder({ navigation }) {
               accessibilityLabel="Add a new account to the accounts list"
             ></Button>
             <Button
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("Account List")}
               title="Go back"
-              accessibilityLabel="Button to navigate to Home page"
+              accessibilityLabel="Button to navigate to Accounts page"
             ></Button>
           </View>
         );
@@ -147,7 +142,6 @@ export default function AccountsAdder({ navigation }) {
     </Formik>
   );
 }
-//removed safeareaview
 
 const styles = StyleSheet.create({
   container: {

@@ -12,7 +12,7 @@ import AccountsCard from "./AccountsCard";
 import { dbFire } from "../../firebaseConfig";
 import { collection, query, getDocs, doc, deleteDoc } from "firebase/firestore";
 
-export default function AccountList({ navigation }) {
+export default function AccountsList({ navigation }) {
   const [accounts, setAccounts] = useState([]);
 
   const fetchData = async () => {
@@ -98,7 +98,7 @@ export default function AccountList({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <View>
         <Text style={styles.title}>
           Total Accounts Balance: £{totalBalance.toFixed(2)}
@@ -119,6 +119,7 @@ export default function AccountList({ navigation }) {
             onEditBudget={() => handleEditBudget(item.id)}
             onEditBalance={() => handleEditBalance(item.id)}
             onAddIncome={() => handleAddIncome(item.id)}
+            navigation={navigation}
           />
         )}
         keyExtractor={(item) => {
@@ -128,7 +129,7 @@ export default function AccountList({ navigation }) {
       <View>
         <Button
           onPress={() =>
-            navigation.navigate("Accounts List", { screen: "Accounts Adder" })
+            navigation.navigate("Accounts Adder")
           }
           title="Add new account"
           accessibilityLabel="Add a new account to the accounts list"
@@ -141,7 +142,7 @@ export default function AccountList({ navigation }) {
           accessibilityLabel="Button to navigate to Home page"
         ></Button>
       </View>
-    </SafeAreaView>
+      </>
   );
 }
 
