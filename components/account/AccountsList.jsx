@@ -3,40 +3,17 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Button,
   FlatList,
 } from "react-native";
 import AccountsCard from "./AccountsCard";
-import { authFire, dbFire } from "../../firebaseConfig";
-import {
-  collection,
-  query,
-  getDocs,
-  doc,
-  deleteDoc,
-  where,
-} from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import { dbFire } from "../../firebaseConfig";
+import { collection, query, getDocs, doc, where, deleteDoc } from "firebase/firestore";
 import { UserContext } from "../../context/UserContext";
 import { AppTracker } from "../../context/AppTracker";
-
 export default function AccountsList({ navigation }) {
-  const [accounts, setAccounts] = useState([]);
   const user = useContext(UserContext);
-
-  const fetchData = async (userId) => {
-    const q = query(
-      collection(dbFire, "account"),
-      where("userId", "==", userId)
-    );
-    const querySnapshot = await getDocs(q);
-    const accountData = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setAccounts(accountData);
-  };
+  const { accounts } = useContext(AppTracker);
 
   const calculateTotalBalance = () => {
     let totalBalance = 0;
@@ -65,18 +42,19 @@ export default function AccountsList({ navigation }) {
   };
 
   const totalBudget = calculateTotalBudget();
+
   const handleDeleteAccount = async (accountId) => {
     await deleteDoc(doc(dbFire, "account", accountId)).catch((error) => {
       console.log(error);
     });
-    setAccounts((previousAccounts) =>
-      previousAccounts.filter((account) => account.id !== accountId)
-    );
+    // setAccounts((previousAccounts) =>
+    //   previousAccounts.filter((account) => account.id !== accountId)
+    // );
   };
 
   useEffect(() => {
-    if (user) fetchData(user.uid);
-  }, [user]);
+    handleDeleteAccount();
+  }, []);
 
   return (
     <>
