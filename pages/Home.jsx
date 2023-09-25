@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import React, { useContext } from "react";
 import Logout from "../components/buttons/Logout";
 import ExpenseListHome from "../components/expenses/ExpenseListHome";
 import BudgetPlanner from "../components/budget/BudgetPlanner";
 import { UserContext } from "../context/UserContext";
 import { AppTracker } from "../context/AppTracker";
-import { Button, Divider, useTheme } from "react-native-paper";
+import { Button, Divider, useTheme, Text } from "react-native-paper";
 
 export default function Home({ navigation }) {
   const user = useContext(UserContext);
