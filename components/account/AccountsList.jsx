@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  FlatList,
-} from "react-native";
+import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import AccountsCard from "./AccountsCard";
 import { dbFire } from "../../firebaseConfig";
-import { collection, query, getDocs, doc, where, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  getDocs,
+  doc,
+  where,
+  deleteDoc,
+} from "firebase/firestore";
 import { UserContext } from "../../context/UserContext";
 import { AppTracker } from "../../context/AppTracker";
 export default function AccountsList({ navigation }) {
   const user = useContext(UserContext);
-  const { accounts } = useContext(AppTracker);
+  const { accounts, balance, budget } = useContext(AppTracker);
+  console.log(accounts, balance, budget);
 
   const calculateTotalBalance = () => {
     let totalBalance = 0;
@@ -53,7 +55,7 @@ export default function AccountsList({ navigation }) {
   };
 
   useEffect(() => {
-    handleDeleteAccount();
+    // handleDeleteAccount();
   }, []);
 
   return (
@@ -87,9 +89,7 @@ export default function AccountsList({ navigation }) {
       />
       <View>
         <Button
-          onPress={() =>
-            navigation.navigate("Accounts Adder")
-          }
+          onPress={() => navigation.navigate("Accounts Adder")}
           title="Add new account"
           accessibilityLabel="Add a new account to the accounts list"
         ></Button>
@@ -101,7 +101,7 @@ export default function AccountsList({ navigation }) {
           accessibilityLabel="Button to navigate to Home page"
         ></Button>
       </View>
-      </>
+    </>
   );
 }
 

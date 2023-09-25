@@ -1,17 +1,12 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  Button,
-} from "react-native";
+import React, { useContext, useState } from "react";
+import { StyleSheet, View, TextInput, Text, Button } from "react-native";
 import { Loading } from "../loading/Loading";
 import { addDoc, collection } from "firebase/firestore";
 import { dbFire, authFire } from "../../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { UserContext } from "../../context/UserContext";
 
 export default function AccountsAdder({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,19 +16,20 @@ export default function AccountsAdder({ navigation }) {
   const [balance, setBalance] = useState("");
   const [type, setType] = useState("");
   const [budget, setBudget] = useState("");
-
-  const [userId, setUserId] = useState("");
+  const user = useContext(UserContext);
+  const [userId, setUserId] = useState(user.uid);
+  console.log(userId);
 
   if (isLoading) return <Loading />;
   if (isError) return <p>Something went wrong!</p>;
 
-  const auth = authFire;
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      setUserId(uid);
-    }
-  });
+  // const auth = authFire;
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     const uid = user.uid;
+  //     setUserId(uid);
+  //   }
+  // });
 
   const newAccount = {
     id: Date.now().toString(36) + Math.random().toString(36).substring(2),
@@ -63,7 +59,6 @@ export default function AccountsAdder({ navigation }) {
       setIsLoading(false);
     }
   };
-
 
   return (
     <Formik
