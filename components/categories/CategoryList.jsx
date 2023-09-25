@@ -12,11 +12,12 @@ function CategoryList({ category, categories, handleChange, handleBlur }) {
     if (category !== value) {
       handleChange("category")(value);
     }
-  }, [value]);
-
-  useEffect(() => {
     setItems(categories);
-  }, [categories]);
+  }, [value, categories]);
+
+  // useEffect(() => {
+  //   setItems(categories);
+  // }, [categories]);
 
   return (
     <DropDownPicker

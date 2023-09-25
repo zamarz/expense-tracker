@@ -13,6 +13,9 @@ import {
   getDocs,
   addDoc,
 } from "@firebase/firestore";
+import { addCategory, getCategories } from "../../firebase/firestore";
+import CategoryList from "../categories/CategoryList";
+import CategoryAdderModal from "../categories/CategoryAdderModal";
 
 const ReceiptAdder = ({ route, navigation }) => {
   const [userId, setUserId] = useState("");
@@ -25,6 +28,8 @@ const ReceiptAdder = ({ route, navigation }) => {
 
   const { imageURL, imageURI } = route.params;
   const [image, setImage] = useState(imageURI);
+  const [categories, setCategories] = useState([]);
+  const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -38,6 +43,12 @@ const ReceiptAdder = ({ route, navigation }) => {
     userId,
   };
 
+  useEffect(() => {
+    getCategories().then((categories) => {
+      setCategories(categories);
+    });
+  }, []);
+
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
     //preventDefault();
@@ -46,10 +57,26 @@ const ReceiptAdder = ({ route, navigation }) => {
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
       setLoading(false);
-      //To add submission message state
+      Alert.alert(
+        "Expense Added",
+        `You have successfully added your expense for the amount of £${values.amount}`,
+        [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]
+      );
+      // TODO: Redirect to home?
     } catch (error) {
       setError(error);
       setLoading(false);
+      Alert.alert("Error: Your expense couldn't be added.", [
+        {
+          text: "OK",
+          style: "cancel",
+        },
+      ]);
     }
   };
 
@@ -76,6 +103,41 @@ const ReceiptAdder = ({ route, navigation }) => {
     category: yup.string().required(),
     date: yup.string().required(),
   });
+
+  const handleAddCategory = (category) => {
+    if (!category.length) return;
+    const exists = categories.find((cat) => cat.label === category);
+    if (exists) {
+      // TODO: Inform user in a modal maybe?
+      console.error("Error: Category already exists");
+      return;
+    }
+
+    addCategory(category).then(
+      () => {
+        Alert.alert(
+          "Category Added",
+          `You have successfully added ${category} to your categories`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
+        // Optimistic update
+        setCategories((prev) => [
+          ...prev,
+          { label: category, value: category },
+        ]);
+      },
+      (error) => {
+        // TODO: Handle error
+        console.error("Error: Unable to add category");
+      }
+    );
+    setToggleCategoryModal((prev) => !prev);
+  };
 
   useEffect(() => {
     downloadText();
@@ -109,10 +171,7 @@ const ReceiptAdder = ({ route, navigation }) => {
   // will eventually need to re-render the image in expenses cards so be aware of how it is stored
   //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
   //might need to include URI in fields in the collection to see if the receipt image can be generated easily
-  // need to update with expense confirmation
   //may need to update Yup fields once date picker etc are implemented
-
-  // if (error) return <ErrorHandler error={error} />;
 
   return (
     <Formik
@@ -166,15 +225,22 @@ const ReceiptAdder = ({ route, navigation }) => {
               placeholder={merchant}
             />
             {errors.merchant && <Text>{errors.merchant}</Text>}
-            <TextInput
+            <CategoryList
               aria-label="Category"
               placeholder="Category"
-              style={styles.input}
-              onChangeText={handleChange("category")}
-              onBlur={handleBlur("category")}
-              value={values.category}
+              onChangeText={handleChange}
+              onBlur={handleBlur}
             />
-            {errors.category && <Text>{errors.category}</Text>}
+            {errors.category && <Text>{errors.category} </Text>}
+            <Button
+              title="Add a new category"
+              onPress={() => setToggleCategoryModal((prev) => !prev)}
+            />
+            <CategoryAdderModal
+              isVisible={toggleCategoryModal}
+              setIsVisible={setToggleCategoryModal}
+              handleAddCategory={handleAddCategory}
+            />
             <TextInput
               aria-label="Account"
               placeholder={account}

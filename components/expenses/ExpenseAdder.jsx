@@ -130,7 +130,7 @@ export default function ExpenseAdder({ navigation }) {
       console.error("Error: Category already exists");
       return;
     }
-    
+
     addCategory(category).then(
       () => {
         Alert.alert(
@@ -304,5 +304,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-
