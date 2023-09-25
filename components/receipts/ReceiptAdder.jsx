@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, Button, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  Image,
+  Alert,
+} from "react-native";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { onAuthStateChanged } from "@firebase/auth";
 import { Formik } from "formik";
@@ -13,6 +21,9 @@ import {
   getDocs,
   addDoc,
 } from "@firebase/firestore";
+import { addCategory, getCategories } from "../../firebase/firestore";
+import CategoryList from "../categories/CategoryList";
+import CategoryAdderModal from "../categories/CategoryAdderModal";
 
 const ReceiptAdder = ({ route, navigation }) => {
   const [userId, setUserId] = useState("");
@@ -22,9 +33,12 @@ const ReceiptAdder = ({ route, navigation }) => {
   const [account, setAccount] = useState("");
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
 
   const { imageURL, imageURI } = route.params;
   const [image, setImage] = useState(imageURI);
+  const [categories, setCategories] = useState([]);
+  const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -35,8 +49,19 @@ const ReceiptAdder = ({ route, navigation }) => {
   });
 
   const expenses = {
+    category,
     userId,
   };
+
+  useEffect(() => {
+    downloadText();
+  }, [image]);
+
+  useEffect(() => {
+    getCategories().then((categories) => {
+      setCategories(categories);
+    });
+  }, []);
 
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
@@ -46,10 +71,26 @@ const ReceiptAdder = ({ route, navigation }) => {
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
       setLoading(false);
-      //To add submission message state
+      Alert.alert(
+        "Expense Added",
+        `You have successfully added your expense for the amount of £${values.amount}`,
+        [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]
+      );
+      // TODO: Redirect to home?
     } catch (error) {
       setError(error);
       setLoading(false);
+      Alert.alert("Error: Your expense couldn't be added.", [
+        {
+          text: "OK",
+          style: "cancel",
+        },
+      ]);
     }
   };
 
@@ -77,9 +118,40 @@ const ReceiptAdder = ({ route, navigation }) => {
     date: yup.string().required(),
   });
 
-  useEffect(() => {
-    downloadText();
-  }, [image]);
+  const handleAddCategory = (category) => {
+    if (!category.length) return;
+    const exists = categories.find((cat) => cat.label === category);
+    if (exists) {
+      // TODO: Inform user in a modal maybe?
+      console.error("Error: Category already exists");
+      return;
+    }
+
+    addCategory(category).then(
+      () => {
+        Alert.alert(
+          "Category Added",
+          `You have successfully added ${category} to your categories`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
+        // Optimistic update
+        setCategories((prev) => [
+          ...prev,
+          { label: category, value: category },
+        ]);
+      },
+      (error) => {
+        // TODO: Handle error
+        console.error("Error: Unable to add category");
+      }
+    );
+    setToggleCategoryModal((prev) => !prev);
+  };
 
   const downloadText = async () => {
     const q = query(
@@ -109,10 +181,7 @@ const ReceiptAdder = ({ route, navigation }) => {
   // will eventually need to re-render the image in expenses cards so be aware of how it is stored
   //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
   //might need to include URI in fields in the collection to see if the receipt image can be generated easily
-  // need to update with expense confirmation
   //may need to update Yup fields once date picker etc are implemented
-
-  // if (error) return <ErrorHandler error={error} />;
 
   return (
     <Formik
@@ -147,6 +216,7 @@ const ReceiptAdder = ({ route, navigation }) => {
           <View style={styles.container}>
             <View style={styles.inputRow}>
               <Text>Add a new Expense</Text>
+              <Text>Amount:</Text>
               <TextInput
                 aria-label="Amount"
                 style={styles.input}
@@ -157,6 +227,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               />
               {errors.amount && <Text>{errors.amount}</Text>}
             </View>
+            <Text>Merchant:</Text>
             <TextInput
               aria-label="Merchant"
               style={styles.input}
@@ -166,15 +237,22 @@ const ReceiptAdder = ({ route, navigation }) => {
               placeholder={merchant}
             />
             {errors.merchant && <Text>{errors.merchant}</Text>}
-            <TextInput
-              aria-label="Category"
-              placeholder="Category"
-              style={styles.input}
-              onChangeText={handleChange("category")}
-              onBlur={handleBlur("category")}
-              value={values.category}
+            <CategoryList
+              category={values.category}
+              categories={categories}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
-            {errors.category && <Text>{errors.category}</Text>}
+            {errors.category && <Text>{errors.category} </Text>}
+            <Button
+              title="Add a new category"
+              onPress={() => setToggleCategoryModal((prev) => !prev)}
+            />
+            <CategoryAdderModal
+              isVisible={toggleCategoryModal}
+              setIsVisible={setToggleCategoryModal}
+              handleAddCategory={handleAddCategory}
+            />
             <TextInput
               aria-label="Account"
               placeholder={account}
@@ -184,6 +262,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               value={values.account}
             />
             {errors.account && <Text>{errors.account}</Text>}
+            <Text>Date:</Text>
             <TextInput
               aria-label="Date"
               placeholder="Date"
@@ -193,6 +272,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               value={values.date}
             />
             {errors.date && <Text>{errors.date}</Text>}
+            <Text>Location:</Text>
             <TextInput
               aria-label="Location"
               placeholder="Location"

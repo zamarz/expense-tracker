@@ -57,6 +57,8 @@ const ReceiptScanner = ({ navigation, route }) => {
     }
   };
 
+  //Need a timer on the next button - will implement after styling!
+
   async function uploadImageAsync(uri) {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
