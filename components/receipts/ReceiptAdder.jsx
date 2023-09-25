@@ -1,12 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
-  Image,
-  Alert,
-} from "react-native";
+import { View, StyleSheet, TextInput, Image, Alert } from "react-native";
+import { Button, Divider, Text } from "react-native-paper";
+
 import { authFire, dbFire } from "../../firebaseConfig";
 import { onAuthStateChanged } from "@firebase/auth";
 import { Formik } from "formik";
@@ -215,8 +209,8 @@ const ReceiptAdder = ({ route, navigation }) => {
         return (
           <View style={styles.container}>
             <View style={styles.inputRow}>
-              <Text>Add a new Expense</Text>
-              <Text>Amount:</Text>
+              <Text variant="headlineMedium">Add a new Expense</Text>
+              <Text variant="titleMedium">Amount:</Text>
               <TextInput
                 aria-label="Amount"
                 style={styles.input}
@@ -227,7 +221,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               />
               {errors.amount && <Text>{errors.amount}</Text>}
             </View>
-            <Text>Merchant:</Text>
+            <Text variant="titleMedium">Merchant:</Text>
             <TextInput
               aria-label="Merchant"
               style={styles.input}
@@ -245,9 +239,12 @@ const ReceiptAdder = ({ route, navigation }) => {
             />
             {errors.category && <Text>{errors.category} </Text>}
             <Button
+              mode="contained"
               title="Add a new category"
               onPress={() => setToggleCategoryModal((prev) => !prev)}
-            />
+            >
+              Add a new category
+            </Button>
             <CategoryAdderModal
               isVisible={toggleCategoryModal}
               setIsVisible={setToggleCategoryModal}
@@ -262,7 +259,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               value={values.account}
             />
             {errors.account && <Text>{errors.account}</Text>}
-            <Text>Date:</Text>
+            <Text variant="titleMedium">Date:</Text>
             <TextInput
               aria-label="Date"
               placeholder="Date"
@@ -272,7 +269,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               value={values.date}
             />
             {errors.date && <Text>{errors.date}</Text>}
-            <Text>Location:</Text>
+            <Text variant="titleMedium">Location:</Text>
             <TextInput
               aria-label="Location"
               placeholder="Location"
@@ -288,7 +285,10 @@ const ReceiptAdder = ({ route, navigation }) => {
                 style={{ width: 200, height: 200 }}
               />
             )}
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button mode="contained" title="Submit" onPress={handleSubmit}>
+              {" "}
+              Submit{" "}
+            </Button>
           </View>
         );
       }}

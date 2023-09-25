@@ -121,7 +121,10 @@ const ReceiptScanner = ({ navigation, route }) => {
       >
         Submit Image
       </Button>
+      <Divider />
+      <Divider />
       <Button
+        mode="contained"
         title="Next"
         onPress={() => {
           setNextDisabled(true);
@@ -132,7 +135,9 @@ const ReceiptScanner = ({ navigation, route }) => {
           });
         }}
         disabled={nextDisabled}
-      />
+      >
+        Next{" "}
+      </Button>
     </View>
   );
 };
