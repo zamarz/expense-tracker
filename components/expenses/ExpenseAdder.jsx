@@ -1,4 +1,5 @@
 import {
+  Alert,
   View,
   StyleSheet,
   TextInput,
@@ -15,9 +16,17 @@ import { onAuthStateChanged } from "@firebase/auth";
 import ErrorHandler from "../error/ErrorHandler";
 import { Loading } from "../loading/Loading";
 import { Formik } from "formik";
+import DropDownPicker from "react-native-dropdown-picker";
 import { stringifyValueWithProperty } from "react-native-web/dist/cjs/exports/StyleSheet/compiler";
 import { object, string, number } from "yup";
 import * as yup from "yup";
+import {
+  getCategories,
+  addCategory,
+  addExpense,
+} from "../../firebase/firestore";
+import CategoryAdderModal from "../categories/CategoryAdderModal";
+import CategoryList from "../categories/CategoryList";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -30,7 +39,9 @@ export default function ExpenseAdder({ navigation }) {
   const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({}); //change const initialC
+  const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -39,6 +50,12 @@ export default function ExpenseAdder({ navigation }) {
       setUserId(uid);
     }
   });
+
+  useEffect(() => {
+    getCategories().then((categories) => {
+      setCategories(categories);
+    });
+  }, []);
 
   const expenses = {
     amount,
@@ -68,36 +85,77 @@ export default function ExpenseAdder({ navigation }) {
     category: yup.string().required(),
     date: yup.string().required(),
   });
-  //Need to change location, category and date
 
   const handleSubmit = async (values) => {
-    values.userId = expenses.userId;
-    //preventDefault();
-    console.log(values);
+    const data = {
+      ...values,
+      userId: expenses.userId,
+    };
+    // TODO: Check this...
     setLoading(true);
-    try {
-      const res = await addDoc(collection(dbFire, "expenses"), values);
-      setLoading(false);
-      //To add submission message state
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-    // setLoading(true);
-    // try {
-    //   setDate("Today");
-    //   setLocation("Here");
-    //   const res = await addDoc(collection(dbFire, "expenses"), expenses);
-    //   console.log(res, "#####response#####");
-    //   setLoading(false);
-    //   console.log("here!!");
-    // } catch {
-    //   setError(error);
-    //   setLoading(false);
-    // }
+    addExpense(data).then(
+      () => {
+        // TODO: Check this...
+        setLoading(false);
+        Alert.alert(
+          "Expense Added",
+          `You have successfully added your expense for the amount of £${data.amount}`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
+        // TODO: Redirect to home?
+      },
+      (error) => {
+        // TODO: Check this...
+        setError(error);
+        // TODO: Check this...
+        setLoading(false);
+        // TODO: Handle error
+        console.error("Error: Unable to add expense");
+      }
+    );
   };
 
   if (error) return <ErrorHandler error={error} />;
+
+  const handleAddCategory = (category) => {
+    if (!category.length) return;
+    const exists = categories.find((cat) => cat.label === category);
+    if (exists) {
+      // TODO: Inform user in a modal maybe?
+      console.error("Error: Category already exists");
+      return;
+    }
+    
+    addCategory(category).then(
+      () => {
+        Alert.alert(
+          "Category Added",
+          `You have successfully added ${category} to your categories`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
+        // Optimistic update
+        setCategories((prev) => [
+          ...prev,
+          { label: category, value: category },
+        ]);
+      },
+      (error) => {
+        // TODO: Handle error
+        console.error("Error: Unable to add category");
+      }
+    );
+    setToggleCategoryModal((prev) => !prev);
+  };
 
   return (
     <Formik
@@ -112,7 +170,6 @@ export default function ExpenseAdder({ navigation }) {
       }}
       validationSchema={expenseSchema}
       onSubmit={(values) => {
-        //?mutating state?? Refactor this
         setFormData(
           (formData.amount = values.amount),
           (formData.category = values.category),
@@ -122,7 +179,6 @@ export default function ExpenseAdder({ navigation }) {
           (formData.receipt = values.receipt),
           (formData.location = values.location)
         );
-        console.log(formData);
         handleSubmit(formData);
       }}
     >
@@ -150,15 +206,22 @@ export default function ExpenseAdder({ navigation }) {
               placeholder="Merchant"
             />
             {errors.merchant && <Text>{errors.merchant}</Text>}
-            <TextInput
-              aria-label="Category"
-              placeholder="Category"
-              style={styles.input}
-              onChangeText={handleChange("category")}
-              onBlur={handleBlur("category")}
-              value={values.category}
+            <CategoryList
+              category={values.category}
+              categories={categories}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
             {errors.category && <Text>{errors.category}</Text>}
+            <Button
+              title="Add New Item"
+              onPress={() => setToggleCategoryModal((prev) => !prev)}
+            />
+            <CategoryAdderModal
+              isVisible={toggleCategoryModal}
+              setIsVisible={setToggleCategoryModal}
+              handleAddCategory={handleAddCategory}
+            />
             <TextInput
               aria-label="Account"
               placeholder="Account"
@@ -241,3 +304,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+
