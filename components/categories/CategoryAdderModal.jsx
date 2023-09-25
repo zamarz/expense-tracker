@@ -31,7 +31,6 @@ const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>Hello World!</Text>
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={toggleModal}
