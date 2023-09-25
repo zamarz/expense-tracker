@@ -1,74 +1,57 @@
 import { View, Text, Button, StyleSheet, SafeAreaView } from "react-native";
-import React, { useContext, useState } from "react";
-import { Loading } from "../components/loading/Loading";
+import React, { useContext } from "react";
 import Logout from "../components/buttons/Logout";
-import ExpenseList from "../components/expenses/ExpenseList";
+import ExpenseListHome from "../components/expenses/ExpenseListHome";
 import BudgetPlanner from "../components/budget/BudgetPlanner";
 import { UserContext } from "../context/UserContext";
-
-// const Separator = () => <View style={styles.separator} />;
+import { AppTracker } from "../context/AppTracker";
 
 export default function Home({ navigation }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [balance, setBalance] = useState(0);
   const user = useContext(UserContext);
+  const { balance, expenses } = useContext(AppTracker);
 
-  {
-    /* Handle onPress App Demo */
+  if (user) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View>
+          <View>
+            <Text style={styles.title}>Balance: {balance}</Text>
+          </View>
+          <View>
+            <BudgetPlanner expenses={expenses} />
+          </View>
+          <View>
+            <ExpenseListHome expenses={expenses} />
+          </View>
+          <View>
+            <Button
+              onPress={() =>
+                navigation.navigate("Expense List", { screen: "ExpenseList" })
+              }
+              title="Expenses List"
+              accessibilityLabel="Goes to the expenses page"
+            />
+            <Button
+              onPress={() => {}}
+              title="Scan expense"
+              accessibilityLabel="Add a new expense to an account by scanning a receipt"
+            />
+            {/* <Button
+              onPress={handleAppDemo}
+              title="App Demo"
+              accessibilityLabel="Learn more about how to use the expense tracker app, through our app demo"
+            /> */}
+            <Button
+              onPress={() => navigation.navigate("Accounts List")}
+              title="View / Add Account"
+              accessibilityLabel="View a list of accounts or add a new account"
+            />
+            <Logout />
+          </View>
+        </View>
+      </SafeAreaView>
+    );
   }
-  // const handleAppDemo = () => {}
-
-  if (isLoading) return <Loading />;
-  if (isError) return <p>Something went wrong!</p>;
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        {/* <Layout> */}
-        <View>
-          {/* Viewing current accounts balance */}
-          <Text style={styles.title}>Balance: {balance}</Text>
-        </View>
-        <View>
-          {/* Viewing current budget, remaning budget and total spent */}
-          <BudgetPlanner />
-        </View>
-        <View>
-          <ExpenseList />
-        </View>
-        <View>
-          <Button
-            onPress={() =>
-              navigation.navigate("Expense List", { screen: "Expense Adder" })
-            }
-            title="Add expense"
-            accessibilityLabel="Add a new expense to an account manually"
-          ></Button>
-          <Button
-            onPress={() => {}}
-            title="Scan expense"
-            accessibilityLabel="Add a new expense to an account by scanning a receipt"
-          ></Button>
-        </View>
-        {/* Button to navigate to the app demo */}
-        {/* <View>
-          <Button onPress={handleAppDemo} title="App Demo" accessibilityLabel="Learn more about how to use the expense tracker app, through our app demo"></Button>
-
-        </View> */}
-        <View>
-          {/* Button to navigate to viewing/adding account(s) */}
-          <Button
-            onPress={() => navigation.navigate("Accounts List")}
-            title="View / Add Account"
-            accessibilityLabel="View a list of accounts or add a new account"
-          ></Button>
-          <Logout />
-        </View>
-        {/* </Layout> */}
-      </View>
-    </SafeAreaView>
-  );
 }
 
 const styles = StyleSheet.create({

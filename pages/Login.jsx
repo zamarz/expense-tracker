@@ -9,14 +9,13 @@ import {
 } from "react-native";
 import { authFire } from "../firebaseConfig";
 import {
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   getAuth,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
-import ErrorHandler from "../components/error/ErrorHandler";
 import { Loading } from "../components/loading/Loading";
-import { FIREBASE_GUEST_UID, FIREBASE_GUEST_PWD } from "@env";
+import { FIREBASE_GUEST_PWD } from "@env";
 
 const auth = authFire;
 const userAuth = getAuth();
@@ -24,7 +23,6 @@ const guestUser = {
   name: "Guest",
   email: "guest@email.com",
   password: FIREBASE_GUEST_PWD,
-  uid: FIREBASE_GUEST_UID,
 };
 
 onAuthStateChanged(userAuth, (user) => {
@@ -39,6 +37,7 @@ onAuthStateChanged(userAuth, (user) => {
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
 
   const signIn = async () => {
@@ -57,9 +56,9 @@ const LoginScreen = ({ navigation }) => {
       setLoading(false);
     }
   };
+
   const signInAsGuest = async (auth, email, password) => {
     setLoading(true);
-
     try {
       const res = await signInWithEmailAndPassword(auth, email, password).then(
         (userCredential) => {
@@ -77,7 +76,6 @@ const LoginScreen = ({ navigation }) => {
 
   const register = async () => {
     setLoading(true);
-
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       const { user } = res;
@@ -94,6 +92,12 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text>Welcome! Please sign in, or register your email!</Text>
       <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Username"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          style={styles.input}
+        />
         <TextInput
           placeholder="Email"
           value={email}

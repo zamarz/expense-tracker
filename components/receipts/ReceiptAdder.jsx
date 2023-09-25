@@ -1,47 +1,30 @@
-import {
-  Alert,
-  View,
-  StyleSheet,
-  TextInput,
-  Button,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
-import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Button, TextInput, Image } from "react-native";
 import { authFire, dbFire } from "../../firebaseConfig";
-import { addDoc, collection } from "@firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
-import ErrorHandler from "../error/ErrorHandler";
-import { Loading } from "../loading/Loading";
 import { Formik } from "formik";
-import DropDownPicker from "react-native-dropdown-picker";
-import { stringifyValueWithProperty } from "react-native-web/dist/cjs/exports/StyleSheet/compiler";
-import { object, string, number } from "yup";
 import * as yup from "yup";
+import ErrorHandler from "../error/ErrorHandler";
+import { useEffect, useState } from "react";
 import {
-  getCategories,
-  addCategory,
-  addExpense,
-} from "../../firebase/firestore";
-import CategoryAdderModal from "../categories/CategoryAdderModal";
-import CategoryList from "../categories/CategoryList";
+  doc,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+} from "@firebase/firestore";
 
-export default function ExpenseAdder({ navigation }) {
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
-  const [merchant, setMerchant] = useState("");
-  const [date, setDate] = useState("");
-  const [receipt, setReceipt] = useState("");
-  const [account, setAccount] = useState("");
-  const [location, setLocation] = useState("");
+const ReceiptAdder = ({ route, navigation }) => {
   const [userId, setUserId] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({}); //change const initialC
-  const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [amount, setAmount] = useState("");
+  const [merchant, setMerchant] = useState("");
+  const [account, setAccount] = useState("");
+  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const { imageURL, imageURI } = route.params;
+  const [image, setImage] = useState(imageURI);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -51,24 +34,32 @@ export default function ExpenseAdder({ navigation }) {
     }
   });
 
-  useEffect(() => {
-    getCategories().then((categories) => {
-      setCategories(categories);
-    });
-  }, []);
-
   const expenses = {
-    amount,
-    category,
-    merchant,
-    date,
-    receipt,
-    account,
-    location,
     userId,
   };
 
-  const expenseSchema = yup.object().shape({
+  const handleSubmit = async (values) => {
+    values.userId = expenses.userId;
+    //preventDefault();
+    console.log(values, "values");
+    setLoading(true);
+    try {
+      const res = await addDoc(collection(dbFire, "expenses"), values);
+      setLoading(false);
+      //To add submission message state
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  const captureGroup = /(?<=images%2F)(.*)(?=\?)/g;
+  const matchedURL = imageURL.match(captureGroup);
+  const stringifiedMatch = matchedURL.toString();
+
+  const searchTerm = "gs://test2-c87e5.appspot.com/images/" + stringifiedMatch;
+
+  const receiptExpenseSchema = yup.object().shape({
     amount: yup
       .number("")
       .typeError("Amount should be a number")
@@ -86,90 +77,58 @@ export default function ExpenseAdder({ navigation }) {
     date: yup.string().required(),
   });
 
-  const handleSubmit = async (values) => {
-    const data = {
-      ...values,
-      userId: expenses.userId,
-    };
-    // TODO: Check this...
-    setLoading(true);
-    addExpense(data).then(
-      () => {
-        // TODO: Check this...
-        setLoading(false);
-        Alert.alert(
-          "Expense Added",
-          `You have successfully added your expense for the amount of £${data.amount}`,
-          [
-            {
-              text: "OK",
-              style: "cancel",
-            },
-          ]
-        );
-        // TODO: Redirect to home?
-      },
-      (error) => {
-        // TODO: Check this...
-        setError(error);
-        // TODO: Check this...
-        setLoading(false);
-        // TODO: Handle error
-        console.error("Error: Unable to add expense");
-      }
+  useEffect(() => {
+    downloadText();
+  }, [image]);
+
+  const downloadText = async () => {
+    const q = query(
+      collection(dbFire, "extractedText"),
+      where("file", "==", searchTerm)
     );
+
+    const querySnapshot = await getDocs(q);
+
+    const expenseData = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+
+    const expenseText = expenseData[0].text;
+    const captureAmount = expenseText
+      .match(/(?<=\bTOTAL\b).\w..\d..../g)
+      .toString();
+    setAmount(captureAmount);
+
+    const captureMerchant = expenseText.match(/^.SDA/g).toString();
+    setMerchant(captureMerchant);
+
+    const captureAccount = expenseText.match(/AMERICAN.EXPRESS/g).toString();
+    setAccount(captureAccount);
   };
 
-  if (error) return <ErrorHandler error={error} />;
+  // will eventually need to re-render the image in expenses cards so be aware of how it is stored
+  //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
+  //might need to include URI in fields in the collection to see if the receipt image can be generated easily
+  // need to update with expense confirmation
+  //may need to update Yup fields once date picker etc are implemented
 
-  const handleAddCategory = (category) => {
-    if (!category.length) return;
-    const exists = categories.find((cat) => cat.label === category);
-    if (exists) {
-      // TODO: Inform user in a modal maybe?
-      console.error("Error: Category already exists");
-      return;
-    }
-    
-    addCategory(category).then(
-      () => {
-        Alert.alert(
-          "Category Added",
-          `You have successfully added ${category} to your categories`,
-          [
-            {
-              text: "OK",
-              style: "cancel",
-            },
-          ]
-        );
-        // Optimistic update
-        setCategories((prev) => [
-          ...prev,
-          { label: category, value: category },
-        ]);
-      },
-      (error) => {
-        // TODO: Handle error
-        console.error("Error: Unable to add category");
-      }
-    );
-    setToggleCategoryModal((prev) => !prev);
-  };
+  // if (error) return <ErrorHandler error={error} />;
 
   return (
     <Formik
+      enableReinitialize
       initialValues={{
-        amount: "",
+        amount: amount,
         category: "",
-        merchant: "",
+        merchant: merchant,
         date: "",
-        receipt: "",
-        account: "",
+        receipt: imageURL,
+        account: account,
         location: "",
       }}
-      validationSchema={expenseSchema}
+      validationSchema={receiptExpenseSchema}
       onSubmit={(values) => {
+        console.log(values, "in onsubmit");
         setFormData(
           (formData.amount = values.amount),
           (formData.category = values.category),
@@ -179,6 +138,7 @@ export default function ExpenseAdder({ navigation }) {
           (formData.receipt = values.receipt),
           (formData.location = values.location)
         );
+        console.log(formData, "formdata");
         handleSubmit(formData);
       }}
     >
@@ -193,7 +153,7 @@ export default function ExpenseAdder({ navigation }) {
                 onChangeText={handleChange("amount")}
                 onBlur={handleBlur("amount")}
                 value={values.amount}
-                placeholder="Amount"
+                placeholder={amount}
               />
               {errors.amount && <Text>{errors.amount}</Text>}
             </View>
@@ -203,28 +163,21 @@ export default function ExpenseAdder({ navigation }) {
               onChangeText={handleChange("merchant")}
               onBlur={handleBlur("merchant")}
               value={values.merchant}
-              placeholder="Merchant"
+              placeholder={merchant}
             />
             {errors.merchant && <Text>{errors.merchant}</Text>}
-            <CategoryList
-              category={values.category}
-              categories={categories}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
+            <TextInput
+              aria-label="Category"
+              placeholder="Category"
+              style={styles.input}
+              onChangeText={handleChange("category")}
+              onBlur={handleBlur("category")}
+              value={values.category}
             />
             {errors.category && <Text>{errors.category}</Text>}
-            <Button
-              title="Add New Item"
-              onPress={() => setToggleCategoryModal((prev) => !prev)}
-            />
-            <CategoryAdderModal
-              isVisible={toggleCategoryModal}
-              setIsVisible={setToggleCategoryModal}
-              handleAddCategory={handleAddCategory}
-            />
             <TextInput
               aria-label="Account"
-              placeholder="Account"
+              placeholder={account}
               style={styles.input}
               onChangeText={handleChange("account")}
               onBlur={handleBlur("account")}
@@ -249,13 +202,19 @@ export default function ExpenseAdder({ navigation }) {
               value={values.location}
             />
             {errors.location && <Text>{errors.location}</Text>}
+            {image && (
+              <Image
+                source={{ uri: image }}
+                style={{ width: 200, height: 200 }}
+              />
+            )}
             <Button title="Submit" onPress={handleSubmit} />
           </View>
         );
       }}
     </Formik>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -305,4 +264,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
+export default ReceiptAdder;

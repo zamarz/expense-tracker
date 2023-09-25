@@ -51,7 +51,6 @@ export default function AccountsAdder({ navigation }) {
     budget: yup.number().required().typeError("Budget should be a number"),
   });
 
-
   const handleSubmit = async (values) => {
     values.userId = newAccount.userId;
     values.id = newAccount.id;
@@ -126,7 +125,6 @@ export default function AccountsAdder({ navigation }) {
             {errors.budget && <Text>{errors.budget}</Text>}
 
             <Button
-              // Add functionality for account adder button
               onPress={handleSubmit}
               title="Add account"
               accessibilityLabel="Add a new account to the accounts list"

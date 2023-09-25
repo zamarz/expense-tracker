@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,16 +7,29 @@ import {
   Button,
   FlatList,
 } from "react-native";
-
 import AccountsCard from "./AccountsCard";
-import { dbFire } from "../../firebaseConfig";
-import { collection, query, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { authFire, dbFire } from "../../firebaseConfig";
+import {
+  collection,
+  query,
+  getDocs,
+  doc,
+  deleteDoc,
+  where,
+} from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { UserContext } from "../../context/UserContext";
+import { AppTracker } from "../../context/AppTracker";
 
 export default function AccountsList({ navigation }) {
   const [accounts, setAccounts] = useState([]);
+  const user = useContext(UserContext);
 
-  const fetchData = async () => {
-    const q = query(collection(dbFire, "account"));
+  const fetchData = async (userId) => {
+    const q = query(
+      collection(dbFire, "account"),
+      where("userId", "==", userId)
+    );
     const querySnapshot = await getDocs(q);
     const accountData = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
@@ -52,37 +65,6 @@ export default function AccountsList({ navigation }) {
   };
 
   const totalBudget = calculateTotalBudget();
-
-  // const handleEditBudget = (accountId, newBudget) => {
-  //     const updatedAccounts = accounts.map((account) => {
-  //         if (account.id === accountId) {
-  //             account.budget = newBudget;
-  //         }
-  //         return account;
-  //     })
-  //     setAccounts(updatedAccounts)
-  // };
-
-  // const handleEditBalance = (accountId, newBalance) => {
-  //     const updatedAccounts = accounts.map((account) => {
-  //         if (account.id === accountId) {
-  //             account.balance = newBalance;
-  //         }
-  //         return account;
-  //     })
-  //     setAccounts(updatedAccounts);
-  // };
-
-  // const handleAddIncome = (accountId, newIncome) => {
-  //     const updatedAccounts = accounts.map((account) => {
-  //         if (account.id === accountId) {
-  //             account.income = newIncome;
-  //         }
-  //         return account;
-  //     })
-  //     setAccounts(updatedAccounts)
-  // };
-
   const handleDeleteAccount = async (accountId) => {
     await deleteDoc(doc(dbFire, "account", accountId)).catch((error) => {
       console.log(error);
@@ -93,9 +75,8 @@ export default function AccountsList({ navigation }) {
   };
 
   useEffect(() => {
-    fetchData();
-    // handleDeleteAccount();
-  }, []);
+    if (user) fetchData(user.uid);
+  }, [user]);
 
   return (
     <>

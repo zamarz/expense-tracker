@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React, { useContext } from "react";
-import { BudgetContext } from "../../context/BudgetContext";
+import { AppTracker } from "../../context/AppTracker";
 
 const Remaining = () => {
-  const { expenses, budget } = useContext(BudgetContext);
+  const { expenses, budget } = useContext(AppTracker);
   const totalExpenses = expenses.reduce((total, item) => {
-    return (total = total + item.amount);
+    return (total = total + +item.amount);
   }, 0);
   return (
     <View>
