@@ -1,5 +1,5 @@
-import { View, StyleSheet, TextInput, Image, Alert } from "react-native";
-import { Button, Divider, Text } from "react-native-paper";
+import { View, StyleSheet, Image, Alert } from "react-native";
+import { Button, Divider, Text, TextInput } from "react-native-paper";
 
 import { authFire, dbFire } from "../../firebaseConfig";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -18,6 +18,7 @@ import {
 import { addCategory, getCategories } from "../../firebase/firestore";
 import CategoryList from "../categories/CategoryList";
 import CategoryAdderModal from "../categories/CategoryAdderModal";
+import { ScrollView } from "react-native-gesture-handler";
 
 const ReceiptAdder = ({ route, navigation }) => {
   const [userId, setUserId] = useState("");
@@ -207,89 +208,97 @@ const ReceiptAdder = ({ route, navigation }) => {
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
         return (
-          <View style={styles.container}>
-            <View style={styles.inputRow}>
-              <Text variant="headlineMedium">Add a new Expense</Text>
-              <Text variant="titleMedium">Amount:</Text>
+          <ScrollView>
+            <View style={styles.container}>
+              <View style={styles.inputRow}>
+                <Text variant="headlineMedium">Add a new Expense</Text>
+                <Text variant="titleMedium">Amount:</Text>
+                <TextInput
+                  mode="outlined"
+                  aria-label="Amount"
+                  style={styles.input}
+                  onChangeText={handleChange("amount")}
+                  onBlur={handleBlur("amount")}
+                  value={values.amount}
+                  placeholder={amount}
+                />
+                {errors.amount && <Text>{errors.amount}</Text>}
+              </View>
+              <Text variant="titleMedium">Merchant:</Text>
               <TextInput
-                aria-label="Amount"
+                mode="outlined"
+                aria-label="Merchant"
                 style={styles.input}
-                onChangeText={handleChange("amount")}
-                onBlur={handleBlur("amount")}
-                value={values.amount}
-                placeholder={amount}
+                onChangeText={handleChange("merchant")}
+                onBlur={handleBlur("merchant")}
+                value={values.merchant}
+                placeholder={merchant}
               />
-              {errors.amount && <Text>{errors.amount}</Text>}
+              {errors.merchant && <Text>{errors.merchant}</Text>}
+              <CategoryList
+                category={values.category}
+                categories={categories}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+              />
+              {errors.category && <Text>{errors.category} </Text>}
+              <Button
+                mode="contained"
+                title="Add a new category"
+                onPress={() => setToggleCategoryModal((prev) => !prev)}
+              >
+                Add a new category
+              </Button>
+              <CategoryAdderModal
+                isVisible={toggleCategoryModal}
+                setIsVisible={setToggleCategoryModal}
+                handleAddCategory={handleAddCategory}
+              />
+              <TextInput
+                mode="outlined"
+                aria-label="Account"
+                placeholder={account}
+                style={styles.input}
+                onChangeText={handleChange("account")}
+                onBlur={handleBlur("account")}
+                value={values.account}
+              />
+              {errors.account && <Text>{errors.account}</Text>}
+              <Text variant="titleMedium">Date:</Text>
+              <TextInput
+                mode="outlined"
+                aria-label="Date"
+                placeholder="Date"
+                style={styles.input}
+                onChangeText={handleChange("date")}
+                onBlur={handleBlur("date")}
+                value={values.date}
+              />
+              {errors.date && <Text>{errors.date}</Text>}
+              <Text variant="titleMedium">Location:</Text>
+              <TextInput
+                mode="outlined"
+                aria-label="Location"
+                placeholder="Location"
+                style={styles.input}
+                onChangeText={handleChange("location")}
+                onBlur={handleBlur("location")}
+                value={values.location}
+              />
+              {errors.location && <Text>{errors.location}</Text>}
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
+              <Button mode="contained" title="Submit" onPress={handleSubmit}>
+                {" "}
+                Submit{" "}
+              </Button>
+              <Divider />
             </View>
-            <Text variant="titleMedium">Merchant:</Text>
-            <TextInput
-              aria-label="Merchant"
-              style={styles.input}
-              onChangeText={handleChange("merchant")}
-              onBlur={handleBlur("merchant")}
-              value={values.merchant}
-              placeholder={merchant}
-            />
-            {errors.merchant && <Text>{errors.merchant}</Text>}
-            <CategoryList
-              category={values.category}
-              categories={categories}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-            />
-            {errors.category && <Text>{errors.category} </Text>}
-            <Button
-              mode="contained"
-              title="Add a new category"
-              onPress={() => setToggleCategoryModal((prev) => !prev)}
-            >
-              Add a new category
-            </Button>
-            <CategoryAdderModal
-              isVisible={toggleCategoryModal}
-              setIsVisible={setToggleCategoryModal}
-              handleAddCategory={handleAddCategory}
-            />
-            <TextInput
-              aria-label="Account"
-              placeholder={account}
-              style={styles.input}
-              onChangeText={handleChange("account")}
-              onBlur={handleBlur("account")}
-              value={values.account}
-            />
-            {errors.account && <Text>{errors.account}</Text>}
-            <Text variant="titleMedium">Date:</Text>
-            <TextInput
-              aria-label="Date"
-              placeholder="Date"
-              style={styles.input}
-              onChangeText={handleChange("date")}
-              onBlur={handleBlur("date")}
-              value={values.date}
-            />
-            {errors.date && <Text>{errors.date}</Text>}
-            <Text variant="titleMedium">Location:</Text>
-            <TextInput
-              aria-label="Location"
-              placeholder="Location"
-              style={styles.input}
-              onChangeText={handleChange("location")}
-              onBlur={handleBlur("location")}
-              value={values.location}
-            />
-            {errors.location && <Text>{errors.location}</Text>}
-            {image && (
-              <Image
-                source={{ uri: image }}
-                style={{ width: 200, height: 200 }}
-              />
-            )}
-            <Button mode="contained" title="Submit" onPress={handleSubmit}>
-              {" "}
-              Submit{" "}
-            </Button>
-          </View>
+          </ScrollView>
         );
       }}
     </Formik>
