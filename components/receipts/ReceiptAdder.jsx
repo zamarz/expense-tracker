@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, Button, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  Image,
+  Alert,
+} from "react-native";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { onAuthStateChanged } from "@firebase/auth";
 import { Formik } from "formik";
@@ -25,6 +33,7 @@ const ReceiptAdder = ({ route, navigation }) => {
   const [account, setAccount] = useState("");
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
 
   const { imageURL, imageURI } = route.params;
   const [image, setImage] = useState(imageURI);
@@ -40,8 +49,13 @@ const ReceiptAdder = ({ route, navigation }) => {
   });
 
   const expenses = {
+    category,
     userId,
   };
+
+  useEffect(() => {
+    downloadText();
+  }, [image]);
 
   useEffect(() => {
     getCategories().then((categories) => {
@@ -139,10 +153,6 @@ const ReceiptAdder = ({ route, navigation }) => {
     setToggleCategoryModal((prev) => !prev);
   };
 
-  useEffect(() => {
-    downloadText();
-  }, [image]);
-
   const downloadText = async () => {
     const q = query(
       collection(dbFire, "extractedText"),
@@ -206,6 +216,7 @@ const ReceiptAdder = ({ route, navigation }) => {
           <View style={styles.container}>
             <View style={styles.inputRow}>
               <Text>Add a new Expense</Text>
+              <Text>Amount:</Text>
               <TextInput
                 aria-label="Amount"
                 style={styles.input}
@@ -216,6 +227,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               />
               {errors.amount && <Text>{errors.amount}</Text>}
             </View>
+            <Text>Merchant:</Text>
             <TextInput
               aria-label="Merchant"
               style={styles.input}
@@ -226,10 +238,10 @@ const ReceiptAdder = ({ route, navigation }) => {
             />
             {errors.merchant && <Text>{errors.merchant}</Text>}
             <CategoryList
-              aria-label="Category"
-              placeholder="Category"
-              onChangeText={handleChange}
-              onBlur={handleBlur}
+              category={values.category}
+              categories={categories}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
             {errors.category && <Text>{errors.category} </Text>}
             <Button
@@ -250,6 +262,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               value={values.account}
             />
             {errors.account && <Text>{errors.account}</Text>}
+            <Text>Date:</Text>
             <TextInput
               aria-label="Date"
               placeholder="Date"
@@ -259,6 +272,7 @@ const ReceiptAdder = ({ route, navigation }) => {
               value={values.date}
             />
             {errors.date && <Text>{errors.date}</Text>}
+            <Text>Location:</Text>
             <TextInput
               aria-label="Location"
               placeholder="Location"
