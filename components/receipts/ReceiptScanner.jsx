@@ -102,7 +102,6 @@ const ReceiptScanner = ({ navigation, route }) => {
       <Button
         title="Take a photo"
         onPress={takeImage}
-        color="blue"
         mode="contained"
         icon="camera"
       >
@@ -120,7 +119,7 @@ const ReceiptScanner = ({ navigation, route }) => {
         disabled={submitDisabled}
         mode="contained"
       >
-        Submit Image{" "}
+        Submit Image
       </Button>
       <Button
         title="Next"
@@ -132,7 +131,6 @@ const ReceiptScanner = ({ navigation, route }) => {
             params: { imageURL: imageURL, imageURI: image },
           });
         }}
-        color="orange"
         disabled={nextDisabled}
       />
     </View>
