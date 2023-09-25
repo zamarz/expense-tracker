@@ -15,7 +15,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Loading } from "../components/loading/Loading";
-import { FIREBASE_GUEST_UID, FIREBASE_GUEST_PWD } from "@env";
+import { FIREBASE_GUEST_PWD } from "@env";
 
 const auth = authFire;
 const userAuth = getAuth();
@@ -39,33 +39,6 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // function signIn() {
-  //   dispatch({
-  //     type: "LOGIN_USER",
-  //     email: email,
-  //     password: password,
-  //     displayName: username,
-  //   });
-  // }
-
-  // function signInAsGuest() {
-  //   dispatch({
-  //     type: "LOGIN_GUEST",
-  //     email: guestUser.email,
-  //     password: guestUser.password,
-  //     username: guestUser.username,
-  //   });
-  // }
-
-  // function register() {
-  //   dispatch({
-  //     type: "REGISTER_USER",
-  //     email: email,
-  //     password: password,
-  //     username: username,
-  //   });
-  // }
 
   const signIn = async () => {
     setLoading(true);

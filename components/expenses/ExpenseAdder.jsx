@@ -68,43 +68,17 @@ export default function ExpenseAdder({ navigation }) {
     category: yup.string().required(),
     date: yup.string().required(),
   });
-  //Need to change location, category and date
 
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
-    //preventDefault();
-    // console.log(values);
+
     setLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
-      // console.log(res);
-      // if (res) {
-      //   setAccount("");
-      //   setAmount("");
-      //   setCategory("");
-      //   setDate("");
-      //   setMerchant("");
-      //   setReceipt("");
-      //   setLocation("");
-      //   setLoading(false);
-      // }
-      //To add submission message state
     } catch (error) {
       setError(error);
       setLoading(false);
     }
-    // setLoading(true);
-    // try {
-    //   setDate("Today");
-    //   setLocation("Here");
-    //   const res = await addDoc(collection(dbFire, "expenses"), expenses);
-    //   console.log(res, "#####response#####");
-    //   setLoading(false);
-    //   console.log("here!!");
-    // } catch {
-    //   setError(error);
-    //   setLoading(false);
-    // }
   };
 
   if (error) return <ErrorHandler error={error} />;
@@ -122,7 +96,6 @@ export default function ExpenseAdder({ navigation }) {
       }}
       validationSchema={expenseSchema}
       onSubmit={(values) => {
-        //?mutating state?? Refactor this
         setFormData(
           (formData.amount = values.amount),
           (formData.category = values.category),
@@ -132,7 +105,6 @@ export default function ExpenseAdder({ navigation }) {
           (formData.receipt = values.receipt),
           (formData.location = values.location)
         );
-        // console.log(formData);
         handleSubmit(formData);
       }}
     >

@@ -19,11 +19,11 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { UserContext } from "../../context/UserContext";
+import { AppTracker } from "../../context/AppTracker";
 
 export default function AccountList({ navigation }) {
   const [accounts, setAccounts] = useState([]);
-  // const [user, setUser] = useState(UserContext);
-  const [user, setUser] = useContext(UserContext);
+  const user = useContext(UserContext);
 
   const fetchData = async (userId) => {
     const q = query(
@@ -65,37 +65,6 @@ export default function AccountList({ navigation }) {
   };
 
   const totalBudget = calculateTotalBudget();
-
-  // const handleEditBudget = (accountId, newBudget) => {
-  //     const updatedAccounts = accounts.map((account) => {
-  //         if (account.id === accountId) {
-  //             account.budget = newBudget;
-  //         }
-  //         return account;
-  //     })
-  //     setAccounts(updatedAccounts)
-  // };
-
-  // const handleEditBalance = (accountId, newBalance) => {
-  //     const updatedAccounts = accounts.map((account) => {
-  //         if (account.id === accountId) {
-  //             account.balance = newBalance;
-  //         }
-  //         return account;
-  //     })
-  //     setAccounts(updatedAccounts);
-  // };
-
-  // const handleAddIncome = (accountId, newIncome) => {
-  //     const updatedAccounts = accounts.map((account) => {
-  //         if (account.id === accountId) {
-  //             account.income = newIncome;
-  //         }
-  //         return account;
-  //     })
-  //     setAccounts(updatedAccounts)
-  // };
-
   const handleDeleteAccount = async (accountId) => {
     await deleteDoc(doc(dbFire, "account", accountId)).catch((error) => {
       console.log(error);
@@ -106,11 +75,7 @@ export default function AccountList({ navigation }) {
   };
 
   useEffect(() => {
-    onAuthStateChanged(authFire, (user) => {
-      setUser(user);
-      if (user) fetchData(user.uid);
-    });
-    // handleDeleteAccount();
+    if (user) fetchData(user.uid);
   }, [user]);
 
   return (

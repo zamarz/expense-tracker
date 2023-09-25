@@ -24,7 +24,6 @@ export default function AccountsAdder({ navigation }) {
   const [userId, setUserId] = useState("");
   const [formData, setFormData] = useState({});
 
-
   if (isLoading) return <Loading />;
   if (isError) return <p>Something went wrong!</p>;
 
@@ -51,7 +50,6 @@ export default function AccountsAdder({ navigation }) {
     type: yup.string().required(),
     budget: yup.number().required().typeError("Budget should be a number"),
   });
-
 
   const handleSubmit = async (values) => {
     values.userId = newAccount.userId;
@@ -81,7 +79,6 @@ export default function AccountsAdder({ navigation }) {
           (formData.type = values.type),
           (formData.budget = values.budget)
         );
-        // console.log(formData);
         handleSubmit(formData);
       }}
     >
@@ -131,7 +128,6 @@ export default function AccountsAdder({ navigation }) {
             {errors.budget && <Text>{errors.budget}</Text>}
 
             <Button
-              // Add functionality for account adder button
               onPress={handleSubmit}
               title="Add account"
               accessibilityLabel="Add a new account to the accounts list"
@@ -147,7 +143,6 @@ export default function AccountsAdder({ navigation }) {
     </Formik>
   );
 }
-//removed safeareaview
 
 const styles = StyleSheet.create({
   container: {

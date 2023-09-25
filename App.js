@@ -27,8 +27,8 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [user, setUser] = useState({ name: "", email: "", uid: "" });
-  const [budget, setBudget] = useState(0);
   const [balance, setBalance] = useState(0);
+  const [budget, setBudget] = useState(0);
   const [expenseList, setExpenseList] = useState([]);
   const [accountList, setAccountList] = useState([]);
 
@@ -85,9 +85,6 @@ export default function App() {
     }
   };
 
-  // console.log(accountList);
-  // console.log(expenseList);
-
   useEffect(() => {
     onAuthStateChanged(authFire, (user) => {
       setUser(user);
@@ -97,7 +94,6 @@ export default function App() {
       }
     });
   }, [user]);
-  // console.log(user);
 
   const LoginNavigator = () => {
     return (
@@ -129,22 +125,7 @@ export default function App() {
   const DrawerNavigator = () => {
     return (
       <Drawer.Navigator>
-        <Drawer.Screen
-          name={`Home`}
-          component={Footer}
-          // options={
-          //   {
-          //     // title: "My Home",
-          //     //headerShown: false,
-          //     // headerLeft: () => (
-          //     //   <Image
-          //     //     style={{ width: 50, height: 50 }}
-          //     //     source={require("./assets/android-chrome-192x192.png")}
-          //     //   />
-          //     // ),
-          //   }
-          // }
-        />
+        <Drawer.Screen name={`Home`} component={Footer} />
         <Drawer.Screen name="Profile" component={Profile} />
         <Drawer.Screen name="Settings" component={Settings} />
         <Drawer.Screen
@@ -152,13 +133,6 @@ export default function App() {
           component={ExpensesNavigator}
           options={{
             title: "Expenses List",
-            // headerShown: false,
-            // headerLeft: () => (
-            //   <Image
-            //     style={{ width: 50, height: 50 }}
-            //     source={require("./assets/android-chrome-192x192.png")}
-            //   />
-            // ),
           }}
         />
         <Drawer.Screen name="Accounts List" component={AccountsNavigator} />
