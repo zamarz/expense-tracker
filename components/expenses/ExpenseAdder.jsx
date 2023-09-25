@@ -85,7 +85,6 @@ export default function ExpenseAdder({ navigation }) {
     category: yup.string().required(),
     date: yup.string().required(),
   });
-  //Need to change location, category and date
 
   const handleSubmit = async (values) => {
     const data = {
@@ -158,7 +157,6 @@ export default function ExpenseAdder({ navigation }) {
     setToggleCategoryModal((prev) => !prev);
   };
 
-
   return (
     <Formik
       initialValues={{
@@ -172,7 +170,6 @@ export default function ExpenseAdder({ navigation }) {
       }}
       validationSchema={expenseSchema}
       onSubmit={(values) => {
-      
         setFormData(
           (formData.amount = values.amount),
           (formData.category = values.category),
@@ -182,7 +179,6 @@ export default function ExpenseAdder({ navigation }) {
           (formData.receipt = values.receipt),
           (formData.location = values.location)
         );
-   
         handleSubmit(formData);
       }}
     >
@@ -221,7 +217,6 @@ export default function ExpenseAdder({ navigation }) {
               title="Add New Item"
               onPress={() => setToggleCategoryModal((prev) => !prev)}
             />
-
             <CategoryAdderModal
               isVisible={toggleCategoryModal}
               setIsVisible={setToggleCategoryModal}
