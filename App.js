@@ -13,7 +13,7 @@ import Settings from "./pages/Settings";
 import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
 import Receipts from "./components/receipts/ReceiptAdder";
-import Map from "./components/map/Map";
+import Map from "./pages/Map";
 import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
 import AccountsAdder from "./components/account/AccountsAdder";

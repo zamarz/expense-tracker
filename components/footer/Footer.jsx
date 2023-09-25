@@ -4,7 +4,7 @@ import Analysis from "../../pages/Analysis";
 import ReceiptScanner from "../receipts/ReceiptScanner";
 import ReceiptAdder from "../receipts/ReceiptAdder";
 
-import Map from "../map/Map";
+import Map from "../../pages/Map";
 import Profile from "../../pages/Profle";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";

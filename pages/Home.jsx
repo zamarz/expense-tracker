@@ -1,4 +1,4 @@
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import React, { useContext } from "react";
 import Logout from "../components/buttons/Logout";
 import ExpenseListHome from "../components/expenses/ExpenseListHome";
@@ -17,20 +17,18 @@ export default function Home({ navigation }) {
     return (
       <SafeAreaView style={styles.container}>
         <View>
-          <View>
-            <Text variant="headlineLarge" style={styles.title}>
-              Balance: {balance}
-            </Text>
-            <Divider />
-          </View>
-          <View>
-            <BudgetPlanner expenses={expenses} />
-            <Divider />
-          </View>
-          <View>
-            <ExpenseListHome expenses={expenses} />
-            <Divider />
-          </View>
+          <Text variant="headlineLarge" style={styles.title}>
+            Balance: {balance}
+          </Text>
+          <Divider />
+
+          <BudgetPlanner expenses={expenses} />
+          <Divider />
+
+          <ExpenseListHome expenses={expenses} />
+          <Divider />
+        </View>
+        <ScrollView>
           <View>
             <Button
               style={styles.appButtonContainer}
@@ -72,7 +70,7 @@ export default function Home({ navigation }) {
             </Button>
             <Logout />
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
