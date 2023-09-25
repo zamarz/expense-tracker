@@ -1,4 +1,3 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Home from "../../pages/Home";
 import Analysis from "../../pages/Analysis";
@@ -8,9 +7,12 @@ import ReceiptAdder from "../receipts/ReceiptAdder";
 import Map from "../map/Map";
 import Profile from "../../pages/Profle";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
+import { useTheme } from "react-native-paper";
 
-const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+const Tab = createMaterialBottomTabNavigator();
 
 const ReceiptsNavigator = () => {
   return (
