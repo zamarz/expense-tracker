@@ -3,21 +3,17 @@ import { ScrollView, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 // import { ScrollView } from "react-native-gesture-handler";
 
-function CategoryList({ category, categories, handleChange, handleBlur }) {
+function AccountListDropDown({account, accounts, handleChange, handleBlur}) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(category);
+  const [value, setValue] = useState(account);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (category !== value) {
-      handleChange("category")(value);
+    if (account !== value) {
+      handleChange("account")(value);
     }
-    setItems(categories);
-  }, [value, categories]);
-
-  // useEffect(() => {
-  //   setItems(categories);
-  // }, [categories]);
+    setItems(accounts);
+  }, [value, accounts]);
 
   return (
     <DropDownPicker
@@ -27,7 +23,7 @@ function CategoryList({ category, categories, handleChange, handleBlur }) {
       setOpen={setOpen}
       setValue={setValue}
       setItems={setItems}
-      placeholder={"Choose a category"}
+      placeholder={"Select your account"}
       scrollViewProps={{
         decelerationRate: "fast",
       }}
@@ -35,4 +31,4 @@ function CategoryList({ category, categories, handleChange, handleBlur }) {
   );
 }
 
-export default CategoryList;
+export default AccountListDropDown;

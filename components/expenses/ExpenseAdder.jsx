@@ -22,11 +22,15 @@ import { object, string, number } from "yup";
 import * as yup from "yup";
 import {
   getCategories,
+  getAccounts,
   addCategory,
   addExpense,
+  addAccount
 } from "../../firebase/firestore";
 import CategoryAdderModal from "../categories/CategoryAdderModal";
 import CategoryList from "../categories/CategoryList";
+import AccountAdderModal from "../account/AccountAdderModal";
+import AccountListDropDown from "../account/AccountListDropDown";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -41,7 +45,9 @@ export default function ExpenseAdder({ navigation }) {
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({}); //change const initialC
   const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
+  const [toggleAccountModal, setToggleAccountModal] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [accounts, setAccounts] = useState([]);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -57,6 +63,12 @@ export default function ExpenseAdder({ navigation }) {
     });
   }, []);
 
+  useEffect(() => {
+    getAccounts().then((accounts) => {
+      setAccounts(accounts);
+    });
+  }, []);
+  
   const expenses = {
     amount,
     category,
@@ -157,6 +169,42 @@ export default function ExpenseAdder({ navigation }) {
     setToggleCategoryModal((prev) => !prev);
   };
 
+  const handleAddAccount = (account) => {
+    if (!account.length) return;
+    const exists = accounts.find((acc) => acc.label === account);
+    if (exists) {
+    
+      console.error("Error: Account already exists");
+      return;
+    }
+    
+    addAccount(account).then(
+      () => {
+        Alert.alert(
+          "Payment Method Added",
+          `You have successfully added ${account} to your accounts`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
+        // Optimistic update
+        setAccounts((prev) => [
+          ...prev,
+          { label: account, value: account },
+        ]);
+      },
+      (error) => {
+        // TODO: Handle error
+        console.error("Error: Unable to add account");
+      }
+    );
+    setToggleAccountModal((prev) => !prev);
+  };
+
+
   return (
     <Formik
       initialValues={{
@@ -214,7 +262,7 @@ export default function ExpenseAdder({ navigation }) {
             />
             {errors.category && <Text>{errors.category}</Text>}
             <Button
-              title="Add New Item"
+              title="Add New Category"
               onPress={() => setToggleCategoryModal((prev) => !prev)}
             />
             <CategoryAdderModal
@@ -222,15 +270,22 @@ export default function ExpenseAdder({ navigation }) {
               setIsVisible={setToggleCategoryModal}
               handleAddCategory={handleAddCategory}
             />
-            <TextInput
-              aria-label="Account"
-              placeholder="Account"
-              style={styles.input}
-              onChangeText={handleChange("account")}
-              onBlur={handleBlur("account")}
-              value={values.account}
+            <AccountListDropDown
+              account={values.account}
+              accounts={accounts}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
             {errors.account && <Text>{errors.account}</Text>}
+            <Button
+              title="Add New Account"
+              onPress={() => setToggleAccountModal((prev) => !prev)}
+            />
+            <AccountAdderModal
+              isVisible={toggleAccountModal}
+              setIsVisible={setToggleAccountModal}
+              handleAddAccount={handleAddAccount}
+            />
             <TextInput
               aria-label="Date"
               placeholder="Date"
