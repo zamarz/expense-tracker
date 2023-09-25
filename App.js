@@ -19,6 +19,7 @@ import ErrorHandler from "./components/error/ErrorHandler";
 import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
+import IncomeAdder from "./components/account/IncomeAdder";
 import { collection, getDocs, query, where } from "@firebase/firestore";
 import { AppTracker } from "./context/AppTracker";
 
@@ -109,6 +110,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="AccountList">
         <Stack.Screen name="Account List" component={AccountList} />
         <Stack.Screen name="Accounts Adder" component={AccountsAdder} />
+        <Stack.Screen name="Income Adder" component={IncomeAdder} />
       </Stack.Navigator>
     );
   };

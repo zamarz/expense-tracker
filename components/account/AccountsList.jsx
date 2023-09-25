@@ -3,40 +3,17 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Button,
   FlatList,
 } from "react-native";
 import AccountsCard from "./AccountsCard";
-import { authFire, dbFire } from "../../firebaseConfig";
-import {
-  collection,
-  query,
-  getDocs,
-  doc,
-  deleteDoc,
-  where,
-} from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import { dbFire } from "../../firebaseConfig";
+import { collection, query, getDocs, doc, where, deleteDoc } from "firebase/firestore";
 import { UserContext } from "../../context/UserContext";
 import { AppTracker } from "../../context/AppTracker";
-
-export default function AccountList({ navigation }) {
-  const [accounts, setAccounts] = useState([]);
+export default function AccountsList({ navigation }) {
   const user = useContext(UserContext);
-
-  const fetchData = async (userId) => {
-    const q = query(
-      collection(dbFire, "account"),
-      where("userId", "==", userId)
-    );
-    const querySnapshot = await getDocs(q);
-    const accountData = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setAccounts(accountData);
-  };
+  const { accounts } = useContext(AppTracker);
 
   const calculateTotalBalance = () => {
     let totalBalance = 0;
@@ -65,21 +42,22 @@ export default function AccountList({ navigation }) {
   };
 
   const totalBudget = calculateTotalBudget();
+
   const handleDeleteAccount = async (accountId) => {
     await deleteDoc(doc(dbFire, "account", accountId)).catch((error) => {
       console.log(error);
     });
-    setAccounts((previousAccounts) =>
-      previousAccounts.filter((account) => account.id !== accountId)
-    );
+    // setAccounts((previousAccounts) =>
+    //   previousAccounts.filter((account) => account.id !== accountId)
+    // );
   };
 
   useEffect(() => {
-    if (user) fetchData(user.uid);
-  }, [user]);
+    handleDeleteAccount();
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <View>
         <Text style={styles.title}>
           Total Accounts Balance: £{totalBalance.toFixed(2)}
@@ -100,6 +78,7 @@ export default function AccountList({ navigation }) {
             onEditBudget={() => handleEditBudget(item.id)}
             onEditBalance={() => handleEditBalance(item.id)}
             onAddIncome={() => handleAddIncome(item.id)}
+            navigation={navigation}
           />
         )}
         keyExtractor={(item) => {
@@ -109,7 +88,7 @@ export default function AccountList({ navigation }) {
       <View>
         <Button
           onPress={() =>
-            navigation.navigate("Accounts List", { screen: "Accounts Adder" })
+            navigation.navigate("Accounts Adder")
           }
           title="Add new account"
           accessibilityLabel="Add a new account to the accounts list"
@@ -122,7 +101,7 @@ export default function AccountList({ navigation }) {
           accessibilityLabel="Button to navigate to Home page"
         ></Button>
       </View>
-    </SafeAreaView>
+      </>
   );
 }
 
