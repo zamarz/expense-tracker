@@ -3,10 +3,23 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Home from "../../pages/Home";
 import Analysis from "../../pages/Analysis";
 import ReceiptScanner from "../receipts/ReceiptScanner";
+import ReceiptAdder from "../receipts/ReceiptAdder";
+
 import Map from "../map/Map";
 import Profile from "../../pages/Profle";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const ReceiptsNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Receipt Scanner" component={ReceiptScanner} />
+      <Stack.Screen name="Receipt Adder" component={ReceiptAdder} />
+    </Stack.Navigator>
+  );
+};
 
 export default function Footer() {
   return (
@@ -41,8 +54,8 @@ export default function Footer() {
         }}
       />
       <Tab.Screen
-        name="Receipt Scanner"
-        component={ReceiptScanner}
+        name="Receipt Navigator"
+        component={ReceiptsNavigator}
         options={{
           tabBarLabel: "Receipt Scanning",
           tabBarIcon: ({ color, size }) => (
