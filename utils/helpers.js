@@ -1,13 +1,13 @@
-export function calculateTotalBalance(accountsData) {
+export const calculateTotalBalance = (accountsData) => {
   let totalBalance = 0;
   for (const account of accountsData) {
     const amount = parseFloat(account.balance);
     totalBalance += amount;
   }
   return totalBalance;
-}
+};
 
-export function calculateTotalBudget(accountsData) {
+export const calculateTotalBudget = (accountsData) => {
   let totalBudget = 0;
   for (const account of accountsData) {
     if (
@@ -20,4 +20,4 @@ export function calculateTotalBudget(accountsData) {
     }
   }
   return totalBudget;
-}
+};
