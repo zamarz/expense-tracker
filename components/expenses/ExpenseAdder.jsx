@@ -83,7 +83,7 @@ export default function ExpenseAdder({ navigation }) {
   useEffect(() => {
     getMerchants().then((merchants) => {
       setMerchants(merchants);
-      console.log(merchants)
+  
     });
   }, []);
     
@@ -126,6 +126,16 @@ const onConfirmSingle = (params) => {
   });
 
   const handleSubmit = async (values) => {
+
+
+//TO DO later
+//if (!date) {
+  // let newDate = new Date();
+//   setDate(newDate);
+//   console.log(date);
+// }
+
+
     const data = {
       ...values,
       userId: expenses.userId,
@@ -357,7 +367,7 @@ const onConfirmSingle = (params) => {
               Select date for your expense
              </Button>
             <DatePickerModal
-             locale="en"
+             locale="en-GB"
               mode="single"
               visible={open}
               onDismiss={onDismissSingle}
@@ -382,7 +392,7 @@ const onConfirmSingle = (params) => {
                 value={values.location}
               />
               {errors.location && <Text>{errors.location}</Text>}
-              <Button title="Submit" onPress={handleSubmit} />
+              <Button title="Submit" mode="contained" onPress={handleSubmit}>Submit</Button>
             </View>
           </AutocompleteDropdownContextProvider>
         );

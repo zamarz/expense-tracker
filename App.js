@@ -28,6 +28,7 @@ import {
   PaperProvider,
 } from "react-native-paper";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
+import { enGB, registerTranslation } from "react-native-paper-dates";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -101,6 +102,8 @@ export default function App() {
       }
     });
   }, [user]);
+
+registerTranslation("en-GB", enGB);
 
   const LoginNavigator = () => {
     return (
