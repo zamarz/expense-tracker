@@ -58,7 +58,7 @@ export async function fetchExpensesData(userId) {
     ...doc.data(),
     id: doc.id,
   }));
-  console.log(expensesData);
+  // console.log(expensesData);
   if (expensesData) {
     return { message: "Success", expenses: expensesData };
   }
@@ -75,7 +75,7 @@ export async function fetchAccountsData(userId) {
     id: doc.id,
   }));
   if (accountsData) {
-    console.log(accountsData);
+    // console.log(accountsData);
     return {
       message: "Success",
       accounts: accountsData,

@@ -6,7 +6,7 @@ export const AppTracker = createContext();
 const initialValues = { balance: 0, budget: 0, expenses: [], accounts: [] };
 
 function reducer(state, action) {
-  console.log(state, action);
+  // console.log(state, action);
   const { type } = action;
   switch (type) {
     case "UPDATE_EXPENSES": {

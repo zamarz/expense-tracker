@@ -23,7 +23,7 @@ export default function Home({ navigation }) {
     fetchExpensesData(uid)
       .then(({ message, expenses }) => {
         if ((message = "Success")) {
-          console.log(expenses);
+          // console.log(expenses);
           dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
         }
         return { message };
@@ -32,7 +32,7 @@ export default function Home({ navigation }) {
         if ((message = "Success")) {
           fetchAccountsData(uid).then(({ message, accounts }) => {
             if (message === "Success") {
-              console.log(accounts);
+              // console.log(accounts);
               if (accounts) {
                 dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
                 setLoading(false);

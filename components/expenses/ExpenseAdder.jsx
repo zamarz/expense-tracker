@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -41,6 +41,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { FIREBASE_API } from "@env";
 import { useTheme } from "react-native-paper";
+import { AppTracker } from "../../context/AppTracker";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -59,7 +60,10 @@ export default function ExpenseAdder({ navigation }) {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [merchants, setMerchants] = useState([]);
-  const [accounts, setAccounts] = useState([]);
+  // const [accounts, setAccounts] = useState([]);
+
+  const { state, dispatch } = useContext(AppTracker);
+  const { accounts } = state;
 
   const theme = useTheme();
 
@@ -77,16 +81,16 @@ export default function ExpenseAdder({ navigation }) {
     });
   }, []);
 
-  useEffect(() => {
-    getAccounts().then((accounts) => {
-      setAccounts(accounts);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getAccounts().then((accounts) => {
+  //     setAccounts(accounts);
+  //   });
+  // }, []);
 
   useEffect(() => {
     getMerchants().then((merchants) => {
       setMerchants(merchants);
-      console.log(merchants);
+      // console.log(merchants);
     });
   }, []);
 
@@ -353,7 +357,7 @@ export default function ExpenseAdder({ navigation }) {
               onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
                 setLocation((location.location = data.description));
-                console.log(data, details);
+                // console.log(data, details);
               }}
               query={{
                 key: FIREBASE_API,
