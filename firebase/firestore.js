@@ -17,6 +17,14 @@ export async function getAccounts() {
   }));
 }
 
+export async function getMerchants() {
+  const querySnapshot = await getDocs(collection(dbFire, "merchants"));
+  return await querySnapshot.docs.map((doc) => ({
+    label: doc.data().merchant,
+    value: doc.data().merchant,
+  }));
+}
+
 export async function addCategory(catName) {
   return await addDoc(collection(dbFire, "categories"), {
     category: catName,
@@ -33,3 +41,4 @@ export async function addAccount(accountName) {
     category: accountName
   });
 }
+
