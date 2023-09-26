@@ -22,12 +22,12 @@ import ExpenseAdder from "./components/expenses/ExpenseAdder";
 import IncomeAdder from "./components/account/IncomeAdder";
 import { collection, getDocs, query, where } from "@firebase/firestore";
 import { AppTracker } from "./context/AppTracker";
-import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import {
   MD3LightTheme as DefaultTheme,
   adaptNavigationTheme,
   PaperProvider,
 } from "react-native-paper";
+import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -223,7 +223,6 @@ export default function App() {
   });
 
   return (
-    
     <PaperProvider theme={theme}>
       <UserContext.Provider value={user}>
         <NavigationContainer theme={LightTheme}>
@@ -231,7 +230,7 @@ export default function App() {
             <LoginNavigator />
           ) : (
             <AppTracker.Provider value={initialValues}>
-                    <AutocompleteDropdownContextProvider>
+              <AutocompleteDropdownContextProvider>
               <DrawerNavigator />
               </AutocompleteDropdownContextProvider>
             </AppTracker.Provider>
