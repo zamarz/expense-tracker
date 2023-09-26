@@ -3,12 +3,12 @@ import {
   View,
   StyleSheet,
   TextInput,
-  Button,
   Text,
   SafeAreaView,
   TouchableOpacity,
   Pressable,
 } from "react-native";
+import { Button } from 'react-native-paper';
 import React, { useState, useEffect } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
@@ -38,6 +38,8 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
 import { DatePickerModal } from 'react-native-paper-dates';
 
+
+
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
@@ -56,6 +58,7 @@ export default function ExpenseAdder({ navigation }) {
   const [categories, setCategories] = useState([]);
   const [merchants, setMerchants] = useState([]);
   const [accounts, setAccounts] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -83,8 +86,17 @@ export default function ExpenseAdder({ navigation }) {
       console.log(merchants)
     });
   }, []);
-  
-  
+    
+  const onDismissSingle = () => {
+    setOpen(false);
+}
+
+const onConfirmSingle = (params) => {
+    setOpen(false);;
+    setDate(params.date)
+}
+
+
   const expenses = {
     amount,
     category,
@@ -111,13 +123,13 @@ export default function ExpenseAdder({ navigation }) {
     account: yup.string().required(),
     location: yup.string().required(),
     category: yup.string().required(),
-    date: yup.string().required(),
   });
 
   const handleSubmit = async (values) => {
     const data = {
       ...values,
       userId: expenses.userId,
+      date: expenses.date,
     };
     // TODO: Check this...
     setLoading(true);
@@ -260,7 +272,6 @@ export default function ExpenseAdder({ navigation }) {
         amount: "",
         category: "",
         merchant: "",
-        date: "",
         receipt: "",
         account: "",
         location: "",
@@ -271,7 +282,6 @@ export default function ExpenseAdder({ navigation }) {
           (formData.amount = values.amount),
           (formData.category = values.category),
           (formData.account = values.account),
-          (formData.date = values.date),
           (formData.merchant = values.merchant),
           (formData.receipt = values.receipt),
           (formData.location = values.location)
@@ -343,11 +353,18 @@ export default function ExpenseAdder({ navigation }) {
                 setIsVisible={setToggleAccountModal}
                 handleAddAccount={handleAddAccount}
               />
-              <DatePickerModal
-                handleChange={handleChange}
-                date={values.date}
-              />
-              <TextInput
+              <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
+              Select date for your expense
+             </Button>
+            <DatePickerModal
+             locale="en"
+              mode="single"
+              visible={open}
+              onDismiss={onDismissSingle}
+              date={date}
+              onConfirm={onConfirmSingle}
+            />
+              {/* <TextInput
                 aria-label="Date"
                 placeholder="Date"
                 style={styles.input}
@@ -355,7 +372,7 @@ export default function ExpenseAdder({ navigation }) {
                 onBlur={handleBlur("date")}
                 value={values.date}
               />
-              {errors.date && <Text>{errors.date}</Text>}
+              {errors.date && <Text>{errors.date}</Text>} */}
               <TextInput
                 aria-label="Location"
                 placeholder="Location"
