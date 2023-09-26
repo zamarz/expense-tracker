@@ -1,22 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import AccountsCard from "./AccountsCard";
 import { dbFire } from "../../firebaseConfig";
-import {
-  collection,
-  query,
-  getDocs,
-  doc,
-  where,
-  deleteDoc,
-} from "firebase/firestore";
-import { UserContext } from "../../context/UserContext";
+import { doc, deleteDoc } from "firebase/firestore";
 import { AppTracker } from "../../context/AppTracker";
+
 export default function AccountsList({ navigation }) {
-  const user = useContext(UserContext);
   const { state, dispatch } = useContext(AppTracker);
   const { accounts, balance, budget } = state;
-  console.log(accounts);
 
   const handleDeleteAccount = async (accountId) => {
     await deleteDoc(doc(dbFire, "account", accountId))
@@ -24,8 +15,6 @@ export default function AccountsList({ navigation }) {
         const newAccounts = accounts.filter(
           (account) => account.id !== accountId
         );
-        console.log(newAccounts);
-
         dispatch({ type: "DELETE_ACCOUNT", payload: newAccounts });
       })
       .catch((error) => {

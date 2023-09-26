@@ -43,6 +43,22 @@ function reducer(state, action) {
         };
       }
     }
+    case "ADD_INCOME": {
+      return console.log("Hello!!");
+      // console.log(action.payload);
+      // const newAccountArray = state.accounts.concat(action.payload);
+      // console.log(newAccountArray);
+      // const totalBalance = calculateTotalBalance(newAccountArray);
+      // const totalBudget = calculateTotalBudget(newAccountArray);
+      // if (totalBalance && totalBudget) {
+      //   return {
+      //     ...state,
+      //     accounts: [...newAccountArray],
+      //     balance: totalBalance,
+      //     budget: totalBudget,
+      //   };
+      // }
+    }
     case "DELETE_ACCOUNT": {
       console.log(action.payload, "###############");
       const totalBalance = calculateTotalBalance(action.payload);
