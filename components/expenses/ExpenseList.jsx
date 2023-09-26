@@ -7,7 +7,6 @@ import { Text, Button, Divider } from "react-native-paper";
 export default function ExpenseList({ navigation }) {
   const { state, dispatch } = useContext(AppTracker);
   const { expenses } = state;
-  console.log(expenses);
   return (
     <View style={styles.container}>
       <Text variant="headlineSmall" style={styles.title}>

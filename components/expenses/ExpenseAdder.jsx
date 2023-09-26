@@ -79,7 +79,6 @@ export default function ExpenseAdder({ navigation }) {
   useEffect(() => {
     getMerchants().then((merchants) => {
       setMerchants(merchants);
-      console.log(merchants)
     });
   }, []);
   

@@ -1,18 +1,13 @@
-import { authFire } from "../firebaseConfig";
-
-export const getCurrentUserId = () => {
-  return authFire.currentUser.uid;
-};
-export const calculateTotalBalance = (accountsData) => {
+export function calculateTotalBalance(accountsData) {
   let totalBalance = 0;
   for (const account of accountsData) {
     const amount = parseFloat(account.balance);
     totalBalance += amount;
   }
   return totalBalance;
-};
+}
 
-export const calculateTotalBudget = (accountsData) => {
+export function calculateTotalBudget(accountsData) {
   let totalBudget = 0;
   for (const account of accountsData) {
     if (
@@ -25,4 +20,4 @@ export const calculateTotalBudget = (accountsData) => {
     }
   }
   return totalBudget;
-};
+}

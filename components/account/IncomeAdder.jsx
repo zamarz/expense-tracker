@@ -48,8 +48,8 @@ export default function IncomeAdder({ route, navigation }) {
         const newDocumentRes = await updateDoc(accountRef, {
           balance: newBalanceString,
         });
-        console.log(newDocumentRes);
-        dispatch({ type: "ADD_INCOME", payload: newBalance });
+        if (newDocumentRes)
+          dispatch({ type: "ADD_INCOME", payload: newBalance });
       }
 
       setIsLoading(false);
@@ -70,7 +70,6 @@ export default function IncomeAdder({ route, navigation }) {
       }}
       validationSchema={incomeSchema}
       onSubmit={(values) => {
-        console.log(values);
         handleSubmit(values);
       }}
     >

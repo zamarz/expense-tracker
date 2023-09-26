@@ -61,7 +61,6 @@ const ReceiptAdder = ({ route, navigation }) => {
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
     //preventDefault();
-    console.log(values, "values");
     setLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
@@ -192,7 +191,6 @@ const ReceiptAdder = ({ route, navigation }) => {
       }}
       validationSchema={receiptExpenseSchema}
       onSubmit={(values) => {
-        console.log(values, "in onsubmit");
         setFormData(
           (formData.amount = values.amount),
           (formData.category = values.category),
@@ -202,7 +200,6 @@ const ReceiptAdder = ({ route, navigation }) => {
           (formData.receipt = values.receipt),
           (formData.location = values.location)
         );
-        console.log(formData, "formdata");
         handleSubmit(formData);
       }}
     >
