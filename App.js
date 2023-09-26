@@ -33,78 +33,10 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [user, setUser] = useState({ name: "", email: "", uid: "" });
-  // const [balance, setBalance] = useState(0);
-  // const [budget, setBudget] = useState(0);
-  // const [expenses, setExpenses] = useState([]);
-  // const [accounts, setAccounts] = useState([]);
-
-  // const initialValues = useMemo(
-  //   () => ({
-  //     balance: balance,
-  //     budget: budget,
-  //     expenses: expenseList,
-  //     accounts: accountList,
-  //   }),
-  //   []
-  // );
-  // const initialSetters = useCallback(() => {
-  //   setAccounts, setBalance, setBudget, setExpenses;
-  // }, []);
-  // const fetchExpensesData = async (userId) => {
-  //   if (userId) {
-  //     const expensesQuery = query(
-  //       collection(dbFire, "expenses"),
-  //       where("userId", "==", userId)
-  //     );
-  //     const querySnapshot = await getDocs(expensesQuery);
-  //     const expensesData = querySnapshot.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     setExpenses(expensesData);
-  //   }
-  // };
-
-  // const fetchAccountsData = async (userId) => {
-  //   const accountsQuery = query(
-  //     collection(dbFire, "account"),
-  //     where("userId", "==", userId)
-  //   );
-  //   const querySnapshot = await getDocs(accountsQuery);
-  //   const accountsData = querySnapshot.docs.map((doc) => ({
-  //     ...doc.data(),
-  //     id: doc.id,
-  //   }));
-  //   setAccounts(accountsData);
-  //   if (accountsData) {
-  //     const calculateBudget = () => {
-  //       const data = accountsData.reduce((total, item) => {
-  //         return (total += +item.budget);
-  //       }, +budget);
-  //       return data.toFixed(2);
-  //     };
-  //     const calculateBalance = () => {
-  //       const data = accountsData.reduce((total, item) => {
-  //         return (total += +item.balance);
-  //       }, +balance);
-  //       return data.toFixed(2);
-  //     };
-  //     const budgetTotal = calculateBudget();
-  //     const balanceTotal = calculateBalance();
-  //     setBudget(budgetTotal);
-  //     setBalance(balanceTotal);
-  //   }
-  // };
 
   onAuthStateChanged(authFire, (user) => {
     setUser(user);
   });
-  // useEffect(() => {
-  //   if (user) {
-  //     fetchExpensesData(user.uid);
-  //     fetchAccountsData(user.uid);
-  //   }
-  // }, [user]);
 
   const LoginNavigator = () => {
     return (
@@ -151,17 +83,6 @@ export default function App() {
         <Drawer.Screen name="Analysis" component={Analysis} />
         <Drawer.Screen name="Receipts" component={Receipts} />
         <Drawer.Screen name="Map" component={Map} />
-        {/* <Drawer.Screen
-          name="Logout"
-          component={() => (
-            <Button
-              onPress={() => {
-                authFire.signOut();
-              }}
-              title="Logout"
-            />
-          )}
-        /> */}
       </Drawer.Navigator>
     );
   };
@@ -233,22 +154,9 @@ export default function App() {
           {!user ? (
             <LoginNavigator />
           ) : (
-            // <AppTracker.Provider
-            //   value={{
-            //     accounts,
-            //     expenses,
-            //     balance,
-            //     budget,
-            //     setBalance,
-            //     setBudget,
-            //     setAccounts,
-            //     setExpenses,
-            //   }}
-            // >
             <AppTrackerProvider>
               <DrawerNavigator />
             </AppTrackerProvider>
-            // </AppTracker.Provider>
           )}
         </NavigationContainer>
       </UserContext.Provider>
