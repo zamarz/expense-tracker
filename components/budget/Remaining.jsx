@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
 import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
+import { Card, Text } from "react-native-paper";
 
 const Remaining = () => {
   const { expenses, budget } = useContext(AppTracker);
@@ -8,9 +8,14 @@ const Remaining = () => {
     return (total = total + +item.amount);
   }, 0);
   return (
-    <View>
-      <Text>Remaining: £{(+budget - +totalExpenses).toFixed(2)}</Text>
-    </View>
+    <Card>
+      <Card.Title title="Your remaining budget" />
+      <Card.Content>
+        <Text variant="titleLarge">
+          Remaining: £{(+budget - +totalExpenses).toFixed(2)}
+        </Text>
+      </Card.Content>
+    </Card>
   );
 };
 

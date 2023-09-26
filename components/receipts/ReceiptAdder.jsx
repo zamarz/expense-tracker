@@ -1,4 +1,6 @@
-import { View, Text, StyleSheet, Button, TextInput, Image } from "react-native";
+import { View, StyleSheet, Image, Alert } from "react-native";
+import { Button, Divider, Text, TextInput } from "react-native-paper";
+
 import { authFire, dbFire } from "../../firebaseConfig";
 import { onAuthStateChanged } from "@firebase/auth";
 import { Formik } from "formik";
@@ -13,6 +15,10 @@ import {
   getDocs,
   addDoc,
 } from "@firebase/firestore";
+import { addCategory, getCategories } from "../../firebase/firestore";
+import CategoryList from "../categories/CategoryList";
+import CategoryAdderModal from "../categories/CategoryAdderModal";
+import { ScrollView } from "react-native-gesture-handler";
 
 const ReceiptAdder = ({ route, navigation }) => {
   const [userId, setUserId] = useState("");
@@ -22,9 +28,12 @@ const ReceiptAdder = ({ route, navigation }) => {
   const [account, setAccount] = useState("");
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
 
   const { imageURL, imageURI } = route.params;
   const [image, setImage] = useState(imageURI);
+  const [categories, setCategories] = useState([]);
+  const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -35,8 +44,19 @@ const ReceiptAdder = ({ route, navigation }) => {
   });
 
   const expenses = {
+    category,
     userId,
   };
+
+  useEffect(() => {
+    downloadText();
+  }, [image]);
+
+  useEffect(() => {
+    getCategories().then((categories) => {
+      setCategories(categories);
+    });
+  }, []);
 
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
@@ -46,10 +66,26 @@ const ReceiptAdder = ({ route, navigation }) => {
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
       setLoading(false);
-      //To add submission message state
+      Alert.alert(
+        "Expense Added",
+        `You have successfully added your expense for the amount of £${values.amount}`,
+        [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]
+      );
+      // TODO: Redirect to home?
     } catch (error) {
       setError(error);
       setLoading(false);
+      Alert.alert("Error: Your expense couldn't be added.", [
+        {
+          text: "OK",
+          style: "cancel",
+        },
+      ]);
     }
   };
 
@@ -77,9 +113,40 @@ const ReceiptAdder = ({ route, navigation }) => {
     date: yup.string().required(),
   });
 
-  useEffect(() => {
-    downloadText();
-  }, [image]);
+  const handleAddCategory = (category) => {
+    if (!category.length) return;
+    const exists = categories.find((cat) => cat.label === category);
+    if (exists) {
+      // TODO: Inform user in a modal maybe?
+      console.error("Error: Category already exists");
+      return;
+    }
+
+    addCategory(category).then(
+      () => {
+        Alert.alert(
+          "Category Added",
+          `You have successfully added ${category} to your categories`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
+        // Optimistic update
+        setCategories((prev) => [
+          ...prev,
+          { label: category, value: category },
+        ]);
+      },
+      (error) => {
+        // TODO: Handle error
+        console.error("Error: Unable to add category");
+      }
+    );
+    setToggleCategoryModal((prev) => !prev);
+  };
 
   const downloadText = async () => {
     const q = query(
@@ -109,10 +176,7 @@ const ReceiptAdder = ({ route, navigation }) => {
   // will eventually need to re-render the image in expenses cards so be aware of how it is stored
   //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
   //might need to include URI in fields in the collection to see if the receipt image can be generated easily
-  // need to update with expense confirmation
   //may need to update Yup fields once date picker etc are implemented
-
-  // if (error) return <ErrorHandler error={error} />;
 
   return (
     <Formik
@@ -144,72 +208,97 @@ const ReceiptAdder = ({ route, navigation }) => {
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
         return (
-          <View style={styles.container}>
-            <View style={styles.inputRow}>
-              <Text>Add a new Expense</Text>
+          <ScrollView>
+            <View style={styles.container}>
+              <View style={styles.inputRow}>
+                <Text variant="headlineMedium">Add a new Expense</Text>
+                <Text variant="titleMedium">Amount:</Text>
+                <TextInput
+                  mode="outlined"
+                  aria-label="Amount"
+                  style={styles.input}
+                  onChangeText={handleChange("amount")}
+                  onBlur={handleBlur("amount")}
+                  value={values.amount}
+                  placeholder={amount}
+                />
+                {errors.amount && <Text>{errors.amount}</Text>}
+              </View>
+              <Text variant="titleMedium">Merchant:</Text>
               <TextInput
-                aria-label="Amount"
+                mode="outlined"
+                aria-label="Merchant"
                 style={styles.input}
-                onChangeText={handleChange("amount")}
-                onBlur={handleBlur("amount")}
-                value={values.amount}
-                placeholder={amount}
+                onChangeText={handleChange("merchant")}
+                onBlur={handleBlur("merchant")}
+                value={values.merchant}
+                placeholder={merchant}
               />
-              {errors.amount && <Text>{errors.amount}</Text>}
+              {errors.merchant && <Text>{errors.merchant}</Text>}
+              <CategoryList
+                category={values.category}
+                categories={categories}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+              />
+              {errors.category && <Text>{errors.category} </Text>}
+              <Button
+                mode="contained"
+                title="Add a new category"
+                onPress={() => setToggleCategoryModal((prev) => !prev)}
+              >
+                Add a new category
+              </Button>
+              <CategoryAdderModal
+                isVisible={toggleCategoryModal}
+                setIsVisible={setToggleCategoryModal}
+                handleAddCategory={handleAddCategory}
+              />
+              <TextInput
+                mode="outlined"
+                aria-label="Account"
+                placeholder={account}
+                style={styles.input}
+                onChangeText={handleChange("account")}
+                onBlur={handleBlur("account")}
+                value={values.account}
+              />
+              {errors.account && <Text>{errors.account}</Text>}
+              <Text variant="titleMedium">Date:</Text>
+              <TextInput
+                mode="outlined"
+                aria-label="Date"
+                placeholder="Date"
+                style={styles.input}
+                onChangeText={handleChange("date")}
+                onBlur={handleBlur("date")}
+                value={values.date}
+              />
+              {errors.date && <Text>{errors.date}</Text>}
+              <Text variant="titleMedium">Location:</Text>
+              <TextInput
+                mode="outlined"
+                aria-label="Location"
+                placeholder="Location"
+                style={styles.input}
+                onChangeText={handleChange("location")}
+                onBlur={handleBlur("location")}
+                value={values.location}
+              />
+              {errors.location && <Text>{errors.location}</Text>}
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
+              <Button mode="contained" title="Submit" onPress={handleSubmit}>
+                {" "}
+                Submit{" "}
+              </Button>
+              <Divider />
             </View>
-            <TextInput
-              aria-label="Merchant"
-              style={styles.input}
-              onChangeText={handleChange("merchant")}
-              onBlur={handleBlur("merchant")}
-              value={values.merchant}
-              placeholder={merchant}
-            />
-            {errors.merchant && <Text>{errors.merchant}</Text>}
-            <TextInput
-              aria-label="Category"
-              placeholder="Category"
-              style={styles.input}
-              onChangeText={handleChange("category")}
-              onBlur={handleBlur("category")}
-              value={values.category}
-            />
-            {errors.category && <Text>{errors.category}</Text>}
-            <TextInput
-              aria-label="Account"
-              placeholder={account}
-              style={styles.input}
-              onChangeText={handleChange("account")}
-              onBlur={handleBlur("account")}
-              value={values.account}
-            />
-            {errors.account && <Text>{errors.account}</Text>}
-            <TextInput
-              aria-label="Date"
-              placeholder="Date"
-              style={styles.input}
-              onChangeText={handleChange("date")}
-              onBlur={handleBlur("date")}
-              value={values.date}
-            />
-            {errors.date && <Text>{errors.date}</Text>}
-            <TextInput
-              aria-label="Location"
-              placeholder="Location"
-              style={styles.input}
-              onChangeText={handleChange("location")}
-              onBlur={handleBlur("location")}
-              value={values.location}
-            />
-            {errors.location && <Text>{errors.location}</Text>}
-            {image && (
-              <Image
-                source={{ uri: image }}
-                style={{ width: 200, height: 200 }}
-              />
-            )}
-            <Button title="Submit" onPress={handleSubmit} />
-          </View>
+          </ScrollView>
         );
       }}
     </Formik>
