@@ -8,6 +8,7 @@ const initialValues = { balance: 0, budget: 0, expenses: [], accounts: [] };
 function reducer(state, action) {
   console.log(state, action);
   const { type } = action;
+  const { balance, budget, expenses, accounts } = state;
   switch (type) {
     case "UPDATE_EXPENSES": {
       return {
@@ -42,18 +43,18 @@ function reducer(state, action) {
         };
       }
     }
-    // case "DELETE_ACCOUNT": {
-    //   const totalBalance = calculateTotalBalance(action.payload);
-    //   const totalBudget = calculateTotalBudget(action.payload);
-    //   if (totalBalance && totalBudget) {
-    //     return {
-    //       ...state,
-    //       accounts: [...action.payload],
-    //       balance: totalBalance,
-    //       budget: totalBudget,
-    //     };
-    //   }
-    // }
+    case "DELETE_ACCOUNT": {
+      const totalBalance = calculateTotalBalance(action.payload);
+      const totalBudget = calculateTotalBudget(action.payload);
+      if (totalBalance && totalBudget) {
+        return {
+          ...state,
+          accounts: [...action.payload],
+          balance: totalBalance,
+          budget: totalBudget,
+        };
+      }
+    }
 
     default:
       return state;

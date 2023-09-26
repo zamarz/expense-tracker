@@ -46,8 +46,6 @@ export default function Home({ navigation }) {
         console.log(accounts, balance, budget);
         if (accounts) {
           dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
-          dispatch({ type: "UPDATE_BALANCE", payload: balance });
-          dispatch({ type: "UPDATE_BUDGET", payload: budget });
           setLoading(false);
         }
       })
@@ -111,32 +109,7 @@ export default function Home({ navigation }) {
       id: doc.id,
     }));
     if (accountsData) {
-      const calculateTotalBalance = () => {
-        let totalBalance = 0;
-        for (const account of accountsData) {
-          const amount = parseFloat(account.balance);
-          totalBalance += amount;
-        }
-        return totalBalance;
-      };
-
       const totalBalance = calculateTotalBalance();
-
-      const calculateTotalBudget = () => {
-        let totalBudget = 0;
-        for (const account of accountsData) {
-          if (
-            account.budget !== null &&
-            account.budget !== undefined &&
-            account.budget !== ""
-          ) {
-            const amount = parseFloat(account.budget);
-            totalBudget += amount;
-          }
-        }
-        return totalBudget;
-      };
-
       const totalBudget = calculateTotalBudget();
       if ((accountsData && totalBalance, totalBudget)) {
         return {
