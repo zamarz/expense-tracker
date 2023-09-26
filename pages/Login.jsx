@@ -68,12 +68,14 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text variant="titleLarge">
-        Welcome! Please sign in, or register your email!
-      </Text>
-      <Divider />
-      <Divider />
-
+      <View style={{ alignItems: "center" }}>
+        <Text variant="titleLarge" style={{ paddingBottom: 50, }}>
+          Welcome!
+        </Text>
+        <Text variant="titleLarge" style={{ paddingBottom: 10, }}>
+          Log in or create an account.
+        </Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           mode="outlined"
@@ -94,15 +96,17 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.buttonContainer}>
         <KeyboardAvoidingView behavior="padding">
-          <TouchableOpacity onPress={signIn} style={styles.button}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={register}
-            style={[styles.button, styles.buttonOutline]}
-          >
-            <Text style={styles.buttonOutlineText}>Register</Text>
-          </TouchableOpacity>
+          <View >
+            <TouchableOpacity onPress={signIn} style={styles.button}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={register}
+              style={[styles.button, styles.buttonOutline]}
+            >
+              <Text style={styles.buttonOutlineText}>Register</Text>
+            </TouchableOpacity>
+          </View>
         </KeyboardAvoidingView>
       </View>
     </View>
@@ -117,12 +121,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputContainer: {
-    width: "80%",
+    width: "85%",
   },
   input: {
     backgroundColor: "white",
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 2,
     borderRadius: 10,
     marginTop: 5,
   },
@@ -138,6 +142,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    marginRight: 10,
   },
   buttonOutline: {
     backgroundColor: "white",
@@ -149,6 +154,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 16,
+    alignContent: "center",
   },
   buttonOutlineText: {
     color: "#0782F9",

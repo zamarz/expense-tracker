@@ -88,56 +88,61 @@ const ReceiptScanner = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text variant="titleLarge">Upload or take an image of your receipt</Text>
-      <Button
-        mode="contained"
-        title="Choose an image from your library"
-        onPress={pickImage}
-      >
-        Choose an image from your library
-      </Button>
-      <Divider />
-      <Divider />
+      <Text variant="titleMedium">Upload or take an image of your receipt</Text>
+      <View style={{ flexDirection: "row", padding: 5, justifyContent: "space-between"}}>
+        <Button
+          mode="contained"
+          title="Choose an image from your library"
+          onPress={pickImage}
+        >
+          Choose from library
+        </Button>
+        <Divider />
+        <Divider />
 
-      <Button
-        title="Take a photo"
-        onPress={takeImage}
-        mode="contained"
-        icon="camera"
-      >
-        Take a photo
-      </Button>
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
+        <Button
+          title="Take a photo"
+          onPress={takeImage}
+          mode="contained"
+          icon="camera"
+        >
+          Take a photo
+        </Button>
+        {image && (
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        )}
+      </View>
       <Divider />
       <Divider />
+      <View style={{ flexDirection: "column", padding: 5, marginVertical: 5 }}>
+        <Button
+          title="Submit Image"
+          onPress={handleSubmit}
+          disabled={submitDisabled}
+          mode="contained"
+          style={{ marginBottom: 10 }}
+        >
+          Submit Image
+        </Button>
 
-      <Button
-        title="Submit Image"
-        onPress={handleSubmit}
-        disabled={submitDisabled}
-        mode="contained"
-      >
-        Submit Image
-      </Button>
-      <Divider />
-      <Divider />
-      <Button
-        mode="contained"
-        title="Next"
-        onPress={() => {
-          setNextDisabled(true);
-          setSubmitDisabled(false);
-          navigation.navigate("Receipt Navigator", {
-            screen: "Receipt Adder",
-            params: { imageURL: imageURL, imageURI: image },
-          });
-        }}
-        disabled={nextDisabled}
-      >
-        Next{" "}
-      </Button>
+        <Divider />
+        <Divider />
+        <Button
+          mode="contained"
+          title="Next"
+          onPress={() => {
+            setNextDisabled(true);
+            setSubmitDisabled(false);
+            navigation.navigate("Receipt Navigator", {
+              screen: "Receipt Adder",
+              params: { imageURL: imageURL, imageURI: image },
+            });
+          }}
+          disabled={nextDisabled}
+        >
+          Next{" "}
+        </Button>
+      </View>
     </View>
   );
 };
