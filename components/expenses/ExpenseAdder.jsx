@@ -36,6 +36,7 @@ import AccountListDropDown from "../account/AccountListDropDown";
 import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
+import { DatePickerModal } from 'react-native-paper-dates';
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -341,6 +342,10 @@ export default function ExpenseAdder({ navigation }) {
                 isVisible={toggleAccountModal}
                 setIsVisible={setToggleAccountModal}
                 handleAddAccount={handleAddAccount}
+              />
+              <DatePickerModal
+                handleChange={handleChange}
+                date={values.date}
               />
               <TextInput
                 aria-label="Date"
