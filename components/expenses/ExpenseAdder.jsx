@@ -36,6 +36,9 @@ import AccountListDropDown from "../account/AccountListDropDown";
 import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {  FIREBASE_API } from "@env";
+
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -360,6 +363,16 @@ export default function ExpenseAdder({ navigation }) {
                 value={values.location}
               />
               {errors.location && <Text>{errors.location}</Text>}
+              <GooglePlacesAutocomplete 
+              placeholder="Search"
+              onPress={(data, details = null) => {
+                console.log(data, details)
+              }}
+              query = {{
+                key: FIREBASE_API,
+                language: "en"
+              }}
+              />
               <Button title="Submit" onPress={handleSubmit} />
             </View>
           </AutocompleteDropdownContextProvider>
