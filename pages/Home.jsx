@@ -17,6 +17,7 @@ export default function Home({ navigation }) {
   // const [loadingAccounts, setALoading] = useState(true);
   const { uid } = useContext(UserContext);
   const { state, dispatch } = useContext(AppTracker);
+  const { accounts, balance, budget } = state;
   // const {
   //   balance,
   //   budget,
@@ -39,9 +40,18 @@ export default function Home({ navigation }) {
       console.log(expenses);
       if (expenses) {
         dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
-        setLoading(false);
       }
-    });
+    }).then(() => {
+      fetchAccountsData(uid).then(({ accounts, balance, budget }) => {
+        console.log(accounts, balance, budget);
+        if (accounts) {
+          dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
+          dispatch({ type: "UPDATE_BALANCE", payload: balance });
+          dispatch({ type: "UPDATE_BUDGET", payload: budget });
+          setLoading(false);
+        }
+      })
+    })
   }, []);
 
   console.log(state.expenses);
@@ -129,11 +139,11 @@ export default function Home({ navigation }) {
 
       const totalBudget = calculateTotalBudget();
       if ((accountsData && totalBalance, totalBudget)) {
-        setAccounts(accounts);
-        setBudget(budget);
-        setBalance(balance);
         return {
           message: "Success",
+          accounts: accountsData,
+          budget: totalBudget,
+          balance: totalBalance,
         };
       }
     }

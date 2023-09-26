@@ -14,59 +14,39 @@ import { UserContext } from "../../context/UserContext";
 import { AppTracker } from "../../context/AppTracker";
 export default function AccountsList({ navigation }) {
   const user = useContext(UserContext);
-  const { accounts } = useContext(AppTracker);
+  const { state, dispatch } = useContext(AppTracker);
+  const { accounts, balance, budget } = state;
+  const [accountList, setAccountList] = useState(accounts);
   console.log(accounts);
 
-  const calculateTotalBalance = () => {
-    let totalBalance = 0;
-    for (const account of accounts) {
-      const amount = parseFloat(account.balance);
-      totalBalance += amount;
-    }
-    return totalBalance;
-  };
-
-  const totalBalance = calculateTotalBalance();
-
-  const calculateTotalBudget = () => {
-    let totalBudget = 0;
-    for (const account of accounts) {
-      if (
-        account.budget !== null &&
-        account.budget !== undefined &&
-        account.budget !== ""
-      ) {
-        const amount = parseFloat(account.budget);
-        totalBudget += amount;
-      }
-    }
-    return totalBudget;
-  };
-
-  const totalBudget = calculateTotalBudget();
-
   const handleDeleteAccount = async (accountId) => {
-    await deleteDoc(doc(dbFire, "account", accountId)).catch((error) => {
-      console.log(error);
-    });
-    // setAccounts((previousAccounts) =>
-    //   previousAccounts.filter((account) => account.id !== accountId)
-    // );
+    await deleteDoc(doc(dbFire, "account", accountId))
+      .then(() => {
+        setAccountList((previousAccounts) => {
+          const newAccounts = previousAccounts.filter((account) => account.id !== accountId)
+          dispatch({ type: "DELETE_ACCOUNT", payload: newAccounts })
+        }
+        );
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
   };
 
   useEffect(() => {
-    // handleDeleteAccount();
   }, []);
 
   return (
     <>
       <View>
         <Text style={styles.title}>
-          Total Accounts Balance: £{totalBalance.toFixed(2)}
+          Total Accounts Balance: £{balance.toFixed(2)}
         </Text>
       </View>
       <View>
-        <Text style={styles.title}>Total Budget: £{totalBudget}</Text>
+        <Text style={styles.title}>Total Budget: £{budget}</Text>
       </View>
       <FlatList
         contentContainerStyle={{ alignSelf: "flex-start" }}

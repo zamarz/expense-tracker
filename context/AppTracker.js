@@ -1,4 +1,5 @@
 import { createContext, useMemo, useReducer } from "react";
+import { calculateTotalBalance, calculateTotalBudget } from "../utils/helpers";
 
 export const AppTracker = createContext();
 
@@ -12,6 +13,36 @@ function reducer(state, action) {
       return {
         ...state,
         expenses: [...action.payload],
+      };
+    }
+    case "UPDATE_ACCOUNTS": {
+      const totalBalance = calculateTotalBalance(action.payload);
+      const totalBudget = calculateTotalBudget(action.payload);
+      if (totalBalance && totalBudget) {
+        return {
+        ...state,
+        accounts: [...action.payload],
+        balance: totalBalance,
+        budget: totalBudget,
+      };
+      }
+    }
+    // case "UPDATE_BUDGET": {
+    //   return {
+    //     ...state,
+    //     budget: state.budget + action.payload,
+    //   };
+    // }
+    // case "UPDATE_BALANCE": {
+    //   return {
+    //     ...state,
+    //     balance: state.balance + action.payload,
+    //   };
+    // }
+    case "DELETE_ACCOUNT": {
+      return {
+        ...state,
+        accounts: action.payload,
       };
     }
 
