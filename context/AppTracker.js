@@ -44,6 +44,7 @@ function reducer(state, action) {
       }
     }
     case "DELETE_ACCOUNT": {
+      console.log(action.payload, "###############");
       const totalBalance = calculateTotalBalance(action.payload);
       const totalBudget = calculateTotalBudget(action.payload);
       if (totalBalance && totalBudget) {

@@ -10,6 +10,7 @@ import { Loading } from "../components/loading/Loading";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { dbFire } from "../firebaseConfig";
 import ErrorHandler from "../components/error/ErrorHandler";
+import { calculateTotalBalance, calculateTotalBudget } from "../utils/helpers";
 
 export default function Home({ navigation }) {
   const [error, setError] = useState(false);
@@ -17,7 +18,7 @@ export default function Home({ navigation }) {
   // const [loadingAccounts, setALoading] = useState(true);
   const { uid } = useContext(UserContext);
   const { state, dispatch } = useContext(AppTracker);
-  const { accounts, balance, budget } = state;
+  const { accounts, balance, budget, expenses } = state;
   // const {
   //   balance,
   //   budget,
@@ -36,23 +37,25 @@ export default function Home({ navigation }) {
   const theme = useTheme();
 
   useEffect(() => {
-    fetchExpensesData(uid).then(({ expenses }) => {
-      console.log(expenses);
-      if (expenses) {
-        dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
-      }
-    }).then(() => {
-      fetchAccountsData(uid).then(({ accounts, balance, budget }) => {
-        console.log(accounts, balance, budget);
-        if (accounts) {
-          dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
-          setLoading(false);
+    fetchExpensesData(uid)
+      .then(({ expenses }) => {
+        console.log(expenses);
+        if (expenses) {
+          dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
         }
       })
-    })
+      .then(() => {
+        fetchAccountsData(uid).then(({ accounts }) => {
+          console.log(accounts);
+          if (accounts) {
+            dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
+            setLoading(false);
+          }
+        });
+      });
   }, []);
 
-  console.log(state.expenses);
+  // console.log(state.expenses);
 
   // fetchExpensesData(uid);
   // .then(({ message }) => {
@@ -108,17 +111,16 @@ export default function Home({ navigation }) {
       ...doc.data(),
       id: doc.id,
     }));
+
+    // const totalBalance = calculateTotalBalance();
+    // const totalBudget = calculateTotalBudget();
     if (accountsData) {
-      const totalBalance = calculateTotalBalance();
-      const totalBudget = calculateTotalBudget();
-      if ((accountsData && totalBalance, totalBudget)) {
-        return {
-          message: "Success",
-          accounts: accountsData,
-          budget: totalBudget,
-          balance: totalBalance,
-        };
-      }
+      return {
+        message: "Success",
+        accounts: accountsData,
+        // budget: totalBudget,
+        // balance: totalBalance,
+      };
     }
   };
 
@@ -131,18 +133,14 @@ export default function Home({ navigation }) {
       <View>
         <View>
           <Text variant="headlineLarge" style={styles.title}>
-            Balance: £{(+state.balance).toFixed(2)}
+            Balance: £{(+balance).toFixed(2)}
           </Text>
           <Divider />
 
-          <BudgetPlanner
-            expenses={state.expenses}
-            budget={state.budget}
-            balance={state.balance}
-          />
+          <BudgetPlanner />
           <Divider />
 
-          <ExpenseListHome expenses={state.expenses} />
+          <ExpenseListHome expenses={expenses} />
           <Divider />
         </View>
         <ScrollView>
@@ -158,17 +156,17 @@ export default function Home({ navigation }) {
           >
             Expenses List{" "}
           </Button>
-          <Divider />
-          <Button
+
+          {/* <Button
             style={styles.appButtonContainer}
             mode="contained"
             onPress={() => {}}
             title="Scan expense"
             accessibilityLabel="Add a new expense to an account by scanning a receipt"
           >
-            Scan expense
+            Scan Expense
           </Button>
-          <Divider />
+          */}
 
           {/* <Button
               onPress={handleAppDemo}
@@ -180,11 +178,23 @@ export default function Home({ navigation }) {
             style={styles.appButtonContainer}
             mode="contained"
             onPress={() => navigation.navigate("Accounts List")}
-            title="View / Add Account"
+            title="View Accounts"
             accessibilityLabel="View a list of accounts or add a new account"
           >
-            Add Account
+            View Accounts
           </Button>
+          <Button
+            style={styles.appButtonContainer}
+            mode="contained"
+            onPress={() =>
+              navigation.navigate("Accounts List", { screen: "Accounts Adder" })
+            }
+            title="Add Account"
+            accessibilityLabel="Navigate here to add a new account"
+          >
+            Add an Account
+          </Button>
+          <Divider />
           <Logout />
         </ScrollView>
       </View>

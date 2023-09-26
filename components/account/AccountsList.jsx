@@ -23,17 +23,15 @@ export default function AccountsList({ navigation }) {
       .then(() => {
         const newAccounts = accounts.filter(
           (account) => account.id !== accountId
-        )
+        );
         console.log(newAccounts);
+
         dispatch({ type: "DELETE_ACCOUNT", payload: newAccounts });
-      }
-      )
+      })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  useEffect(() => { }, []);
 
   return (
     <>

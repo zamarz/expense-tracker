@@ -3,8 +3,9 @@ import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
 import { Card, Text, useTheme } from "react-native-paper";
 
-const ExpenseTotal = ({ expenses }) => {
-  // const { expenses } = useContext(AppTracker);
+const ExpenseTotal = () => {
+  const { state } = useContext(AppTracker);
+  const { expenses } = state;
 
   const totalExpenses = expenses.reduce((total, item) => {
     return (total += +item.amount);

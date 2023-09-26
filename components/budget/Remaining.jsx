@@ -3,8 +3,9 @@ import { AppTracker } from "../../context/AppTracker";
 import { Card, Text } from "react-native-paper";
 
 const Remaining = () => {
-  const { state, dispatch } = useContext(AppTracker);
-  const totalExpenses = state.expenses.reduce((total, item) => {
+  const { state } = useContext(AppTracker);
+  const { expenses, budget } = state;
+  const totalExpenses = expenses.reduce((total, item) => {
     return (total = total + +item.amount);
   }, 0);
   return (
@@ -12,7 +13,7 @@ const Remaining = () => {
       <Card.Title title="Your remaining budget" />
       <Card.Content>
         <Text variant="titleLarge">
-          Remaining: £{(+state.budget - +totalExpenses).toFixed(2)}
+          Remaining: £{(+budget - +totalExpenses).toFixed(2)}
         </Text>
       </Card.Content>
     </Card>

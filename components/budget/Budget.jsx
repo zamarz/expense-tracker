@@ -3,9 +3,9 @@ import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
 import { Card } from "react-native-paper";
 
-const Budget = ({ budget }) => {
-  // const { budget } = useContext(AppTracker);
-
+const Budget = () => {
+  const { state } = useContext(AppTracker);
+  const { budget } = state;
   return (
     <Card>
       <Card.Title title="Your budget" />
