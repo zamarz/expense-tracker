@@ -1,8 +1,9 @@
 import { View, Text, Button } from "react-native";
 import React from "react";
 
-const ErrorHandler = ({ route, navigation }) => {
-  const { error } = route.params;
+const ErrorHandler = ({ error, route, navigation }) => {
+  console.log(error);
+  // if(route)  const { error } = route.params;
   alert(
     "Change this to a modal instead of a new screeen - should fix Android bug"
   );

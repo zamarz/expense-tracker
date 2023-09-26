@@ -1,10 +1,11 @@
-import { Text, View, Button, Image, Alert } from "react-native";
+import { View, Image, Alert } from "react-native";
 import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { storageFire } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import { Button, Divider, Text } from "react-native-paper";
 
 const ReceiptScanner = ({ navigation, route }) => {
   const [image, setImage] = useState(null);
@@ -87,23 +88,43 @@ const ReceiptScanner = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Upload or take an image of your receipt</Text>
+      <Text variant="titleLarge">Upload or take an image of your receipt</Text>
       <Button
+        mode="contained"
         title="Choose an image from your library"
         onPress={pickImage}
-        color="green"
-      />
-      <Button title="Take a photo" onPress={takeImage} color="blue" />
+      >
+        Choose an image from your library
+      </Button>
+      <Divider />
+      <Divider />
+
+      <Button
+        title="Take a photo"
+        onPress={takeImage}
+        mode="contained"
+        icon="camera"
+      >
+        Take a photo
+      </Button>
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       )}
+      <Divider />
+      <Divider />
+
       <Button
         title="Submit Image"
         onPress={handleSubmit}
-        color="orange"
         disabled={submitDisabled}
-      />
+        mode="contained"
+      >
+        Submit Image
+      </Button>
+      <Divider />
+      <Divider />
       <Button
+        mode="contained"
         title="Next"
         onPress={() => {
           setNextDisabled(true);
@@ -113,9 +134,10 @@ const ReceiptScanner = ({ navigation, route }) => {
             params: { imageURL: imageURL, imageURI: image },
           });
         }}
-        color="orange"
         disabled={nextDisabled}
-      />
+      >
+        Next{" "}
+      </Button>
     </View>
   );
 };

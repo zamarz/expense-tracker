@@ -1,14 +1,18 @@
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
+import { Card } from "react-native-paper";
 
 const Budget = () => {
-  const { budget } = useContext(AppTracker);
-
+  const { state } = useContext(AppTracker);
+  const { budget } = state;
   return (
-    <View>
-      <Text>Budget: £{(+budget).toFixed(2)}</Text>
-    </View>
+    <Card>
+      <Card.Title title="Your budget" />
+      <Card.Content>
+        <Text variant="titleLarge">Budget: £{(+budget).toFixed(2)}</Text>
+      </Card.Content>
+    </Card>
   );
 };
 

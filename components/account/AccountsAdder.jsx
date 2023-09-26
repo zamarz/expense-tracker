@@ -1,39 +1,27 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  Button,
-} from "react-native";
+import React, { useContext, useState } from "react";
+import { StyleSheet, View, TextInput, Text, Button } from "react-native";
 import { Loading } from "../loading/Loading";
 import { addDoc, collection } from "firebase/firestore";
-import { dbFire, authFire } from "../../firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import { dbFire } from "../../firebaseConfig";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { AppTracker } from "../../context/AppTracker";
+import { UserContext } from "../../context/UserContext";
 
 export default function AccountsAdder({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const { state, dispatch } = useContext(AppTracker);
 
   const [bank, setBank] = useState("");
   const [balance, setBalance] = useState("");
   const [type, setType] = useState("");
   const [budget, setBudget] = useState("");
 
-  const [userId, setUserId] = useState("");
+  const { uid } = useContext(UserContext);
 
   if (isLoading) return <Loading />;
   if (isError) return <p>Something went wrong!</p>;
-
-  const auth = authFire;
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      setUserId(uid);
-    }
-  });
 
   const newAccount = {
     id: Date.now().toString(36) + Math.random().toString(36).substring(2),
@@ -41,7 +29,7 @@ export default function AccountsAdder({ navigation }) {
     balance,
     type,
     budget,
-    userId,
+    userId: uid,
   };
 
   const bankSchema = yup.object().shape({
@@ -56,14 +44,17 @@ export default function AccountsAdder({ navigation }) {
     values.id = newAccount.id;
     setIsLoading(true);
     try {
+      console.log(values);
       const res = await addDoc(collection(dbFire, "account"), values);
+      if (res.type === "document") {
+        dispatch({ type: "ADD_ACCOUNT", payload: values });
+      }
       setIsLoading(false);
     } catch (err) {
       setIsError(err);
       setIsLoading(false);
     }
   };
-
 
   return (
     <Formik

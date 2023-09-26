@@ -4,6 +4,7 @@ import ExpenseCard from "./ExpenseCard";
 import { AppTracker } from "../../context/AppTracker";
 
 const ExpenseListHome = ({ expenses }) => {
+  console.log(expenses, "EXPENSES##########");
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Most Recent Expenses </Text>
