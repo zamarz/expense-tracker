@@ -55,7 +55,6 @@ export default function IncomeAdder({ route, navigation }) {
       setIsLoading(false);
       navigation.navigate("Account List");
     } catch (error) {
-      console.log(error);
       setIsError(true);
       setIsLoading(false);
     }
