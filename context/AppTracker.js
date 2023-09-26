@@ -20,31 +20,38 @@ function reducer(state, action) {
       const totalBudget = calculateTotalBudget(action.payload);
       if (totalBalance && totalBudget) {
         return {
-        ...state,
-        accounts: [...action.payload],
-        balance: totalBalance,
-        budget: totalBudget,
-      };
+          ...state,
+          accounts: [...action.payload],
+          balance: totalBalance,
+          budget: totalBudget,
+        };
       }
     }
-    // case "UPDATE_BUDGET": {
-    //   return {
-    //     ...state,
-    //     budget: state.budget + action.payload,
-    //   };
-    // }
-    // case "UPDATE_BALANCE": {
-    //   return {
-    //     ...state,
-    //     balance: state.balance + action.payload,
-    //   };
-    // }
-    case "DELETE_ACCOUNT": {
-      return {
-        ...state,
-        accounts: action.payload,
-      };
+    case "UPDATE_ACCOUNT": {
+      console.log(action.payload);
+      // const totalBalance = calculateTotalBalance(action.payload);
+      // const totalBudget = calculateTotalBudget(action.payload);
+      // if (totalBalance && totalBudget) {
+      //   return {
+      //     ...state,
+      //     accounts: [...state.accounts, ...action.payload],
+      //     balance: totalBalance,
+      //     budget: totalBudget,
+      //   };
+      // }
     }
+    // case "DELETE_ACCOUNT": {
+    //   const totalBalance = calculateTotalBalance(action.payload);
+    //   const totalBudget = calculateTotalBudget(action.payload);
+    //   if (totalBalance && totalBudget) {
+    //     return {
+    //       ...state,
+    //       accounts: [...action.payload],
+    //       balance: totalBalance,
+    //       budget: totalBudget,
+    //     };
+    //   }
+    // }
 
     default:
       return state;

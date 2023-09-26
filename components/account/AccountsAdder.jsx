@@ -1,21 +1,17 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  Button,
-} from "react-native";
+import React, { useContext, useState } from "react";
+import { StyleSheet, View, TextInput, Text, Button } from "react-native";
 import { Loading } from "../loading/Loading";
 import { addDoc, collection } from "firebase/firestore";
 import { dbFire, authFire } from "../../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { AppTracker } from "../../context/AppTracker";
 
 export default function AccountsAdder({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const { state, dispatch } = useContext(AppTracker);
 
   const [bank, setBank] = useState("");
   const [balance, setBalance] = useState("");
@@ -57,13 +53,13 @@ export default function AccountsAdder({ navigation }) {
     setIsLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "account"), values);
+      dispatch({ type: "UPDATE_ACCOUNT", payload: res });
       setIsLoading(false);
     } catch (err) {
       setIsError(err);
       setIsLoading(false);
     }
   };
-
 
   return (
     <Formik
