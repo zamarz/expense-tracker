@@ -4,7 +4,9 @@ import { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
 
 export default function ExpenseList({ navigation }) {
-  const { expenses } = useContext(AppTracker);
+  const { state, dispatch } = useContext(AppTracker);
+  const { expenses } = state;
+  console.log(expenses);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>

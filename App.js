@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./pages/Login";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { authFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -21,7 +21,7 @@ import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
 import IncomeAdder from "./components/account/IncomeAdder";
 // import { collection, getDocs, query, where } from "@firebase/firestore";
-import { AppTracker } from "./context/AppTracker";
+import { AppTrackerProvider } from "./context/AppTracker";
 import {
   MD3LightTheme as DefaultTheme,
   adaptNavigationTheme,
@@ -33,20 +33,20 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [user, setUser] = useState({ name: "", email: "", uid: "" });
-  const [balance, setBalance] = useState(0);
-  const [budget, setBudget] = useState(0);
-  const [expenseList, setExpenses] = useState([]);
-  const [accountList, setAccounts] = useState([]);
+  // const [balance, setBalance] = useState(0);
+  // const [budget, setBudget] = useState(0);
+  // const [expenses, setExpenses] = useState([]);
+  // const [accounts, setAccounts] = useState([]);
 
-  const initialValues = useMemo(
-    () => ({
-      balance: balance,
-      budget: budget,
-      expenses: expenseList,
-      accounts: accountList,
-    }),
-    []
-  );
+  // const initialValues = useMemo(
+  //   () => ({
+  //     balance: balance,
+  //     budget: budget,
+  //     expenses: expenseList,
+  //     accounts: accountList,
+  //   }),
+  //   []
+  // );
   // const initialSetters = useCallback(() => {
   //   setAccounts, setBalance, setBudget, setExpenses;
   // }, []);
@@ -233,9 +233,22 @@ export default function App() {
           {!user ? (
             <LoginNavigator />
           ) : (
-            <AppTracker.Provider value={{ initialValues }}>
+            // <AppTracker.Provider
+            //   value={{
+            //     accounts,
+            //     expenses,
+            //     balance,
+            //     budget,
+            //     setBalance,
+            //     setBudget,
+            //     setAccounts,
+            //     setExpenses,
+            //   }}
+            // >
+            <AppTrackerProvider>
               <DrawerNavigator />
-            </AppTracker.Provider>
+            </AppTrackerProvider>
+            // </AppTracker.Provider>
           )}
         </NavigationContainer>
       </UserContext.Provider>

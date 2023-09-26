@@ -1,4 +1,4 @@
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import Logout from "../components/buttons/Logout";
 import ExpenseListHome from "../components/expenses/ExpenseListHome";
@@ -13,47 +13,63 @@ import ErrorHandler from "../components/error/ErrorHandler";
 
 export default function Home({ navigation }) {
   const [error, setError] = useState(false);
-  const [loadingExpenses, setELoading] = useState(true);
-  const [loadingAccounts, setALoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  // const [loadingAccounts, setALoading] = useState(true);
   const { uid } = useContext(UserContext);
-  const { balance, budget, accounts, expenses } = useContext(AppTracker);
-  const [expenseList, setExpenses] = useState(expenses);
-  const [accontList, setAccounts] = useState(accounts);
-  const [newBudget, setBudget] = useState(budget);
-  const [newBalance, setBalance] = useState(balance);
+  const { state, dispatch } = useContext(AppTracker);
+  // const {
+  //   balance,
+  //   budget,
+  //   accounts,
+  //   expenses,
+  //   setAccounts,
+  //   setBalance,
+  //   setBudget,
+  //   setExpenses,
+  // } = useContext(AppTracker);
+  // const [expenseList, setExpenses] = useState(expenses);
+  // const [accountList, setAccounts] = useState(accounts);
+  // const [newBudget, setBudget] = useState(budget);
+  // const [newBalance, setBalance] = useState(balance);
 
   const theme = useTheme();
 
   useEffect(() => {
-    if (uid) {
-      fetchExpensesData(uid)
-        .then(({ message, expenses }) => {
-          if (message === "Success") {
-            setExpenses(expenses);
-            setELoading(false);
-          }
-        })
-        .catch((err) => {
-          setError(err);
-          setELoading(false);
-          setALoading(false);
-        });
-      fetchAccountsData(uid)
-        .then(({ message, accounts, budget, balance }) => {
-          if (message === "Success") {
-            setAccounts(accounts);
-            setBudget(budget);
-            setBalance(balance);
-            setALoading(false);
-          }
-        })
-        .catch((err) => {
-          setError(err);
-          setELoading(false);
-          setALoading(false);
-        });
-    }
-  }, [expenses]);
+    fetchExpensesData(uid).then(({ expenses }) => {
+      console.log(expenses);
+      if (expenses) {
+        dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
+        setLoading(false);
+      }
+    });
+  }, []);
+
+  console.log(state.expenses);
+
+  // fetchExpensesData(uid);
+  // .then(({ message }) => {
+  //   if (message === "Success") {
+  //     setELoading(false);
+  //   }
+  // })
+  // .catch((err) => {
+  //   setError(err);
+  //   setELoading(false);
+  //   setALoading(false);
+  // });
+  // fetchAccountsData(uid);
+  // .then(({ message }) => {
+  //   if (message === "Success") {
+  //     setALoading(false);
+  //   }
+  // })
+  // .catch((err) => {
+  //   setError(err);
+  //   setELoading(false);
+  //   setALoading(false);
+  // });
+
+  // setALoading(false);
 
   const fetchExpensesData = async (userId) => {
     if (userId) {
@@ -66,7 +82,10 @@ export default function Home({ navigation }) {
         ...doc.data(),
         id: doc.id,
       }));
-      return { message: "Success", expenses: expensesData };
+      if (expensesData) {
+        // setExpenses(expensesData);
+        return { message: "Success", expenses: expensesData };
+      }
     }
   };
 
@@ -81,42 +100,46 @@ export default function Home({ navigation }) {
       ...doc.data(),
       id: doc.id,
     }));
-
     if (accountsData) {
-      try {
-        const calculateBudget = () => {
-          const data = accountsData.reduce((total, item) => {
-            return (total += +item.budget);
-          }, +budget);
-          return data.toFixed(2);
-        };
-
-        const calculateBalance = () => {
-          const data = accountsData.reduce((total, item) => {
-            return (total += +item.balance);
-          }, +balance);
-          return data.toFixed(2);
-        };
-
-        const budgetTotal = calculateBudget();
-        const balanceTotal = calculateBalance();
-        if ((accountsData, budgetTotal, balanceTotal)) {
-          return {
-            message: "Success",
-            accounts: accountsData,
-            budget: budgetTotal,
-            balance: balanceTotal,
-          };
+      const calculateTotalBalance = () => {
+        let totalBalance = 0;
+        for (const account of accountsData) {
+          const amount = parseFloat(account.balance);
+          totalBalance += amount;
         }
-      } catch (err) {
-        setError(err);
+        return totalBalance;
+      };
+
+      const totalBalance = calculateTotalBalance();
+
+      const calculateTotalBudget = () => {
+        let totalBudget = 0;
+        for (const account of accountsData) {
+          if (
+            account.budget !== null &&
+            account.budget !== undefined &&
+            account.budget !== ""
+          ) {
+            const amount = parseFloat(account.budget);
+            totalBudget += amount;
+          }
+        }
+        return totalBudget;
+      };
+
+      const totalBudget = calculateTotalBudget();
+      if ((accountsData && totalBalance, totalBudget)) {
+        setAccounts(accounts);
+        setBudget(budget);
+        setBalance(balance);
+        return {
+          message: "Success",
+        };
       }
     }
   };
 
-  console.log(balance);
-
-  if ((loadingAccounts, loadingExpenses)) return <Loading />;
+  if (loading) return <Loading />;
 
   if (error) return <ErrorHandler error={error} />;
 
@@ -125,19 +148,21 @@ export default function Home({ navigation }) {
       <View>
         <View>
           <Text variant="headlineLarge" style={styles.title}>
-            Balance: {+balance}
+            Balance: £{(+state.balance).toFixed(2)}
           </Text>
           <Divider />
-        </View>
-        {/* <View>
-          <BudgetPlanner expenses={expenseList} />
+
+          <BudgetPlanner
+            expenses={state.expenses}
+            budget={state.budget}
+            balance={state.balance}
+          />
           <Divider />
-        </View> */}
-        <View>
-          <ExpenseListHome expenses={expenseList} />
+
+          <ExpenseListHome expenses={state.expenses} />
           <Divider />
         </View>
-        <View>
+        <ScrollView>
           <Button
             style={styles.appButtonContainer}
             mode="contained"
@@ -167,6 +192,7 @@ export default function Home({ navigation }) {
               title="App Demo"
               accessibilityLabel="Learn more about how to use the expense tracker app, through our app demo"
             /> */}
+
           <Button
             style={styles.appButtonContainer}
             mode="contained"
@@ -177,7 +203,7 @@ export default function Home({ navigation }) {
             Add Account
           </Button>
           <Logout />
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
