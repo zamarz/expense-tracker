@@ -53,7 +53,6 @@ export default function AccountsList({ navigation }) {
   };
 
   useEffect(() => {
-    handleDeleteAccount();
   }, []);
 
   return (

@@ -5,7 +5,7 @@ export default function AccountsCard({ item, onDelete, navigation }) {
 
     return (
             <View>
-                <Text style={styles.item}>{item.bank}: £{item.balance}{'\n'}Budget: {item.budget}{'\n'}Card type: {item.type}</Text>
+                <Text style={styles.item}>{item.bank}: £{item.balance}{'\n'}Budget: £{item.budget}{'\n'}Card type: {item.type}</Text>
                 <Button title="Edit budget"
                     aria-label="Edit budget for the account" onPress={() => {}}></Button>
                 <Button title="Add income"
