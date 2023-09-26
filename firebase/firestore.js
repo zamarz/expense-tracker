@@ -9,6 +9,30 @@ export async function getCategories() {
   }));
 }
 
+export async function getAccounts() {
+  const querySnapshot = await getDocs(collection(dbFire, "accounts"));
+  return await querySnapshot.docs.map((doc) => ({
+    label: doc.data().account,
+    value: doc.data().account,
+  }));
+}
+
+
+export async function getMerchants() {
+  const querySnapshot = await getDocs(collection(dbFire, "merchants"));
+  return await querySnapshot.docs.map((doc) => ({
+    id: doc.data().merchant,
+    title: doc.data().merchant,
+  }));
+}
+
+export async function addMerchant(merchName) {
+  return await addDoc(collection(dbFire, "merchants"), {
+    merchant: merchName,
+  });
+}
+
+
 export async function addCategory(catName) {
   return await addDoc(collection(dbFire, "categories"), {
     category: catName,
@@ -19,3 +43,10 @@ export async function addCategory(catName) {
 export async function addExpense(expense) {
   return await addDoc(collection(dbFire, "expenses"), expense);
 }
+
+export async function addAccount(accountName) {
+  return await addDoc(collection(dbFire, "accounts"), {
+    category: accountName
+  });
+}
+

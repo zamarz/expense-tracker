@@ -27,6 +27,7 @@ import {
   adaptNavigationTheme,
   PaperProvider,
 } from "react-native-paper";
+import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -229,7 +230,9 @@ export default function App() {
             <LoginNavigator />
           ) : (
             <AppTracker.Provider value={initialValues}>
+              <AutocompleteDropdownContextProvider>
               <DrawerNavigator />
+              </AutocompleteDropdownContextProvider>
             </AppTracker.Provider>
           )}
         </NavigationContainer>

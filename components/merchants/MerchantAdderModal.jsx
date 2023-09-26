@@ -9,17 +9,17 @@ import {
   TextInput,
 } from "react-native";
 
-const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
-  const [catTitle, setCatTitle] = useState("");
+const MerchantAdderModal = ({ isVisible, setIsVisible, handleAddMerchant }) => {
+  const [merchantTitle, setMerchantTitle] = useState("");
 
   const toggleModal = () => {
     setIsVisible(!isVisible);
   };
 
-  const handleCatAdd = () => {
-    const newCategory = catTitle;
-    handleAddCategory(newCategory);
-    setCatTitle("");
+  const handleMerchantAdd = () => {
+    const newMerchant = merchantTitle;
+    handleAddMerchant(newMerchant);
+    setMerchantTitle("");
   };
 
   return (
@@ -39,13 +39,13 @@ const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
           </Pressable>
 
           <TextInput
-            onChangeText={setCatTitle}
-            value={catTitle}
-            placeholder="Category Title"
+            onChangeText={setMerchantTitle}
+            value={merchantTitle}
+            placeholder="Merchant"
           />
           <Pressable
             style={[styles.button, styles.buttonClose]}
-            onPress={() => handleCatAdd()}
+            onPress={() => handleMerchantAdd()}
           >
             <Text style={styles.textStyle}>Add</Text>
           </Pressable>
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoryAdderModal;
+export default MerchantAdderModal;

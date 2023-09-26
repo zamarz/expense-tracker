@@ -9,17 +9,17 @@ import {
   TextInput,
 } from "react-native";
 
-const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
-  const [catTitle, setCatTitle] = useState("");
+const AccountAdderModal = ({ isVisible, setIsVisible, handleAddAccount }) => {
+  const [accountTitle, setAccountTitle] = useState("");
 
   const toggleModal = () => {
     setIsVisible(!isVisible);
   };
 
-  const handleCatAdd = () => {
-    const newCategory = catTitle;
-    handleAddCategory(newCategory);
-    setCatTitle("");
+  const handleAccountAdd = () => {
+    const newAccount = accountTitle;
+    handleAddAccount(newAccount);
+    setAccountTitle("");
   };
 
   return (
@@ -39,15 +39,15 @@ const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
           </Pressable>
 
           <TextInput
-            onChangeText={setCatTitle}
-            value={catTitle}
-            placeholder="Category Title"
+            onChangeText={setAccountTitle}
+            value={accountTitle}
+            placeholder="Method of Payment"
           />
           <Pressable
             style={[styles.button, styles.buttonClose]}
-            onPress={() => handleCatAdd()}
+            onPress={() => handleAccountAdd()}
           >
-            <Text style={styles.textStyle}>Add</Text>
+            <Text style={styles.textStyle}>Add Account</Text>
           </Pressable>
           <Pressable onPress={() => setIsVisible((prev) => !prev)}>
             <Text>Cancel</Text>
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoryAdderModal;
+export default AccountAdderModal;
