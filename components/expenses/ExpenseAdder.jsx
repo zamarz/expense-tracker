@@ -387,6 +387,7 @@ import {
   getAccounts,
   getMerchants,
   addCategory,
+  addMerchant,
   addExpense,
   addAccount
 } from "../../firebase/firestore";
@@ -395,7 +396,8 @@ import CategoryList from "../categories/CategoryList";
 import AccountAdderModal from "../account/AccountAdderModal";
 import AccountListDropDown from "../account/AccountListDropDown";
 import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
-import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
+import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
+import MerchantAdderModal from "../merchants/MerchantAdderModal";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -411,6 +413,7 @@ export default function ExpenseAdder({ navigation }) {
   const [formData, setFormData] = useState({}); //change const initialC
   const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
   const [toggleAccountModal, setToggleAccountModal] = useState(false);
+  const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [merchants, setMerchants] = useState([]);
   const [accounts, setAccounts] = useState([]);
@@ -456,13 +459,13 @@ export default function ExpenseAdder({ navigation }) {
   
   useEffect(() => {
     getMerchants().then((merchants) => {
-      const m = merchants.map((merchant) => {
-        return {
-          id: merchant.id,
-          title: merchant.merchant, // check this prop
-        };
-      });
-      setMerchants(m);
+      // const m = merchants.map((merchant) => {
+      //   return {
+      //     id: merchant.id,
+      //     title: merchant.merchant, // check this prop
+      //   };
+      // });
+      setMerchants(merchants);
     });
   }, []);
   
@@ -567,6 +570,41 @@ export default function ExpenseAdder({ navigation }) {
     setToggleCategoryModal((prev) => !prev);
   };
 
+  const handleAddMerchant = (merchant) => {
+    if (!merchant.length) return;
+    const exists = merchants.find((merch) => merch.label === merchant);
+    if (exists) {
+      // TODO: Inform user in a modal maybe?
+      console.error("Error: Merchant already exists");
+      return;
+    }
+    
+    addMerchant(merchant).then(
+      () => {
+        Alert.alert(
+          "Merchant Added",
+          `You have successfully added ${merchant} to your merchant list`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
+        // Optimistic update
+        setMerchants((prev) => [
+          ...prev,
+          { label: merchant, value: merchant },
+        ]);
+      },
+      (error) => {
+        // TODO: Handle error
+        console.error("Error: Unable to add merchant");
+      }
+    );
+    setToggleMerchantModal((prev) => !prev);
+  };
+
   const handleAddAccount = (account) => {
     if (!account.length) return;
     const exists = accounts.find((acc) => acc.label === account);
@@ -648,7 +686,16 @@ export default function ExpenseAdder({ navigation }) {
                 merchants={merchants}
                 handleChange={handleChange}
                 handleBlur={handleBlur}
-              />             
+              />       
+                <Button
+                title="Add New Merchant"
+                onPress={() => setToggleMerchantModal((prev) => !prev)}
+              />
+              <MerchantAdderModal
+                isVisible={toggleMerchantModal}
+                setIsVisible={setToggleMerchantModal}
+                handleAddMerchant={handleAddMerchant}
+              />    
               {errors.merchant && <Text>{errors.merchant}</Text>}
               <CategoryList
                 category={values.category}
