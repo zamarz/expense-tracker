@@ -27,18 +27,20 @@ function reducer(state, action) {
         };
       }
     }
-    case "UPDATE_ACCOUNT": {
+    case "ADD_ACCOUNT": {
       console.log(action.payload);
-      // const totalBalance = calculateTotalBalance(action.payload);
-      // const totalBudget = calculateTotalBudget(action.payload);
-      // if (totalBalance && totalBudget) {
-      //   return {
-      //     ...state,
-      //     accounts: [...state.accounts, ...action.payload],
-      //     balance: totalBalance,
-      //     budget: totalBudget,
-      //   };
-      // }
+      const newAccountArray = state.accounts.concat(action.payload);
+      console.log(newAccountArray);
+      const totalBalance = calculateTotalBalance(newAccountArray);
+      const totalBudget = calculateTotalBudget(newAccountArray);
+      if (totalBalance && totalBudget) {
+        return {
+          ...state,
+          accounts: [...newAccountArray],
+          balance: totalBalance,
+          budget: totalBudget,
+        };
+      }
     }
     // case "DELETE_ACCOUNT": {
     //   const totalBalance = calculateTotalBalance(action.payload);

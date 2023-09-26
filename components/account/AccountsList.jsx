@@ -16,25 +16,24 @@ export default function AccountsList({ navigation }) {
   const user = useContext(UserContext);
   const { state, dispatch } = useContext(AppTracker);
   const { accounts, balance, budget } = state;
-  const [accountList, setAccountList] = useState(accounts);
   console.log(accounts);
 
   const handleDeleteAccount = async (accountId) => {
     await deleteDoc(doc(dbFire, "account", accountId))
       .then(() => {
-        setAccountList((previousAccounts) => {
-          const newAccounts = previousAccounts.filter(
-            (account) => account.id !== accountId
-          );
-          dispatch({ type: "UPDATE_ACCOUNTS", payload: newAccounts });
-        });
-      })
+        const newAccounts = accounts.filter(
+          (account) => account.id !== accountId
+        )
+        console.log(newAccounts);
+        dispatch({ type: "DELETE_ACCOUNT", payload: newAccounts });
+      }
+      )
       .catch((error) => {
         console.log(error);
       });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <>
