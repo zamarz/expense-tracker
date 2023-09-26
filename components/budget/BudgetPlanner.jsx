@@ -5,17 +5,18 @@ import Remaining from "./Remaining";
 import ExpenseTotal from "./ExpenseTotal";
 import { Divider, Text } from "react-native-paper";
 
-const BudgetPlanner = () => {
+const BudgetPlanner = ({ expenses, budget, balance }) => {
+  console.log(budget, balance);
   return (
     <View>
       <Text variant="titleLarge">BudgetPlanner</Text>
       <Divider />
-      <Budget />
+      <Budget budget={budget} />
       <Divider />
-      <Remaining />
+      <Remaining expenses={expenses} budget={budget} />
       <Divider />
 
-      <ExpenseTotal />
+      <ExpenseTotal expenses={expenses} />
       <Divider />
     </View>
   );
