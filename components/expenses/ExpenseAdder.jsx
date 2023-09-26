@@ -466,6 +466,7 @@ export default function ExpenseAdder({ navigation }) {
       //   };
       // });
       setMerchants(merchants);
+      console.log(merchants)
     });
   }, []);
   

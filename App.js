@@ -21,6 +21,7 @@ import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
 import { collection, getDocs, query, where } from "@firebase/firestore";
 import { AppTracker } from "./context/AppTracker";
+import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -161,7 +162,9 @@ export default function App() {
           <LoginNavigator />
         ) : (
           <AppTracker.Provider value={initialValues}>
+            <AutocompleteDropdownContextProvider>
             <DrawerNavigator />
+            </AutocompleteDropdownContextProvider>
           </AppTracker.Provider>
         )}
       </NavigationContainer>

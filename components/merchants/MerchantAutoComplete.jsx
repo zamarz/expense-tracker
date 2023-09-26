@@ -16,7 +16,7 @@ export default function MerchantAutoComplete({ merchant, merchants, handleChange
 
   useEffect(() => {
     if (value && merchant !== value.title) {
-      handleChange("category")(value.title);
+      handleChange("merchant")(value.title);
     }
   }, [value]);
 
