@@ -1,70 +1,47 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  FlatList,
-} from "react-native";
+import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import AccountsCard from "./AccountsCard";
 import { dbFire } from "../../firebaseConfig";
-import { collection, query, getDocs, doc, where, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  getDocs,
+  doc,
+  where,
+  deleteDoc,
+} from "firebase/firestore";
 import { UserContext } from "../../context/UserContext";
 import { AppTracker } from "../../context/AppTracker";
 export default function AccountsList({ navigation }) {
   const user = useContext(UserContext);
-  const { accounts } = useContext(AppTracker);
-
-  const calculateTotalBalance = () => {
-    let totalBalance = 0;
-    for (const account of accounts) {
-      const amount = parseFloat(account.balance);
-      totalBalance += amount;
-    }
-    return totalBalance;
-  };
-
-  const totalBalance = calculateTotalBalance();
-
-  const calculateTotalBudget = () => {
-    let totalBudget = 0;
-    for (const account of accounts) {
-      if (
-        account.budget !== null &&
-        account.budget !== undefined &&
-        account.budget !== ""
-      ) {
-        const amount = parseFloat(account.budget);
-        totalBudget += amount;
-      }
-    }
-    return totalBudget;
-  };
-
-  const totalBudget = calculateTotalBudget();
+  const { state, dispatch } = useContext(AppTracker);
+  const { accounts, balance, budget } = state;
+  console.log(accounts);
 
   const handleDeleteAccount = async (accountId) => {
-    await deleteDoc(doc(dbFire, "account", accountId)).catch((error) => {
-      console.log(error);
-    });
-    // setAccounts((previousAccounts) =>
-    //   previousAccounts.filter((account) => account.id !== accountId)
-    // );
-  };
+    await deleteDoc(doc(dbFire, "account", accountId))
+      .then(() => {
+        const newAccounts = accounts.filter(
+          (account) => account.id !== accountId
+        );
+        console.log(newAccounts);
 
-  useEffect(() => {
-    handleDeleteAccount();
-  }, []);
+        dispatch({ type: "DELETE_ACCOUNT", payload: newAccounts });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
       <View>
         <Text style={styles.title}>
-          Total Accounts Balance: £{totalBalance.toFixed(2)}
+          Total Accounts Balance: £{balance.toFixed(2)}
         </Text>
       </View>
       <View>
-        <Text style={styles.title}>Total Budget: £{totalBudget}</Text>
+        <Text style={styles.title}>Total Budget: £{budget}</Text>
       </View>
       <FlatList
         contentContainerStyle={{ alignSelf: "flex-start" }}
@@ -87,9 +64,7 @@ export default function AccountsList({ navigation }) {
       />
       <View>
         <Button
-          onPress={() =>
-            navigation.navigate("Accounts Adder")
-          }
+          onPress={() => navigation.navigate("Accounts Adder")}
           title="Add new account"
           accessibilityLabel="Add a new account to the accounts list"
         ></Button>
@@ -101,7 +76,7 @@ export default function AccountsList({ navigation }) {
           accessibilityLabel="Button to navigate to Home page"
         ></Button>
       </View>
-      </>
+    </>
   );
 }
 

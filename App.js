@@ -4,8 +4,8 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./pages/Login";
-import { useEffect, useMemo, useState } from "react";
-import { authFire, dbFire } from "./firebaseConfig";
+import { useState } from "react";
+import { authFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./pages/Profle";
@@ -20,8 +20,7 @@ import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
 import IncomeAdder from "./components/account/IncomeAdder";
-import { collection, getDocs, query, where } from "@firebase/firestore";
-import { AppTracker } from "./context/AppTracker";
+import { AppTrackerProvider } from "./context/AppTracker";
 import {
   MD3LightTheme as DefaultTheme,
   adaptNavigationTheme,
@@ -34,73 +33,10 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [user, setUser] = useState({ name: "", email: "", uid: "" });
-  const [balance, setBalance] = useState(0);
-  const [budget, setBudget] = useState(0);
-  const [expenseList, setExpenseList] = useState([]);
-  const [accountList, setAccountList] = useState([]);
 
-  const initialValues = {
-    balance: balance,
-    budget: budget,
-    expenses: expenseList,
-    accounts: accountList,
-  };
-
-  const fetchExpensesData = async (userId) => {
-    if (userId) {
-      const expensesQuery = query(
-        collection(dbFire, "expenses"),
-        where("userId", "==", userId)
-      );
-      const querySnapshot = await getDocs(expensesQuery);
-      const expensesData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setExpenseList(expensesData);
-    }
-  };
-
-  const fetchAccountsData = async (userId) => {
-    const accountsQuery = query(
-      collection(dbFire, "account"),
-      where("userId", "==", userId)
-    );
-    const querySnapshot = await getDocs(accountsQuery);
-    const accountsData = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setAccountList(accountsData);
-    if (accountsData) {
-      const calculateBudget = () => {
-        const data = accountsData.reduce((total, item) => {
-          return (total += +item.budget);
-        }, +budget);
-        return data.toFixed(2);
-      };
-      const calculateBalance = () => {
-        const data = accountsData.reduce((total, item) => {
-          return (total += +item.balance);
-        }, +balance);
-        return data.toFixed(2);
-      };
-      const budgetTotal = calculateBudget();
-      const balanceTotal = calculateBalance();
-      setBudget(budgetTotal);
-      setBalance(balanceTotal);
-    }
-  };
-
-  useEffect(() => {
-    onAuthStateChanged(authFire, (user) => {
-      setUser(user);
-      if (user) {
-        fetchExpensesData(user.uid);
-        fetchAccountsData(user.uid);
-      }
-    });
-  }, [user]);
+  onAuthStateChanged(authFire, (user) => {
+    setUser(user);
+  });
 
   const LoginNavigator = () => {
     return (
@@ -147,17 +83,6 @@ export default function App() {
         <Drawer.Screen name="Analysis" component={Analysis} />
         <Drawer.Screen name="Receipts" component={Receipts} />
         <Drawer.Screen name="Map" component={Map} />
-        {/* <Drawer.Screen
-          name="Logout"
-          component={() => (
-            <Button
-              onPress={() => {
-                authFire.signOut();
-              }}
-              title="Logout"
-            />
-          )}
-        /> */}
       </Drawer.Navigator>
     );
   };
@@ -229,11 +154,11 @@ export default function App() {
           {!user ? (
             <LoginNavigator />
           ) : (
-            <AppTracker.Provider value={initialValues}>
+            <AppTrackerProvider>
               <AutocompleteDropdownContextProvider>
-              <DrawerNavigator />
+                <DrawerNavigator />
               </AutocompleteDropdownContextProvider>
-            </AppTracker.Provider>
+            </AppTrackerProvider>
           )}
         </NavigationContainer>
       </UserContext.Provider>
