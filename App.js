@@ -28,9 +28,11 @@ import {
 } from "react-native-paper";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { enGB, registerTranslation } from "react-native-paper-dates";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+registerTranslation("en-GB", enGB);
 
 export default function App() {
   const [user, setUser] = useState({ name: "", email: "", uid: "" });

@@ -23,6 +23,7 @@ import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
 import { AppTracker } from "../../context/AppTracker";
 import { UserContext } from "../../context/UserContext";
+import { DatePickerModal } from "react-native-paper-dates";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -32,7 +33,6 @@ export default function ExpenseAdder({ navigation }) {
   const [receipt, setReceipt] = useState("");
   const [account, setAccount] = useState("");
   const [location, setLocation] = useState("");
-  const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({}); //change const initialC
@@ -41,10 +41,12 @@ export default function ExpenseAdder({ navigation }) {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [merchants, setMerchants] = useState([]);
-  const [accountList, setAccounts] = useState([]);
+  // const [accounts, setAccounts] = useState([]);
   const { state, dispatch } = useContext(AppTracker);
   const { accounts } = state;
   const { uid } = useContext(UserContext);
+  const [open, setOpen] = useState(false);
+
   // const auth = authFire;
   // onAuthStateChanged(auth, (user) => {
   //   if (user) {
@@ -83,6 +85,15 @@ export default function ExpenseAdder({ navigation }) {
 
   // }, []);
 
+  const onDismissSingle = () => {
+    setOpen(false);
+  };
+
+  const onConfirmSingle = (params) => {
+    setOpen(false);
+    setDate(params.date.toString());
+  };
+
   const expenses = {
     id: Date.now().toString(36) + Math.random().toString(36).substring(2),
     amount,
@@ -110,7 +121,7 @@ export default function ExpenseAdder({ navigation }) {
     account: yup.string().required(),
     location: yup.string().required(),
     category: yup.string().required(),
-    date: yup.string().required(),
+    // date: yup.string().required(),
   });
 
   const handleSubmit = async (values) => {
@@ -118,6 +129,7 @@ export default function ExpenseAdder({ navigation }) {
       ...values,
       userId: expenses.userId,
       id: expenses.id,
+      date: expenses.date,
     };
 
     setLoading(true);
@@ -137,13 +149,14 @@ export default function ExpenseAdder({ navigation }) {
         dispatch({ type: "ADD_EXPENSES", payload: data });
         // navigation.navigate("Expenses List");
       })
-      .catch((error) => {
-        setError(error);
+      .catch((err) => {
+        console.log(err);
+        setError(err);
         // TODO: Check
         setLoading(false);
         // TODO: CHECK
         // console.error("Error: Unable to add expense");
-        alert("Error", "Unable to add expense", [
+        alert("Error: Unable to add expense", [
           {
             text: "OK",
             style: "cancel",
@@ -169,8 +182,8 @@ export default function ExpenseAdder({ navigation }) {
       // return;
     }
 
-    addCategory(category).then(
-      () => {
+    addCategory(category)
+      .then(() => {
         Alert.alert(
           "Category Added",
           `You have successfully added ${category} to your categories`,
@@ -186,8 +199,8 @@ export default function ExpenseAdder({ navigation }) {
           ...prev,
           { label: category, value: category },
         ]);
-      },
-      (error) => {
+      })
+      .catch((err) => {
         //CHECK
         Alert.alert(`Error: Unable to add ${category} to your categories`, [
           {
@@ -195,8 +208,7 @@ export default function ExpenseAdder({ navigation }) {
             style: "cancel",
           },
         ]);
-      }
-    );
+      });
     setToggleCategoryModal((prev) => !prev);
   };
 
@@ -213,8 +225,8 @@ export default function ExpenseAdder({ navigation }) {
       //CHECK
     }
 
-    addMerchant(merchant).then(
-      () => {
+    addMerchant(merchant)
+      .then(() => {
         Alert.alert(
           "Merchant Added",
           `You have successfully added ${merchant} to your merchant list`,
@@ -227,8 +239,8 @@ export default function ExpenseAdder({ navigation }) {
         );
 
         setMerchants((prev) => [...prev, { label: merchant, value: merchant }]);
-      },
-      (error) => {
+      })
+      .catch((err) => {
         // TODO: - check working
         //console.error("Error: Unable to add merchant");
         Alert.alert("Error", "Unable to add merchant", [
@@ -237,58 +249,57 @@ export default function ExpenseAdder({ navigation }) {
             style: "cancel",
           },
         ]);
-      }
-    );
+      });
     setToggleMerchantModal((prev) => !prev);
   };
 
-  const handleAddAccount = (account) => {
-    if (!account.length) return;
-    const exists = accounts.find((acc) => acc.label === account);
-    if (exists) {
-      // console.error("Error: Account already exists");
-      // return;
-      //CHECK
-      Alert.alert("Error", "This account already exists", [
-        {
-          text: "OK",
-          style: "cancel",
-        },
-      ]);
-    }
+  // const handleAddAccount = (account) => {
+  //   if (!account.length) return;
+  //   const exists = accounts.find((acc) => acc.label === account);
+  //   if (exists) {
+  //     // console.error("Error: Account already exists");
+  //     // return;
+  //     //CHECK
+  //     Alert.alert("Error", "This account already exists", [
+  //       {
+  //         text: "OK",
+  //         style: "cancel",
+  //       },
+  //     ]);
+  //   }
 
-    addAccount(account).then(
-      () => {
-        Alert.alert(
-          "Payment Method Added",
-          `You have successfully added ${account} to your accounts`,
-          [
-            {
-              text: "OK",
-              style: "cancel",
-            },
-          ]
-        );
+  //   addAccount(account).then(
+  //     () => {
+  //       Alert.alert(
+  //         "Payment Method Added",
+  //         `You have successfully added ${account} to your accounts`,
+  //         [
+  //           {
+  //             text: "OK",
+  //             style: "cancel",
+  //           },
+  //         ]
+  //       );
 
-        setAccounts((prev) => [...prev, { label: account, value: account }]);
-      },
-      (error) => {
-        // TODO: CHECK
-        //console.error("Error: Unable to add account");
-        Alert.alert(
-          "Error",
-          "You have not been able to add this account card to your account",
-          [
-            {
-              text: "OK",
-              style: "cancel",
-            },
-          ]
-        );
-      }
-    );
-    setToggleAccountModal((prev) => !prev);
-  };
+  //       setAccounts((prev) => [...prev, { label: account, value: account }]);
+  //     },
+  //     (error) => {
+  //       // TODO: CHECK
+  //       //console.error("Error: Unable to add account");
+  //       Alert.alert(
+  //         "Error",
+  //         "You have not been able to add this account card to your account",
+  //         [
+  //           {
+  //             text: "OK",
+  //             style: "cancel",
+  //           },
+  //         ]
+  //       );
+  //     }
+  //   );
+  //   setToggleAccountModal((prev) => !prev);
+  // };
 
   return (
     <Formik
@@ -330,7 +341,8 @@ export default function ExpenseAdder({ navigation }) {
                     aria-label="Amount"
                     style={styles.input}
                     onChangeText={handleChange("amount")}
-                    onBlur={handleBlur("amount")}
+                    // onBlur={handleBlur("amount")}
+
                     value={values.amount}
                     placeholder="Amount"
                   />
@@ -342,7 +354,7 @@ export default function ExpenseAdder({ navigation }) {
                     merchant={values.merchant}
                     merchants={merchants}
                     handleChange={handleChange}
-                    handleBlur={handleBlur}
+                    // handleBlur={handleBlur}
                   />
                   <Button
                     mode="outlined"
@@ -358,45 +370,45 @@ export default function ExpenseAdder({ navigation }) {
                   handleAddMerchant={handleAddMerchant}
                 />
                 {errors.merchant && <Text>{errors.merchant}</Text>}
-                <CategoryList
+                {/* <CategoryList
                   category={values.category}
                   categories={categories}
                   handleChange={handleChange}
-                  handleBlur={handleBlur}
+                  // handleBlur={handleBlur}
                 />
-                {errors.category && <Text>{errors.category}</Text>}
-                <Button
+                {errors.category && <Text>{errors.category}</Text>} */}
+                {/* <Button
                   mode="contained"
                   title="Add New Category"
                   onPress={() => setToggleCategoryModal((prev) => !prev)}
                 >
                   Add New Category
-                </Button>
-                <CategoryAdderModal
+                </Button> */}
+                {/* <CategoryAdderModal
                   isVisible={toggleCategoryModal}
                   setIsVisible={setToggleCategoryModal}
                   handleAddCategory={handleAddCategory}
-                />
+                /> */}
                 <AccountListDropDown
                   account={values.account}
                   accounts={accounts}
                   handleChange={handleChange}
-                  handleBlur={handleBlur}
+                  // handleBlur={handleBlur}
                 />
                 {errors.account && <Text>{errors.account}</Text>}
-                <Button
+                {/* <Button
                   mode="contained"
                   title="Add New Account"
                   onPress={() => setToggleAccountModal((prev) => !prev)}
-                >
-                  Add New Account
+                > */}
+                {/* Add New Account
                 </Button>
                 <AccountAdderModal
                   isVisible={toggleAccountModal}
                   setIsVisible={setToggleAccountModal}
                   handleAddAccount={handleAddAccount}
-                />
-                <TextInput
+                /> */}
+                {/* <TextInput
                   mode="outlined"
                   aria-label="Date"
                   placeholder="Date"
@@ -404,15 +416,30 @@ export default function ExpenseAdder({ navigation }) {
                   onChangeText={handleChange("date")}
                   onBlur={handleBlur("date")}
                   value={values.date}
+                /> */}
+                {/* {errors.date && <Text>{errors.date}</Text>} */}
+                <Button
+                  onPress={() => setOpen(true)}
+                  uppercase={false}
+                  mode="outlined"
+                >
+                  Select date for your expense
+                </Button>
+                <DatePickerModal
+                  locale="en-GB"
+                  mode="single"
+                  visible={open}
+                  onDismiss={onDismissSingle}
+                  date={date}
+                  onConfirm={onConfirmSingle}
                 />
-                {errors.date && <Text>{errors.date}</Text>}
                 <TextInput
                   mode="outlined"
                   aria-label="Location"
                   placeholder="Location"
                   style={styles.input}
                   onChangeText={handleChange("location")}
-                  onBlur={handleBlur("location")}
+                  // onBlur={handleBlur("location")}
                   value={values.location}
                 />
                 {errors.location && <Text>{errors.location}</Text>}
