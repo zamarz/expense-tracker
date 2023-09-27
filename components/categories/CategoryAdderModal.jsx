@@ -36,6 +36,7 @@ const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
               onChangeText={setCatTitle}
               value={catTitle}
               placeholder="Category Title"
+              style={styles.input}
             />
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -59,6 +60,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+  },
+  input: {
+    width: "100%",
+    height: 42,
+    marginVertical: 10,
   },
   modalView: {
     margin: 20,
