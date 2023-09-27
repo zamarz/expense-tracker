@@ -7,7 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -34,6 +34,8 @@ import AccountListDropDown from "../account/AccountListDropDown";
 import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
+import { AppTracker } from "../../context/AppTracker";
+import { UserContext } from "../../context/UserContext";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -52,33 +54,46 @@ export default function ExpenseAdder({ navigation }) {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [merchants, setMerchants] = useState([]);
-  const [accounts, setAccounts] = useState([]);
-
-  const auth = authFire;
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      setUserId(uid);
-    }
-  });
-
-  useEffect(() => {
-    getCategories().then((categories) => {
-      setCategories(categories);
-    });
-  }, []);
+  const [accountList, setAccounts] = useState([]);
+  const { state, dispatch } = useContext(AppTracker);
+  const { accounts } = state;
+  const { uid } = useContext(UserContext);
+  // const auth = authFire;
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     const uid = user.uid;
+  //     setUserId(uid);
+  //   }
+  // });
 
   useEffect(() => {
-    getAccounts().then((accounts) => {
-      setAccounts(accounts);
-    });
+    setLoading(true);
+    getCategories()
+      .then((categories) => {
+        setCategories(categories);
+      })
+      .then(() => {
+        getMerchants().then((merchants) => {
+          setMerchants(merchants);
+        });
+      })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+      });
   }, []);
 
-  useEffect(() => {
-    getMerchants().then((merchants) => {
-      setMerchants(merchants);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getAccounts().then((accounts) => {
+  //     setAccounts(accounts);
+  //   });
+  // }, [accounts]);
+
+  // useEffect(() => {
+
+  // }, []);
 
   const expenses = {
     id: Date.now().toString(36) + Math.random().toString(36).substring(2),
@@ -89,7 +104,7 @@ export default function ExpenseAdder({ navigation }) {
     receipt,
     account,
     location,
-    userId,
+    userId: uid,
   };
 
   const expenseSchema = yup.object().shape({
@@ -114,11 +129,12 @@ export default function ExpenseAdder({ navigation }) {
     const data = {
       ...values,
       userId: expenses.userId,
+      id: expenses.id,
     };
 
     setLoading(true);
-    addExpense(data).then(
-      () => {
+    addExpense(data)
+      .then(() => {
         setLoading(false);
         Alert.alert(
           "Expense Added",
@@ -126,16 +142,13 @@ export default function ExpenseAdder({ navigation }) {
           [
             {
               text: "OK",
-              onPress: () => {
-                // Navigate back to the Expenses List screen - check working Android and correct nav
-                navigation.navigate("ExpenseList");
-              },
               style: "cancel",
             },
           ]
         );
-      },
-      (error) => {
+        // navigation.navigate("Expenses List");
+      })
+      .catch((error) => {
         setError(error);
         // TODO: Check
         setLoading(false);
@@ -147,8 +160,7 @@ export default function ExpenseAdder({ navigation }) {
             style: "cancel",
           },
         ]);
-      }
-    );
+      });
   };
 
   if (error) return <ErrorHandler error={error} />;
@@ -317,26 +329,27 @@ export default function ExpenseAdder({ navigation }) {
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
         return (
-          <AutocompleteDropdownContextProvider>
-            <View style={styles.container}>
-              {loading ? (
-                <Loading />
-              ) : (
-                <>
-                  <View style={styles.inputRow}>
-                    <Text variant="headlineMedium">Add a new Expense</Text>
-                    <TextInput
-                      mode="outlined"
-                      aria-label="Amount"
-                      style={styles.input}
-                      onChangeText={handleChange("amount")}
-                      onBlur={handleBlur("amount")}
-                      value={values.amount}
-                      placeholder="Amount"
-                    />
-                    {errors.amount && <Text>{errors.amount}</Text>}
-                  </View>
+          <View style={styles.container}>
+            {loading ? (
+              <Loading />
+            ) : (
+              <>
+                <View style={styles.inputRow}>
+                  <Text variant="headlineMedium">Add a new Expense</Text>
+                  <TextInput
+                    mode="outlined"
+                    aria-label="Amount"
+                    style={styles.input}
+                    onChangeText={handleChange("amount")}
+                    onBlur={handleBlur("amount")}
+                    value={values.amount}
+                    placeholder="Amount"
+                  />
+                  {errors.amount && <Text>{errors.amount}</Text>}
+                </View>
+                <View style={styles.inputRow}>
                   <MerchantAutoComplete
+                    style={styles.input}
                     merchant={values.merchant}
                     merchants={merchants}
                     handleChange={handleChange}
@@ -349,81 +362,77 @@ export default function ExpenseAdder({ navigation }) {
                   >
                     Add New Merchant
                   </Button>
-                  <MerchantAdderModal
-                    isVisible={toggleMerchantModal}
-                    setIsVisible={setToggleMerchantModal}
-                    handleAddMerchant={handleAddMerchant}
-                  />
-                  {errors.merchant && <Text>{errors.merchant}</Text>}
-                  <CategoryList
-                    category={values.category}
-                    categories={categories}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                  />
-                  {errors.category && <Text>{errors.category}</Text>}
-                  <Button
-                    mode="contained"
-                    title="Add New Category"
-                    onPress={() => setToggleCategoryModal((prev) => !prev)}
-                  >
-                    Add New Category
-                  </Button>
-                  <CategoryAdderModal
-                    isVisible={toggleCategoryModal}
-                    setIsVisible={setToggleCategoryModal}
-                    handleAddCategory={handleAddCategory}
-                  />
-                  <AccountListDropDown
-                    account={values.account}
-                    accounts={accounts}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                  />
-                  {errors.account && <Text>{errors.account}</Text>}
-                  <Button
-                    mode="contained"
-                    title="Add New Account"
-                    onPress={() => setToggleAccountModal((prev) => !prev)}
-                  >
-                    Add New Account
-                  </Button>
-                  <AccountAdderModal
-                    isVisible={toggleAccountModal}
-                    setIsVisible={setToggleAccountModal}
-                    handleAddAccount={handleAddAccount}
-                  />
-                  <TextInput
-                    mode="outlined"
-                    aria-label="Date"
-                    placeholder="Date"
-                    style={styles.input}
-                    onChangeText={handleChange("date")}
-                    onBlur={handleBlur("date")}
-                    value={values.date}
-                  />
-                  {errors.date && <Text>{errors.date}</Text>}
-                  <TextInput
-                    mode="outlined"
-                    aria-label="Location"
-                    placeholder="Location"
-                    style={styles.input}
-                    onChangeText={handleChange("location")}
-                    onBlur={handleBlur("location")}
-                    value={values.location}
-                  />
-                  {errors.location && <Text>{errors.location}</Text>}
-                  <Button
-                    title="Submit"
-                    onPress={handleSubmit}
-                    mode="contained"
-                  >
-                    Submit
-                  </Button>
-                </>
-              )}
-            </View>
-          </AutocompleteDropdownContextProvider>
+                </View>
+                <MerchantAdderModal
+                  isVisible={toggleMerchantModal}
+                  setIsVisible={setToggleMerchantModal}
+                  handleAddMerchant={handleAddMerchant}
+                />
+                {errors.merchant && <Text>{errors.merchant}</Text>}
+                <CategoryList
+                  category={values.category}
+                  categories={categories}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                />
+                {errors.category && <Text>{errors.category}</Text>}
+                <Button
+                  mode="contained"
+                  title="Add New Category"
+                  onPress={() => setToggleCategoryModal((prev) => !prev)}
+                >
+                  Add New Category
+                </Button>
+                <CategoryAdderModal
+                  isVisible={toggleCategoryModal}
+                  setIsVisible={setToggleCategoryModal}
+                  handleAddCategory={handleAddCategory}
+                />
+                <AccountListDropDown
+                  account={values.account}
+                  accounts={accounts}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                />
+                {errors.account && <Text>{errors.account}</Text>}
+                <Button
+                  mode="contained"
+                  title="Add New Account"
+                  onPress={() => setToggleAccountModal((prev) => !prev)}
+                >
+                  Add New Account
+                </Button>
+                <AccountAdderModal
+                  isVisible={toggleAccountModal}
+                  setIsVisible={setToggleAccountModal}
+                  handleAddAccount={handleAddAccount}
+                />
+                <TextInput
+                  mode="outlined"
+                  aria-label="Date"
+                  placeholder="Date"
+                  style={styles.input}
+                  onChangeText={handleChange("date")}
+                  onBlur={handleBlur("date")}
+                  value={values.date}
+                />
+                {errors.date && <Text>{errors.date}</Text>}
+                <TextInput
+                  mode="outlined"
+                  aria-label="Location"
+                  placeholder="Location"
+                  style={styles.input}
+                  onChangeText={handleChange("location")}
+                  onBlur={handleBlur("location")}
+                  value={values.location}
+                />
+                {errors.location && <Text>{errors.location}</Text>}
+                <Button title="Submit" onPress={handleSubmit} mode="contained">
+                  Submit
+                </Button>
+              </>
+            )}
+          </View>
         );
       }}
     </Formik>
