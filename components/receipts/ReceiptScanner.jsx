@@ -13,6 +13,7 @@ const ReceiptScanner = ({ navigation, route }) => {
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [imageURL, setImageURL] = useState(null);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -41,14 +42,17 @@ const ReceiptScanner = ({ navigation, route }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitDisabled(true);
+    setLoadingButton(true);
     try {
       setUploading(true);
 
       const uploadUrl = await uploadImageAsync(image);
-      setImageURL(uploadUrl);
-      alert("Upload successful!");
-
-      setNextDisabled(false);
+      if (uploadUrl) {
+        setImageURL(uploadUrl);
+        alert("Upload successful!");
+        setLoadingButton(false);
+        setNextDisabled(false);
+      }
     } catch (error) {
       console.log(error);
       alert("Sorry, upload failed");
@@ -86,7 +90,13 @@ const ReceiptScanner = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text variant="titleMedium">Upload or take an image of your receipt</Text>
-      <View style={{ flexDirection: "row", padding: 5, justifyContent: "space-between"}}>
+      <View
+        style={{
+          flexDirection: "row",
+          padding: 5,
+          justifyContent: "space-between",
+        }}
+      >
         <Button
           mode="contained"
           title="Choose an image from your library"
@@ -116,6 +126,7 @@ const ReceiptScanner = ({ navigation, route }) => {
           title="Submit Image"
           onPress={handleSubmit}
           disabled={submitDisabled}
+          loading={loadingButton}
           mode="contained"
           style={{ marginBottom: 10 }}
         >
