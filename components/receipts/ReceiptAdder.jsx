@@ -278,7 +278,6 @@ const ReceiptAdder = ({ route, navigation }) => {
   };
 
   return (
-    // <ScrollView keyboardShouldPersistTaps={"handled"}>
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Text variant="headlineMedium">Add a new Expense</Text>
