@@ -6,9 +6,9 @@ const Settings = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "Pounds", value: "pounds" },
-    { label: "Euros", value: "euros" },
-    { label: "Dollars", value: "dollars" },
+    { label: "Pound £", value: "pounds" },
+    { label: "Euro €", value: "euros" },
+    { label: "Dollar $", value: "dollars" },
   ]);
 
   // going to need to change the currency in state or context

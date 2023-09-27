@@ -1,25 +1,19 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import React, { useState, useContext } from "react";
+import { View, Text, StyleSheet, TextInput, Button } from "react-native";
 import { Loading } from "../loading/Loading";
-import { addDoc, collection, doc, updateDoc, query, where, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbFire } from "../../firebaseConfig";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { UserContext } from "../../context/UserContext";
-import { AppTracker } from "../../context/AppTracker";
 
-export default function IncomeAdder({ route, navigation }) {
+export default function IncomeAdder({ navigation, item }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-
-  const [income, setIncome] = useState("");
   const [incomeDate, setIncomeDate] = useState(new Date());
-  const [source, setSource] = useState("");
-
-  const user = useContext(UserContext);
-  const { balance, accounts } = useContext(AppTracker);
-
+  const { uid } = useContext(UserContext);
+  const { dispatch } = useContext(AppTracker);
   const { item } = route.params;
+
   const selectedAccount = item.id;
 
   if (isLoading) return <Loading />;
@@ -28,28 +22,48 @@ export default function IncomeAdder({ route, navigation }) {
   const incomeSchema = yup.object().shape({
     income: yup.number().required().typeError("Income should be a number"),
     source: yup.string().required(),
+    incomeDate: yup.string().required(),
   });
+
+  const fetchAccounts = async () => {
+    try {
+      const q = query(collection(dbFire, "account").where("userId", "==", userId));
+      const querySnapshot = await getDocs(q);
+      const accountData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setAccounts(accountData);
+      console.log(accountData);
+    } catch (error) {
+      console.console.log(error);
+    }
+  };
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
     try {
-      const incomeData = await addDoc(collection(dbFire, "income"), {
+      const incomeDocRef = await addDoc(collection(dbFire, "income"), {
         income: values.income,
         source: values.source,
         incomeDate: values.incomeDate,
-        userId: user.uid,
+        userId: uid,
         accountId: selectedAccount,
       });
-
       const accountRef = doc(dbFire, "account", selectedAccount);
-      console.log(accountRef);
       const accountSnapshot = await getDoc(accountRef);
-      console.log("THIS");
+
       if (!accountSnapshot.empty) {
-        console.log("HERE");
-        const currentBalance = accountSnapshot.docs[0].data().balance || 0;
-        const newBalance = currentBalance + parseFloat(values.income);
-        await updateDoc(accountRef, { balance: newBalance });
+        const currentBalance =
+          accountSnapshot._document.data.value.mapValue.fields.balance
+            .stringValue;
+        const newBalance = +currentBalance + parseFloat(values.income);
+        const newBalanceString = newBalance.toString();
+        const newDocumentRes = await updateDoc(accountRef, {
+          balance: newBalanceString,
+        });
+        if (newDocumentRes)
+          dispatch({ type: "ADD_INCOME", payload: newBalance });
       }
 
       setIsLoading(false);
@@ -69,7 +83,6 @@ export default function IncomeAdder({ route, navigation }) {
       }}
       validationSchema={incomeSchema}
       onSubmit={(values) => {
-        console.log(values);
         handleSubmit(values);
       }}
     >
@@ -88,6 +101,7 @@ export default function IncomeAdder({ route, navigation }) {
               />
               {errors.income && <Text>{errors.income}</Text>}
             </View>
+               
             <View style={styles.inputRow}>
               <TextInput
                 aria-label="Source of income"
@@ -115,13 +129,14 @@ export default function IncomeAdder({ route, navigation }) {
         );
       }}
     </Formik>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+
     marginHorizontal: 16,
   },
   title: {
@@ -133,15 +148,20 @@ const styles = StyleSheet.create({
     borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 10,
+  datePicker: {
+    height: 120,
+    marginTop: -10,
+  },
+  pickerButton: {
+    paddingHorizontal: 20,
   },
   buttonText: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 });
+
+//income amount needs to update the balance for the specific account
+//
+//update state in context

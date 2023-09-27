@@ -4,6 +4,7 @@ import { authFire } from "../../firebaseConfig";
 import { IconButton } from "react-native-paper";
 
 const Logout = () => {
+  const theme = useTheme();
   return (
     <View>
       <IconButton
@@ -16,5 +17,14 @@ const Logout = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  appButtonContainer: {
+    elevation: 8,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+});
 
 export default Logout;

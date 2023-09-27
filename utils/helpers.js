@@ -1,8 +1,3 @@
-import { authFire } from "../firebaseConfig";
-
-export const getCurrentUserId = () => {
-  return authFire.currentUser.uid;
-};
 export const calculateTotalBalance = (accountsData) => {
   let totalBalance = 0;
   for (const account of accountsData) {
