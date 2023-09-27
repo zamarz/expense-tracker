@@ -235,99 +235,109 @@ const ExpenseAdder = () => {
   // console.log(formData);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <Text style={styles.title}>Add a new Expense</Text>
-        <TextInput
-          mode="outlined"
-          value={amount}
-          onChangeText={setAmount}
-          // onSubmitEditing={() => handleChange("amount", amount)}
-        />
-        <MerchantAutoComplete
-          merchant={merchant}
-          merchants={merchants}
-          setMerchant={setMerchant}
-          handleChange={handleChange}
-        />
-        <Button
-          mode="outlined"
-          onPress={() => setToggleMerchantModal((prev) => !prev)}
-        >
-          <Text>Add new Merchant</Text>
-        </Button>
-        <MerchantAdderModal
-          isVisible={toggleMerchantModal}
-          setIsVisible={setToggleMerchantModal}
-          handleAddMerchant={handleAddMerchant}
-        />
-        <CategoryList
-          category={"Default"}
-          categories={categories}
-          handleChange={handleChange}
-        />
-        <Button
-          mode="contained"
-          title="Add New Category"
-          onPress={() => setToggleCategoryModal((prev) => !prev)}
-        >
-          Add New Category
-        </Button>
-        <CategoryAdderModal
-          isVisible={toggleCategoryModal}
-          setIsVisible={setToggleCategoryModal}
-          handleAddCategory={handleAddCategory}
-        />
-        <AccountListDropDown accounts={accounts} handleChange={handleChange} />
-        <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
-          Select date for your expense
-        </Button>
-        <DatePickerModal
-          locale="en-GB"
-          mode="single"
-          visible={open}
-          onDismiss={onDismissSingle}
-          date={date}
-          onConfirm={onConfirmSingle}
-        />
-        <GooglePlacesAutocomplete
-          placeholder="Search location"
-          onPress={(data, details = null) => {
-            // 'details' is provided when fetchDetails = true
-            setLocation(data.description);
-            console.log(data, details);
-          }}
-          query={{
-            key: FIREBASE_API,
-            language: "en",
-          }}
-          textInputProps={{
-            InputComp: TextInput,
-          }}
-          styles={{
-            textInputContainer: {
-              backgroundColor: theme.colors.primary,
-            },
-            container: {
-              flex: 0,
-            },
-            textInput: {
-              height: 38,
-              color: "#5d5d5d",
-              fontSize: 16,
-            },
-            predefinedPlacesDescription: {
-              color: "#1faadb",
-            },
-          }}
-          onFail={(error) => console.log(error)}
-          onNotFound={() => console.log("no results")}
-        />
-        <Button title="Submit" onPress={handleSubmit} mode="contained">
-          Submit
-        </Button>
+    <ScrollView keyboardShouldPersistTaps={"handled"}>
+      <View style={styles.container}>
+        <View style={styles.wrapper}>
+          <Text style={styles.title}>Add a new Expense</Text>
+          <TextInput
+            mode="outlined"
+            value={amount}
+            onChangeText={setAmount}
+            // onSubmitEditing={() => handleChange("amount", amount)}
+          />
+          <MerchantAutoComplete
+            merchant={merchant}
+            merchants={merchants}
+            setMerchant={setMerchant}
+            handleChange={handleChange}
+          />
+          <Button
+            mode="outlined"
+            onPress={() => setToggleMerchantModal((prev) => !prev)}
+          >
+            <Text>Add new Merchant</Text>
+          </Button>
+          <MerchantAdderModal
+            isVisible={toggleMerchantModal}
+            setIsVisible={setToggleMerchantModal}
+            handleAddMerchant={handleAddMerchant}
+          />
+          <CategoryList
+            category={"Default"}
+            categories={categories}
+            handleChange={handleChange}
+          />
+          <Button
+            mode="contained"
+            title="Add New Category"
+            onPress={() => setToggleCategoryModal((prev) => !prev)}
+          >
+            Add New Category
+          </Button>
+          <CategoryAdderModal
+            isVisible={toggleCategoryModal}
+            setIsVisible={setToggleCategoryModal}
+            handleAddCategory={handleAddCategory}
+          />
+          <AccountListDropDown
+            accounts={accounts}
+            handleChange={handleChange}
+          />
+          <Button
+            onPress={() => setOpen(true)}
+            uppercase={false}
+            mode="outlined"
+          >
+            Select date for your expense
+          </Button>
+          <DatePickerModal
+            locale="en-GB"
+            mode="single"
+            visible={open}
+            onDismiss={onDismissSingle}
+            date={date}
+            onConfirm={onConfirmSingle}
+          />
+          <GooglePlacesAutocomplete
+            placeholder="Search location"
+            fetchDetails={true}
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
+              setLocation(data.description);
+              console.log(data, details);
+            }}
+            query={{
+              key: FIREBASE_API,
+              language: "en",
+            }}
+            textInputProps={{
+              InputComp: TextInput,
+            }}
+            styles={{
+              textInputContainer: {
+                backgroundColor: theme.colors.primary,
+              },
+              container: {
+                flex: 0,
+              },
+              textInput: {
+                height: 38,
+                color: "#5d5d5d",
+                fontSize: 16,
+              },
+              predefinedPlacesDescription: {
+                color: "#1faadb",
+              },
+            }}
+            onFail={(error) => console.log(error)}
+            onNotFound={() => console.log("no results")}
+          />
+          <Button title="Submit" onPress={handleSubmit} mode="contained">
+            Submit
+          </Button>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
