@@ -2,14 +2,12 @@ import {
   Alert,
   View,
   StyleSheet,
-  TextInput,
-  Button,
-  Text,
   SafeAreaView,
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
+import { Button, Text, TextInput } from "react-native-paper";
+import React, { useState, useEffect } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -36,12 +34,6 @@ import AccountListDropDown from "../account/AccountListDropDown";
 import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
-import GooglePlacesInput from "../map/GooglePlacesInput";
-import { ScrollView } from "react-native-gesture-handler";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { FIREBASE_API } from "@env";
-import { useTheme } from "react-native-paper";
-import { AppTracker } from "../../context/AppTracker";
 
 export default function ExpenseAdder({ navigation }) {
   const [amount, setAmount] = useState("");
@@ -60,12 +52,7 @@ export default function ExpenseAdder({ navigation }) {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [merchants, setMerchants] = useState([]);
-  // const [accounts, setAccounts] = useState([]);
-
-  const { state, dispatch } = useContext(AppTracker);
-  const { accounts } = state;
-
-  const theme = useTheme();
+  const [accounts, setAccounts] = useState([]);
 
   const auth = authFire;
   onAuthStateChanged(auth, (user) => {
@@ -81,20 +68,20 @@ export default function ExpenseAdder({ navigation }) {
     });
   }, []);
 
-  // useEffect(() => {
-  //   getAccounts().then((accounts) => {
-  //     setAccounts(accounts);
-  //   });
-  // }, []);
+  useEffect(() => {
+    getAccounts().then((accounts) => {
+      setAccounts(accounts);
+    });
+  }, []);
 
   useEffect(() => {
     getMerchants().then((merchants) => {
       setMerchants(merchants);
-      // console.log(merchants);
     });
   }, []);
 
   const expenses = {
+    id: Date.now().toString(36) + Math.random().toString(36).substring(2),
     amount,
     category,
     merchant,
@@ -118,6 +105,7 @@ export default function ExpenseAdder({ navigation }) {
       ),
     merchant: yup.string().required(),
     account: yup.string().required(),
+    location: yup.string().required(),
     category: yup.string().required(),
     date: yup.string().required(),
   });
@@ -126,13 +114,11 @@ export default function ExpenseAdder({ navigation }) {
     const data = {
       ...values,
       userId: expenses.userId,
-      location: expenses.location,
     };
-    // TODO: Check this...
+
     setLoading(true);
     addExpense(data).then(
       () => {
-        // TODO: Check this...
         setLoading(false);
         Alert.alert(
           "Expense Added",
@@ -140,32 +126,46 @@ export default function ExpenseAdder({ navigation }) {
           [
             {
               text: "OK",
+              onPress: () => {
+                // Navigate back to the Expenses List screen - check working Android and correct nav
+                navigation.navigate("ExpenseList");
+              },
               style: "cancel",
             },
           ]
         );
-        // TODO: Redirect to home?
       },
       (error) => {
-        // TODO: Check this...
         setError(error);
-        // TODO: Check this...
+        // TODO: Check
         setLoading(false);
-        // TODO: Handle error
-        console.error("Error: Unable to add expense");
+        // TODO: CHECK
+        // console.error("Error: Unable to add expense");
+        Alert.alert("Error", "Unable to add expense", [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]);
       }
     );
   };
 
-  // if (error) return <ErrorHandler error={error} />;
+  if (error) return <ErrorHandler error={error} />;
 
   const handleAddCategory = (category) => {
     if (!category.length) return;
     const exists = categories.find((cat) => cat.label === category);
     if (exists) {
-      // TODO: Inform user in a modal maybe?
-      console.error("Error: Category already exists");
-      return;
+      // TODO: CHECK
+      Alert.alert("This category already exists!", [
+        {
+          text: "OK",
+          style: "cancel",
+        },
+      ]);
+      // console.error("Error: Category already exists");
+      // return;
     }
 
     addCategory(category).then(
@@ -187,7 +187,13 @@ export default function ExpenseAdder({ navigation }) {
         ]);
       },
       (error) => {
-        console.error("Error: Unable to add category");
+        //CHECK
+        Alert.alert(`Error: Unable to add ${category} to your categories`, [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]);
       }
     );
     setToggleCategoryModal((prev) => !prev);
@@ -197,8 +203,13 @@ export default function ExpenseAdder({ navigation }) {
     if (!merchant.length) return;
     const exists = merchants.find((merch) => merch.label === merchant);
     if (exists) {
-      console.error("Error: Merchant already exists");
-      return;
+      Alert.alert(`Error: this merchant already exists!`, [
+        {
+          text: "OK",
+          style: "cancel",
+        },
+      ]);
+      //CHECK
     }
 
     addMerchant(merchant).then(
@@ -217,8 +228,14 @@ export default function ExpenseAdder({ navigation }) {
         setMerchants((prev) => [...prev, { label: merchant, value: merchant }]);
       },
       (error) => {
-        // TODO: Handle error
-        console.error("Error: Unable to add merchant");
+        // TODO: - check working
+        //console.error("Error: Unable to add merchant");
+        Alert.alert("Error", "Unable to add merchant", [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]);
       }
     );
     setToggleMerchantModal((prev) => !prev);
@@ -228,8 +245,15 @@ export default function ExpenseAdder({ navigation }) {
     if (!account.length) return;
     const exists = accounts.find((acc) => acc.label === account);
     if (exists) {
-      console.error("Error: Account already exists");
-      return;
+      // console.error("Error: Account already exists");
+      // return;
+      //CHECK
+      Alert.alert("Error", "This account already exists", [
+        {
+          text: "OK",
+          style: "cancel",
+        },
+      ]);
     }
 
     addAccount(account).then(
@@ -244,12 +268,22 @@ export default function ExpenseAdder({ navigation }) {
             },
           ]
         );
-        // Optimistic update
+
         setAccounts((prev) => [...prev, { label: account, value: account }]);
       },
       (error) => {
-        // TODO: Handle error
-        console.error("Error: Unable to add account");
+        // TODO: CHECK
+        //console.error("Error: Unable to add account");
+        Alert.alert(
+          "Error",
+          "You have not been able to add this account card to your account",
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
       }
     );
     setToggleAccountModal((prev) => !prev);
@@ -264,6 +298,8 @@ export default function ExpenseAdder({ navigation }) {
         date: "",
         receipt: "",
         account: "",
+        location: "",
+        id: "",
       }}
       validationSchema={expenseSchema}
       onSubmit={(values) => {
@@ -273,118 +309,121 @@ export default function ExpenseAdder({ navigation }) {
           (formData.account = values.account),
           (formData.date = values.date),
           (formData.merchant = values.merchant),
-          (formData.receipt = values.receipt)
-          // (formData.location = values.location)
+          (formData.receipt = values.receipt),
+          (formData.location = values.location)
         );
         handleSubmit(formData);
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
         return (
-          // <ScrollView style={{ flex: 1 }}>
-          <View style={styles.container}>
-            <View style={styles.inputRow}>
-              <Text>Add a new Expense</Text>
-              <TextInput
-                aria-label="Amount"
-                style={styles.input}
-                onChangeText={handleChange("amount")}
-                onBlur={handleBlur("amount")}
-                value={values.amount}
-                placeholder="Amount"
-              />
-              {errors.amount && <Text>{errors.amount}</Text>}
+          <AutocompleteDropdownContextProvider>
+            <View style={styles.container}>
+              {loading ? (
+                <Loading />
+              ) : (
+                <>
+                  <View style={styles.inputRow}>
+                    <Text variant="headlineMedium">Add a new Expense</Text>
+                    <TextInput
+                      mode="outlined"
+                      aria-label="Amount"
+                      style={styles.input}
+                      onChangeText={handleChange("amount")}
+                      onBlur={handleBlur("amount")}
+                      value={values.amount}
+                      placeholder="Amount"
+                    />
+                    {errors.amount && <Text>{errors.amount}</Text>}
+                  </View>
+                  <MerchantAutoComplete
+                    merchant={values.merchant}
+                    merchants={merchants}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                  />
+                  <Button
+                    mode="outlined"
+                    title="Add New Merchant"
+                    onPress={() => setToggleMerchantModal((prev) => !prev)}
+                  >
+                    Add New Merchant
+                  </Button>
+                  <MerchantAdderModal
+                    isVisible={toggleMerchantModal}
+                    setIsVisible={setToggleMerchantModal}
+                    handleAddMerchant={handleAddMerchant}
+                  />
+                  {errors.merchant && <Text>{errors.merchant}</Text>}
+                  <CategoryList
+                    category={values.category}
+                    categories={categories}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                  />
+                  {errors.category && <Text>{errors.category}</Text>}
+                  <Button
+                    mode="contained"
+                    title="Add New Category"
+                    onPress={() => setToggleCategoryModal((prev) => !prev)}
+                  >
+                    Add New Category
+                  </Button>
+                  <CategoryAdderModal
+                    isVisible={toggleCategoryModal}
+                    setIsVisible={setToggleCategoryModal}
+                    handleAddCategory={handleAddCategory}
+                  />
+                  <AccountListDropDown
+                    account={values.account}
+                    accounts={accounts}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                  />
+                  {errors.account && <Text>{errors.account}</Text>}
+                  <Button
+                    mode="contained"
+                    title="Add New Account"
+                    onPress={() => setToggleAccountModal((prev) => !prev)}
+                  >
+                    Add New Account
+                  </Button>
+                  <AccountAdderModal
+                    isVisible={toggleAccountModal}
+                    setIsVisible={setToggleAccountModal}
+                    handleAddAccount={handleAddAccount}
+                  />
+                  <TextInput
+                    mode="outlined"
+                    aria-label="Date"
+                    placeholder="Date"
+                    style={styles.input}
+                    onChangeText={handleChange("date")}
+                    onBlur={handleBlur("date")}
+                    value={values.date}
+                  />
+                  {errors.date && <Text>{errors.date}</Text>}
+                  <TextInput
+                    mode="outlined"
+                    aria-label="Location"
+                    placeholder="Location"
+                    style={styles.input}
+                    onChangeText={handleChange("location")}
+                    onBlur={handleBlur("location")}
+                    value={values.location}
+                  />
+                  {errors.location && <Text>{errors.location}</Text>}
+                  <Button
+                    title="Submit"
+                    onPress={handleSubmit}
+                    mode="contained"
+                  >
+                    Submit
+                  </Button>
+                </>
+              )}
             </View>
-            <MerchantAutoComplete
-              merchant={values.merchant}
-              merchants={merchants}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-            />
-            <Button
-              title="Add New Merchant"
-              onPress={() => setToggleMerchantModal((prev) => !prev)}
-            />
-            <MerchantAdderModal
-              isVisible={toggleMerchantModal}
-              setIsVisible={setToggleMerchantModal}
-              handleAddMerchant={handleAddMerchant}
-            />
-            {errors.merchant && <Text>{errors.merchant}</Text>}
-            <CategoryList
-              category={values.category}
-              categories={categories}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-            />
-            {errors.category && <Text>{errors.category}</Text>}
-            <Button
-              title="Add New Category"
-              onPress={() => setToggleCategoryModal((prev) => !prev)}
-            />
-            <CategoryAdderModal
-              isVisible={toggleCategoryModal}
-              setIsVisible={setToggleCategoryModal}
-              handleAddCategory={handleAddCategory}
-            />
-            <AccountListDropDown
-              account={values.account}
-              accounts={accounts}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
-            />
-            {errors.account && <Text>{errors.account}</Text>}
-            <Button
-              title="Add New Account"
-              onPress={() => setToggleAccountModal((prev) => !prev)}
-            />
-            <AccountAdderModal
-              isVisible={toggleAccountModal}
-              setIsVisible={setToggleAccountModal}
-              handleAddAccount={handleAddAccount}
-            />
-            <TextInput
-              aria-label="Date"
-              placeholder="Date"
-              style={styles.input}
-              onChangeText={handleChange("date")}
-              onBlur={handleBlur("date")}
-              value={values.date}
-            />
-            {errors.date && <Text>{errors.date}</Text>}
-            <GooglePlacesAutocomplete
-              placeholder="Search location"
-              onPress={(data, details = null) => {
-                // 'details' is provided when fetchDetails = true
-                setLocation((location.location = data.description));
-                // console.log(data, details);
-              }}
-              query={{
-                key: FIREBASE_API,
-                language: "en",
-              }}
-              textInputProps={{
-                InputComp: TextInput,
-              }}
-              styles={{
-                textInputContainer: {
-                  backgroundColor: theme.colors.primary,
-                },
-                textInput: {
-                  height: 38,
-                  color: "#5d5d5d",
-                  fontSize: 16,
-                },
-                predefinedPlacesDescription: {
-                  color: "#1faadb",
-                },
-              }}
-              onFail={(error) => console.log(error)}
-              onNotFound={() => console.log("no results")}
-            />
-            <Button title="Submit" onPress={handleSubmit} />
-          </View>
-          // </ScrollView>
+          </AutocompleteDropdownContextProvider>
         );
       }}
     </Formik>
