@@ -22,8 +22,6 @@ export default function ExpenseCard({ item }) {
   );
 }
 
-//Card.Cover needs to either show a placeholder image or be disabled if receipt is null
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

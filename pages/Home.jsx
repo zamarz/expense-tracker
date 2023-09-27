@@ -9,6 +9,7 @@ import { Button, Divider, useTheme, Text } from "react-native-paper";
 import { Loading } from "../components/loading/Loading";
 import ErrorHandler from "../components/error/ErrorHandler";
 import { fetchAccountsData, fetchExpensesData } from "../firebase/firestore";
+import { authSentry } from "../sentryConfig";
 
 export default function Home({ navigation }) {
   const [error, setError] = useState(false);
@@ -23,7 +24,6 @@ export default function Home({ navigation }) {
     fetchExpensesData(uid)
       .then(({ message, expenses }) => {
         if ((message = "Success")) {
-          // console.log(expenses);
           dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
         }
         return { message };
@@ -32,7 +32,6 @@ export default function Home({ navigation }) {
         if ((message = "Success")) {
           fetchAccountsData(uid).then(({ message, accounts }) => {
             if (message === "Success") {
-              // console.log(accounts);
               if (accounts) {
                 dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
                 setLoading(false);
@@ -64,6 +63,12 @@ export default function Home({ navigation }) {
           <Divider />
         </View>
         <ScrollView>
+          <Button
+            title="Try!"
+            onPress={() => {
+              authSentry.captureException(new Error("First error"));
+            }}
+          />
           <Button
             style={styles.appButtonContainer}
             mode="contained"

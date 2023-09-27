@@ -54,13 +54,12 @@ export default function ExpenseAdder({ navigation }) {
   const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({}); //change const initialC
+  const [formData, setFormData] = useState({});
   const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
   const [toggleAccountModal, setToggleAccountModal] = useState(false);
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [merchants, setMerchants] = useState([]);
-  // const [accounts, setAccounts] = useState([]);
 
   const { state, dispatch } = useContext(AppTracker);
   const { accounts } = state;
@@ -81,16 +80,9 @@ export default function ExpenseAdder({ navigation }) {
     });
   }, []);
 
-  // useEffect(() => {
-  //   getAccounts().then((accounts) => {
-  //     setAccounts(accounts);
-  //   });
-  // }, []);
-
   useEffect(() => {
     getMerchants().then((merchants) => {
       setMerchants(merchants);
-      // console.log(merchants);
     });
   }, []);
 
@@ -128,11 +120,10 @@ export default function ExpenseAdder({ navigation }) {
       userId: expenses.userId,
       location: expenses.location,
     };
-    // TODO: Check this...
+
     setLoading(true);
     addExpense(data).then(
       () => {
-        // TODO: Check this...
         setLoading(false);
         Alert.alert(
           "Expense Added",
@@ -144,26 +135,21 @@ export default function ExpenseAdder({ navigation }) {
             },
           ]
         );
-        // TODO: Redirect to home?
       },
       (error) => {
-        // TODO: Check this...
         setError(error);
-        // TODO: Check this...
+
         setLoading(false);
-        // TODO: Handle error
+
         console.error("Error: Unable to add expense");
       }
     );
   };
 
-  // if (error) return <ErrorHandler error={error} />;
-
   const handleAddCategory = (category) => {
     if (!category.length) return;
     const exists = categories.find((cat) => cat.label === category);
     if (exists) {
-      // TODO: Inform user in a modal maybe?
       console.error("Error: Category already exists");
       return;
     }
@@ -217,7 +203,6 @@ export default function ExpenseAdder({ navigation }) {
         setMerchants((prev) => [...prev, { label: merchant, value: merchant }]);
       },
       (error) => {
-        // TODO: Handle error
         console.error("Error: Unable to add merchant");
       }
     );
@@ -244,11 +229,10 @@ export default function ExpenseAdder({ navigation }) {
             },
           ]
         );
-        // Optimistic update
+
         setAccounts((prev) => [...prev, { label: account, value: account }]);
       },
       (error) => {
-        // TODO: Handle error
         console.error("Error: Unable to add account");
       }
     );
@@ -274,14 +258,12 @@ export default function ExpenseAdder({ navigation }) {
           (formData.date = values.date),
           (formData.merchant = values.merchant),
           (formData.receipt = values.receipt)
-          // (formData.location = values.location)
         );
         handleSubmit(formData);
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
         return (
-          // <ScrollView style={{ flex: 1 }}>
           <View style={styles.container}>
             <View style={styles.inputRow}>
               <Text>Add a new Expense</Text>
@@ -355,9 +337,7 @@ export default function ExpenseAdder({ navigation }) {
             <GooglePlacesAutocomplete
               placeholder="Search location"
               onPress={(data, details = null) => {
-                // 'details' is provided when fetchDetails = true
                 setLocation((location.location = data.description));
-                // console.log(data, details);
               }}
               query={{
                 key: FIREBASE_API,
@@ -384,7 +364,6 @@ export default function ExpenseAdder({ navigation }) {
             />
             <Button title="Submit" onPress={handleSubmit} />
           </View>
-          // </ScrollView>
         );
       }}
     </Formik>

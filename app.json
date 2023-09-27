@@ -27,6 +27,18 @@
       "eas": {
         "projectId": "04285a9f-2887-45a0-95af-ad2e68735439"
       }
+    },
+    "plugins": ["sentry-expo"],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "code-crafters-4o",
+            "project": "cc-expenses-tracker"
+          }
+        }
+      ]
     }
   }
 }

@@ -60,7 +60,7 @@ const ReceiptAdder = ({ route, navigation }) => {
 
   const handleSubmit = async (values) => {
     values.userId = expenses.userId;
-    //preventDefault();
+
     setLoading(true);
     try {
       const res = await addDoc(collection(dbFire, "expenses"), values);
@@ -75,7 +75,6 @@ const ReceiptAdder = ({ route, navigation }) => {
           },
         ]
       );
-      // TODO: Redirect to home?
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -116,7 +115,6 @@ const ReceiptAdder = ({ route, navigation }) => {
     if (!category.length) return;
     const exists = categories.find((cat) => cat.label === category);
     if (exists) {
-      // TODO: Inform user in a modal maybe?
       console.error("Error: Category already exists");
       return;
     }
@@ -133,14 +131,13 @@ const ReceiptAdder = ({ route, navigation }) => {
             },
           ]
         );
-        // Optimistic update
+
         setCategories((prev) => [
           ...prev,
           { label: category, value: category },
         ]);
       },
       (error) => {
-        // TODO: Handle error
         console.error("Error: Unable to add category");
       }
     );
@@ -171,11 +168,6 @@ const ReceiptAdder = ({ route, navigation }) => {
     const captureAccount = expenseText.match(/AMERICAN.EXPRESS/g).toString();
     setAccount(captureAccount);
   };
-
-  // will eventually need to re-render the image in expenses cards so be aware of how it is stored
-  //Need to set some kind of loading screeen of around 10 seconds before this page is rendered
-  //might need to include URI in fields in the collection to see if the receipt image can be generated easily
-  //may need to update Yup fields once date picker etc are implemented
 
   return (
     <Formik

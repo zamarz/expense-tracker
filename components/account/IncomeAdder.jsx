@@ -100,7 +100,6 @@ export default function IncomeAdder({ route, navigation }) {
             </View>
 
             <Button
-              // Add functionality for account adder button
               onPress={handleSubmit}
               title="Add income"
               accessibilityLabel="Add a new income to update your balance"
@@ -144,7 +143,3 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 });
-
-//income amount needs to update the balance for the specific account
-//
-//update state in context

@@ -3,7 +3,6 @@ import React from "react";
 
 const ErrorHandler = ({ error, route, navigation }) => {
   console.log(error);
-  // if(route)  const { error } = route.params;
   alert(
     `Error: ${error} \nChange this to a modal instead of a new screeen - should fix Android bug`
   );

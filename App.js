@@ -28,6 +28,8 @@ import {
 } from "react-native-paper";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 
+import * as Sentry from "@sentry/react-native";
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 

@@ -11,8 +11,6 @@ const Settings = () => {
     { label: "Dollars", value: "dollars" },
   ]);
 
-  // going to need to change the currency in state or context
-
   return (
     <SafeAreaView style={styles.container}>
       <View>

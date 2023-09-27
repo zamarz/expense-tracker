@@ -24,8 +24,8 @@ const MerchantAdderModal = ({ isVisible, setIsVisible, handleAddMerchant }) => {
 
   return (
     <Modal
-      animationType="slide" // You can change the animation type if needed
-      transparent={true} // Set to true for a transparent background
+      animationType="slide"
+      transparent={true}
       visible={isVisible}
       onRequestClose={toggleModal}
     >
