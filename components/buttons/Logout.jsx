@@ -1,11 +1,13 @@
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { authFire } from "../../firebaseConfig";
+import { IconButton } from "react-native-paper";
 
 const Logout = () => {
   return (
     <View>
-      <Button
+      <IconButton
+        color="orange"
         onPress={() => {
           authFire.signOut();
         }}

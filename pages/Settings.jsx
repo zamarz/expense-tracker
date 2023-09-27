@@ -51,6 +51,7 @@ const Settings = () => {
             placeholder={"Choose a currency"}
           />
         </View>
+        <Logout />/
         <View>
           <Text style={styles.title}>Delete your account</Text>
           <Button
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     marginVertical: 8,
+    fontSize: 20,
   },
   separator: {
     marginVertical: 8,
