@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
 import { Card, Text, useTheme } from "react-native-paper";
@@ -12,35 +12,36 @@ const ExpenseTotal = () => {
     return (total += +item.amount);
   }, 0);
   return (
-    <Card
-      style={{
-        backgroundColor: theme.colors.secondary,
-        width: 150,
-        height: 80,
-        margin: 10,
-        marginLeft: 250,
-      }}
-    >
-      <Card.Title
-        title="Total Spent"
-        titleStyle={{
-          color: theme.colors.onSecondary,
-          fontSize: 12,
+    <View style={styles.container}>
+      <Card
+        style={{
+          backgroundColor: theme.colors.secondary,
+          width: 150,
+          height: 80,
+          margin: 10,
         }}
-      />
-      <Card.Content>
-        <Text
-          variant="titleLarge"
-          style={{
+      >
+        <Card.Title
+          title="Total Spent"
+          titleStyle={{
             color: theme.colors.onSecondary,
-            fontSize: 18,
-            fontWeight: "bold",
+            fontSize: 12,
           }}
-        >
-          £{(+totalExpenses).toFixed(2)}
-        </Text>
-      </Card.Content>
-    </Card>
+        />
+        <Card.Content>
+          <Text
+            variant="titleLarge"
+            style={{
+              color: theme.colors.onSecondary,
+              fontSize: 18,
+              fontWeight: "bold",
+            }}
+          >
+            £{(+totalExpenses).toFixed(2)}
+          </Text>
+        </Card.Content>
+      </Card>
+    </View>
   );
 };
 
@@ -51,6 +52,17 @@ const styles = StyleSheet.create({
   amount: {
     color: "red",
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F2F2F2',
+  },
+  card: {
+    width: '80%',
+    marginBottom: 20,
+  },
 });
+
 
 export default ExpenseTotal;
