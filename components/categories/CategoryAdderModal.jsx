@@ -1,13 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-  TextInput,
-} from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Pressable, TextInput } from "react-native";
+import { Text, Modal, Portal } from "react-native-paper";
 
 const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
   const [catTitle, setCatTitle] = useState("");
@@ -23,38 +16,40 @@ const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
   };
 
   return (
-    <Modal
-      animationType="slide" // You can change the animation type if needed
-      transparent={true} // Set to true for a transparent background
-      visible={isVisible}
-      onRequestClose={toggleModal}
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={toggleModal}
-          >
-            <Text style={styles.textStyle}>Close</Text>
-          </Pressable>
+    <Portal>
+      <Modal
+        animationType="slide" // You can change the animation type if needed
+        transparent={true} // Set to true for a transparent background
+        visible={isVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={toggleModal}
+            >
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable>
 
-          <TextInput
-            onChangeText={setCatTitle}
-            value={catTitle}
-            placeholder="Category Title"
-          />
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => handleCatAdd()}
-          >
-            <Text style={styles.textStyle}>Add</Text>
-          </Pressable>
-          <Pressable onPress={() => setIsVisible((prev) => !prev)}>
-            <Text>Cancel</Text>
-          </Pressable>
+            <TextInput
+              onChangeText={setCatTitle}
+              value={catTitle}
+              placeholder="Category Title"
+            />
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => handleCatAdd()}
+            >
+              <Text style={styles.textStyle}>Add</Text>
+            </Pressable>
+            <Pressable onPress={() => setIsVisible((prev) => !prev)}>
+              <Text>Cancel</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </Portal>
   );
 };
 
@@ -86,6 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: 200,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",

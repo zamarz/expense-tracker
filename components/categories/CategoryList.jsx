@@ -3,14 +3,14 @@ import { ScrollView, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 // import { ScrollView } from "react-native-gesture-handler";
 
-function CategoryList({ category, categories, handleChange, handleBlur }) {
+function CategoryList({ category, categories, handleChange }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(category);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     if (category !== value) {
-      handleChange("category")(value);
+      handleChange("category", value);
     }
     setItems(categories);
   }, [value, categories]);

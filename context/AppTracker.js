@@ -15,6 +15,14 @@ function reducer(state, action) {
         expenses: [...action.payload],
       };
     }
+
+    case "ADD_EXPENSE": {
+      return {
+        ...state,
+        expenses: [...state.expenses, ...action.payload],
+      };
+    }
+
     case "UPDATE_ACCOUNTS": {
       const totalBalance = calculateTotalBalance(action.payload);
       const totalBudget = calculateTotalBudget(action.payload);
@@ -27,6 +35,7 @@ function reducer(state, action) {
         };
       }
     }
+
     case "ADD_ACCOUNT": {
       const newAccountArray = state.accounts.concat(action.payload);
       const totalBalance = calculateTotalBalance(newAccountArray);
@@ -40,6 +49,7 @@ function reducer(state, action) {
         };
       }
     }
+
     // case "ADD_INCOME": {
     //   return console.log("Hello!!");
     // console.log(action.payload);
@@ -57,7 +67,6 @@ function reducer(state, action) {
     // }
     // }
     case "DELETE_ACCOUNT": {
-      console.log(action.payload, "###############");
       const totalBalance = calculateTotalBalance(action.payload);
       const totalBudget = calculateTotalBudget(action.payload);
       if (totalBalance && totalBudget) {
