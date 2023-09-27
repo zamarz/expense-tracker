@@ -2,13 +2,11 @@ import {
   Alert,
   View,
   StyleSheet,
-  TextInput,
-  Button,
-  Text,
   SafeAreaView,
   TouchableOpacity,
   Pressable,
 } from "react-native";
+import { Button, Text, TextInput } from "react-native-paper";
 import React, { useState, useEffect } from "react";
 import { authFire, dbFire } from "../../firebaseConfig";
 import { addDoc, collection } from "@firebase/firestore";
@@ -79,12 +77,12 @@ export default function ExpenseAdder({ navigation }) {
   useEffect(() => {
     getMerchants().then((merchants) => {
       setMerchants(merchants);
-      console.log(merchants)
     });
   }, []);
   
   
   const expenses = {
+    id: Date.now().toString(36) + Math.random().toString(36).substring(2),
     amount,
     category,
     merchant,
@@ -118,11 +116,11 @@ export default function ExpenseAdder({ navigation }) {
       ...values,
       userId: expenses.userId,
     };
-    // TODO: Check this...
+
     setLoading(true);
     addExpense(data).then(
       () => {
-        // TODO: Check this...
+
         setLoading(false);
         Alert.alert(
           "Expense Added",
@@ -130,19 +128,32 @@ export default function ExpenseAdder({ navigation }) {
           [
             {
               text: "OK",
+              onPress: () => {
+                // Navigate back to the Expenses List screen - check working Android and correct nav
+                navigation.navigate('ExpenseList');
+              },
               style: "cancel",
             },
           ]
         );
-        // TODO: Redirect to home?
+      
       },
       (error) => {
-        // TODO: Check this...
         setError(error);
-        // TODO: Check this...
+        // TODO: Check
         setLoading(false);
-        // TODO: Handle error
-        console.error("Error: Unable to add expense");
+        // TODO: CHECK
+       // console.error("Error: Unable to add expense");
+       Alert.alert(
+        "Error",
+        "Unable to add expense",
+        [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]
+      );
       }
     );
   };
@@ -153,9 +164,18 @@ export default function ExpenseAdder({ navigation }) {
     if (!category.length) return;
     const exists = categories.find((cat) => cat.label === category);
     if (exists) {
-      // TODO: Inform user in a modal maybe?
-      console.error("Error: Category already exists");
-      return;
+      // TODO: CHECK
+      Alert.alert(
+        "This category already exists!",
+        [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]
+      );
+      // console.error("Error: Category already exists");
+      // return;
     }
 
     addCategory(category).then(
@@ -177,8 +197,17 @@ export default function ExpenseAdder({ navigation }) {
         ]);
       },
       (error) => {
-  
-        console.error("Error: Unable to add category");
+ //CHECK
+        Alert.alert(
+         
+          `Error: Unable to add ${category} to your categories`,
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
       }
     );
     setToggleCategoryModal((prev) => !prev);
@@ -188,8 +217,16 @@ export default function ExpenseAdder({ navigation }) {
     if (!merchant.length) return;
     const exists = merchants.find((merch) => merch.label === merchant);
     if (exists) {
-      console.error("Error: Merchant already exists");
-      return;
+      Alert.alert(
+        `Error: this merchant already exists!`,
+        [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]
+      );
+      //CHECK
     }
     
     addMerchant(merchant).then(
@@ -211,8 +248,18 @@ export default function ExpenseAdder({ navigation }) {
         ]);
       },
       (error) => {
-        // TODO: Handle error
-        console.error("Error: Unable to add merchant");
+        // TODO: - check working
+        //console.error("Error: Unable to add merchant");
+        Alert.alert(
+          "Error",
+          "Unable to add merchant",
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
       }
     );
     setToggleMerchantModal((prev) => !prev);
@@ -222,9 +269,19 @@ export default function ExpenseAdder({ navigation }) {
     if (!account.length) return;
     const exists = accounts.find((acc) => acc.label === account);
     if (exists) {
-    
-      console.error("Error: Account already exists");
-      return;
+      // console.error("Error: Account already exists");
+      // return;
+      //CHECK
+      Alert.alert(
+        "Error",
+        "This account already exists",
+        [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ]
+      );
     }
     
     addAccount(account).then(
@@ -239,15 +296,25 @@ export default function ExpenseAdder({ navigation }) {
             },
           ]
         );
-        // Optimistic update
+    
         setAccounts((prev) => [
           ...prev,
           { label: account, value: account },
         ]);
       },
       (error) => {
-        // TODO: Handle error
-        console.error("Error: Unable to add account");
+        // TODO: CHECK
+        //console.error("Error: Unable to add account");
+        Alert.alert(
+          "Error",
+          "You have not been able to add this account card to your account",
+          [
+            {
+              text: "OK",
+              style: "cancel",
+            },
+          ]
+        );
       }
     );
     setToggleAccountModal((prev) => !prev);
@@ -263,7 +330,9 @@ export default function ExpenseAdder({ navigation }) {
         receipt: "",
         account: "",
         location: "",
+        id: "",
       }}
+      
       validationSchema={expenseSchema}
       onSubmit={(values) => {
         setFormData(
@@ -282,9 +351,14 @@ export default function ExpenseAdder({ navigation }) {
         return (
           <AutocompleteDropdownContextProvider>
             <View style={styles.container}>
+              {loading ? ( 
+            <Loading />
+          ) : (
+            <>
               <View style={styles.inputRow}>
-                <Text>Add a new Expense</Text>
+                <Text variant="headlineMedium" >Add a new Expense</Text>
                 <TextInput
+                  mode="outlined"
                   aria-label="Amount"
                   style={styles.input}
                   onChangeText={handleChange("amount")}
@@ -301,9 +375,11 @@ export default function ExpenseAdder({ navigation }) {
                 handleBlur={handleBlur}
               />       
                 <Button
+                mode="outlined"
                 title="Add New Merchant"
                 onPress={() => setToggleMerchantModal((prev) => !prev)}
-              />
+              >Add New Merchant
+                </Button>
               <MerchantAdderModal
                 isVisible={toggleMerchantModal}
                 setIsVisible={setToggleMerchantModal}
@@ -318,9 +394,11 @@ export default function ExpenseAdder({ navigation }) {
               />
               {errors.category && <Text>{errors.category}</Text>}
               <Button
+                mode="contained"
                 title="Add New Category"
                 onPress={() => setToggleCategoryModal((prev) => !prev)}
-              />
+              >Add New Category
+              </Button>
               <CategoryAdderModal
                 isVisible={toggleCategoryModal}
                 setIsVisible={setToggleCategoryModal}
@@ -334,15 +412,17 @@ export default function ExpenseAdder({ navigation }) {
               />
               {errors.account && <Text>{errors.account}</Text>}
               <Button
+                mode="contained"
                 title="Add New Account"
                 onPress={() => setToggleAccountModal((prev) => !prev)}
-              />
+              >Add New Account</Button>
               <AccountAdderModal
                 isVisible={toggleAccountModal}
                 setIsVisible={setToggleAccountModal}
                 handleAddAccount={handleAddAccount}
               />
               <TextInput
+                mode="outlined"
                 aria-label="Date"
                 placeholder="Date"
                 style={styles.input}
@@ -352,6 +432,7 @@ export default function ExpenseAdder({ navigation }) {
               />
               {errors.date && <Text>{errors.date}</Text>}
               <TextInput
+                mode="outlined"
                 aria-label="Location"
                 placeholder="Location"
                 style={styles.input}
@@ -360,7 +441,11 @@ export default function ExpenseAdder({ navigation }) {
                 value={values.location}
               />
               {errors.location && <Text>{errors.location}</Text>}
-              <Button title="Submit" onPress={handleSubmit} />
+              <Button title="Submit" onPress={handleSubmit} mode="contained">
+                Submit
+                </Button>
+                </>
+          )}
             </View>
           </AutocompleteDropdownContextProvider>
         );

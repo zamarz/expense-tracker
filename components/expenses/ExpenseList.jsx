@@ -14,6 +14,9 @@ export default function ExpenseList({ navigation }) {
       <FlatList
         data={expenses}
         renderItem={({ item }) => <ExpenseCard item={item} />}
+        keyExtractor={(item) => {
+          return item.id;
+        }}
       />
       <Button
         mode="contained"

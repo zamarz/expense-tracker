@@ -17,7 +17,6 @@ export async function getAccounts() {
   }));
 }
 
-
 export async function getMerchants() {
   const querySnapshot = await getDocs(collection(dbFire, "merchants"));
   return await querySnapshot.docs.map((doc) => ({
