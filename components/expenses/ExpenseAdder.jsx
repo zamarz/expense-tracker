@@ -1,26 +1,14 @@
-import {
-  Alert,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import { Alert, View, StyleSheet } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import React, { useState, useEffect, useContext } from "react";
-import { authFire, dbFire } from "../../firebaseConfig";
-import { addDoc, collection } from "@firebase/firestore";
-import { onAuthStateChanged } from "@firebase/auth";
+
 import ErrorHandler from "../error/ErrorHandler";
 import { Loading } from "../loading/Loading";
 import { Formik } from "formik";
-import DropDownPicker from "react-native-dropdown-picker";
-import { stringifyValueWithProperty } from "react-native-web/dist/cjs/exports/StyleSheet/compiler";
-import { object, string, number } from "yup";
+
 import * as yup from "yup";
 import {
   getCategories,
-  getAccounts,
   getMerchants,
   addCategory,
   addMerchant,
@@ -32,7 +20,6 @@ import CategoryList from "../categories/CategoryList";
 import AccountAdderModal from "../account/AccountAdderModal";
 import AccountListDropDown from "../account/AccountListDropDown";
 import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
-import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
 import { AppTracker } from "../../context/AppTracker";
 import { UserContext } from "../../context/UserContext";
@@ -81,6 +68,7 @@ export default function ExpenseAdder({ navigation }) {
         setLoading(false);
       })
       .catch((err) => {
+        console.log(err);
         setError(err);
       });
   }, []);
@@ -136,7 +124,7 @@ export default function ExpenseAdder({ navigation }) {
     addExpense(data)
       .then(() => {
         setLoading(false);
-        Alert.alert(
+        alert(
           "Expense Added",
           `You have successfully added your expense for the amount of £${data.amount}`,
           [
@@ -146,6 +134,7 @@ export default function ExpenseAdder({ navigation }) {
             },
           ]
         );
+        dispatch({ type: "ADD_EXPENSES", payload: data });
         // navigation.navigate("Expenses List");
       })
       .catch((error) => {
@@ -154,7 +143,7 @@ export default function ExpenseAdder({ navigation }) {
         setLoading(false);
         // TODO: CHECK
         // console.error("Error: Unable to add expense");
-        Alert.alert("Error", "Unable to add expense", [
+        alert("Error", "Unable to add expense", [
           {
             text: "OK",
             style: "cancel",

@@ -15,6 +15,12 @@ function reducer(state, action) {
         expenses: [...action.payload],
       };
     }
+    case "ADD_EXPENSES": {
+      return {
+        ...state,
+        expenses: [...state.expenses, ...action.payload],
+      };
+    }
     case "UPDATE_ACCOUNTS": {
       const totalBalance = calculateTotalBalance(action.payload);
       const totalBudget = calculateTotalBudget(action.payload);

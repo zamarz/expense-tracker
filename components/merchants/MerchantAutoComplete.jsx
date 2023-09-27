@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import {
-  StyleSheet,
-  TextInput,
-  Text,
-} from "react-native";
-import { AutocompleteDropdown } from "react-native-autocomplete-dropdown"
+import React, { useState, useEffect } from "react";
+import { StyleSheet, TextInput, Text } from "react-native";
+import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
-export default function MerchantAutoComplete({ merchant, merchants, handleChange, handleBlur }) {
+export default function MerchantAutoComplete({
+  merchant,
+  merchants,
+  handleChange,
+  handleBlur,
+}) {
   const merchantAsId = (merchant) => {
     if (!merchant || !merchant.length) return;
     const merchantObject = merchants.find((m) => m.title === merchant);
     return merchantObject.id;
-  }
+  };
   const [value, setValue] = useState(merchantAsId(merchant));
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function MerchantAutoComplete({ merchant, merchants, handleChange
       initialValue={value}
       onSelectItem={setValue}
       dataSet={merchants}
+      onSubmit={setValue}
     />
   );
 }
