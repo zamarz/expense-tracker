@@ -17,7 +17,7 @@ const Tab = createMaterialBottomTabNavigator();
 const ReceiptsNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Receipt Scanner" component={ReceiptScanner} />
+      <Stack.Screen name="Receipt ScannerS" component={ReceiptScanner} />
       <Stack.Screen name="Receipt Adder" component={ReceiptAdder} />
     </Stack.Navigator>
   );
@@ -37,7 +37,7 @@ export default function Footer() {
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}
       />
@@ -45,12 +45,12 @@ export default function Footer() {
         name="Analytics"
         component={Analysis}
         options={{
-          tabBarLabel: "Analytics",
+          tabBarLabel: "Analysis",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="google-analytics"
               color={color}
-              size={size}
+              size={26}
             />
           ),
         }}
@@ -59,9 +59,9 @@ export default function Footer() {
         name="Receipt Navigator"
         component={ReceiptsNavigator}
         options={{
-          tabBarLabel: "Receipt Scanning",
+          tabBarLabel: "Scan",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="camera" color={color} size={size} />
+            <MaterialCommunityIcons name="camera" color={color} size={26} />
           ),
         }}
       />
@@ -69,12 +69,12 @@ export default function Footer() {
         name="Expenses Map"
         component={Map}
         options={{
-          tabBarLabel: "Expenses Map",
+          tabBarLabel: "Map",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="google-maps"
               color={color}
-              size={size}
+              size={26}
             />
           ),
         }}
@@ -88,7 +88,7 @@ export default function Footer() {
             <MaterialCommunityIcons
               name="account-settings"
               color={color}
-              size={size}
+              size={26}
             />
           ),
         }}

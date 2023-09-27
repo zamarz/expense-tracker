@@ -5,10 +5,8 @@ import { addDoc, collection, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbFire } from "../../firebaseConfig";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { UserContext } from "../../context/UserContext";
-import { AppTracker } from "../../context/AppTracker";
 
-export default function IncomeAdder({ route, navigation }) {
+export default function IncomeAdder({ navigation, item }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [incomeDate, setIncomeDate] = useState(new Date());
@@ -24,12 +22,28 @@ export default function IncomeAdder({ route, navigation }) {
   const incomeSchema = yup.object().shape({
     income: yup.number().required().typeError("Income should be a number"),
     source: yup.string().required(),
+    incomeDate: yup.string().required(),
   });
+
+  const fetchAccounts = async () => {
+    try {
+      const q = query(collection(dbFire, "account").where("userId", "==", userId));
+      const querySnapshot = await getDocs(q);
+      const accountData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setAccounts(accountData);
+      console.log(accountData);
+    } catch (error) {
+      console.console.log(error);
+    }
+  };
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
     try {
-      const incomeData = await addDoc(collection(dbFire, "income"), {
+      const incomeDocRef = await addDoc(collection(dbFire, "income"), {
         income: values.income,
         source: values.source,
         incomeDate: values.incomeDate,
@@ -87,6 +101,7 @@ export default function IncomeAdder({ route, navigation }) {
               />
               {errors.income && <Text>{errors.income}</Text>}
             </View>
+               
             <View style={styles.inputRow}>
               <TextInput
                 aria-label="Source of income"
@@ -121,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+
     marginHorizontal: 16,
   },
   title: {
@@ -132,11 +148,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 10,
+  datePicker: {
+    height: 120,
+    marginTop: -10,
+  },
+  pickerButton: {
+    paddingHorizontal: 20,
   },
   buttonText: {
     fontSize: 14,

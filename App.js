@@ -60,7 +60,7 @@ export default function App() {
   const ExpensesNavigator = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Expense List Page" component={ExpenseList} />
+        <Stack.Screen name="Expenses List" component={ExpenseList} />
         <Stack.Screen name="Expense Adder" component={ExpenseAdder} />
       </Stack.Navigator>
     );

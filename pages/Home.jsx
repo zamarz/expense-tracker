@@ -50,12 +50,13 @@ export default function Home({ navigation }) {
   if (loading) return <Loading />;
   if (error) return <ErrorHandler error={error} />;
 
+  const remainingBalance = (+balance).toFixed(2);
+
   return (
     <View style={styles.container}>
-      <View>
         <View>
-          <Text variant="headlineLarge" style={styles.title}>
-            Balance: £{(+balance).toFixed(2)}
+          <Text variant="headlineSmall" style={styles.title}>
+            Balance: <Text>£{remainingBalance}</Text>
           </Text>
           <Divider />
           <BudgetPlanner />
@@ -65,7 +66,7 @@ export default function Home({ navigation }) {
         </View>
         <ScrollView>
           <Button
-            style={styles.appButtonContainer}
+            style={[styles.appButtonContainer, {marginBottom: 2, marginTop: 5}]}
             mode="contained"
             onPress={() =>
               navigation.navigate("Expense List", { screen: "ExpenseList" })
@@ -77,7 +78,7 @@ export default function Home({ navigation }) {
             Expenses List{" "}
           </Button>
           <Button
-            style={styles.appButtonContainer}
+            style={[styles.appButtonContainer, { marginBottom: 2 }]}
             mode="contained"
             onPress={() => navigation.navigate("Accounts List")}
             title="View Accounts"
@@ -86,7 +87,7 @@ export default function Home({ navigation }) {
             View Accounts
           </Button>
           <Button
-            style={styles.appButtonContainer}
+            style={[styles.appButtonContainer, { marginBottom: 2 }]}
             mode="contained"
             onPress={() =>
               navigation.navigate("Accounts List", { screen: "Accounts Adder" })
@@ -99,7 +100,7 @@ export default function Home({ navigation }) {
           <Divider />
           <Logout />
         </ScrollView>
-      </View>
+      
     </View>
   );
 }
@@ -111,6 +112,8 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
+    fontWeight: "bold",
+    paddingTop: 6,
   },
   separator: {
     marginVertical: 8,
@@ -122,5 +125,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    margin: 2
   },
 });

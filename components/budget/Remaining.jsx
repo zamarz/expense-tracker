@@ -8,12 +8,19 @@ const Remaining = () => {
   const totalExpenses = expenses.reduce((total, item) => {
     return (total = total + +item.amount);
   }, 0);
+
+  const remainingBalance = (+budget - +totalExpenses).toFixed(2);
+
+  const textStyle = {
+    color: remainingBalance > 0 ? "green" : "red",
+  };
+
   return (
     <Card>
-      <Card.Title title="Your remaining budget" />
+      {/* <Card.Title title="Your remaining budget" /> */}
       <Card.Content>
-        <Text variant="titleLarge">
-          Remaining: £{(+budget - +totalExpenses).toFixed(2)}
+        <Text variant="titleMedium" >
+          Remaining budget: <Text style={textStyle}>£{remainingBalance}</Text>
         </Text>
       </Card.Content>
     </Card>

@@ -1,4 +1,4 @@
-import {} from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
 import { Card, Text, useTheme } from "react-native-paper";
@@ -12,14 +12,23 @@ const ExpenseTotal = () => {
   }, 0);
   return (
     <Card>
-      <Card.Title title="Your total spend" />
+      {/* <Card.Title title="Your total spend" /> */}
       <Card.Content>
-        <Text variant="titleLarge">
-          Total spent so far: £{(+totalExpenses).toFixed(2)}
+        <Text variant="titleMedium">
+          Total spent so far: <Text style={styles.amount}>£{(+totalExpenses).toFixed(2)}</Text>
         </Text>
       </Card.Content>
     </Card>
   );
 };
+
+const styles = StyleSheet.create({
+  baseText: {
+    fontWeight: 'bold',
+  },
+  amount: {
+    color: 'red',
+  },
+});
 
 export default ExpenseTotal;
