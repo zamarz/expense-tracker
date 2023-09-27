@@ -21,7 +21,7 @@ import ErrorHandler from "../error/ErrorHandler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { FIREBASE_API } from "@env";
 import { ScrollView } from "react-native-gesture-handler";
-import { geolocation } from "../../utils/helpers";
+import { fetchGeoLocation } from "../../utils/helpers";
 
 const ExpenseAdder = () => {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
@@ -31,6 +31,7 @@ const ExpenseAdder = () => {
   const [error, setError] = useState(false);
   const [date, setDate] = useState(undefined);
   const [location, setLocation] = useState();
+  const [geolocation, setGeolocation] = useState();
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
   const [merchants, setMerchants] = useState([]);
@@ -212,6 +213,9 @@ const ExpenseAdder = () => {
           setMerchant(payload);
         }
         break;
+      case "geoLocation": {
+        setGeolocation(payload);
+      }
       default:
         console.log("CHANGE");
     }
@@ -301,10 +305,12 @@ const ExpenseAdder = () => {
           />
           <GooglePlacesAutocomplete
             placeholder="Search location"
-            fetchDetails={true}
             onPress={(data, details = null) => {
               // 'details' is provided when fetchDetails = true
-              setLocation(data.description);
+              // setLocation(data.description);
+              fetchGeoLocation(data.description).then((res) => {
+                console.log(res);
+              });
               console.log(data, details);
             }}
             query={{
@@ -336,10 +342,9 @@ const ExpenseAdder = () => {
           <Button title="Submit" onPress={handleSubmit} mode="contained">
             Submit
           </Button>
-          <Button mode="contained" onPress={geolocation}>
-            {" "}
+          {/* <Button mode="contained" onPress={handleChange}>
             Hit me
-          </Button>
+          </Button> */}
         </View>
       </View>
     </ScrollView>

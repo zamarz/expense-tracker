@@ -26,13 +26,21 @@ export const calculateTotalBudget = (accountsData) => {
   return totalBudget;
 };
 
-export const geolocation = (location) => {
+export const fetchGeoLocation = async (location) => {
   Geocoder.init(FIREBASE_API, { language: "en" });
 
-  Geocoder.from(location)
+  return Geocoder.from(location)
     .then((json) => {
       let geolocation = json.results[0].geometry.location;
-      return geolocation;
+
+      let geoboundingBox = json.results[0].geometry;
+
+      console.log(geolocation, "geolocation");
+      console.log(geoboundingBox, "box");
+
+      if (geolocation && geoboundingBox) {
+        return { coordinates: { location: geolocation, box: geoboundingBox } };
+      }
     })
     .catch((err) => console.log(err));
 };
@@ -42,3 +50,20 @@ export const geolocation = (location) => {
 // lat: 51.5072178
 // ​
 // lng: -0.1275862
+
+// .then(({ results }) => {
+
+//   const result = results[0];
+//   const { geometry } = result;
+//   const { location, bounds } = geometry;
+
+//   const geolocation = location;
+
+//   const geoboundingBox = bounds;
+//   console.log(geoboundingBox, geolocation);
+//   if (
+//     geolocation &&
+//     geoboundingBox.contains("northwest") &&
+//     geoboundingBox.contains("southeast")
+//   ) {
+//     return { coordinates: { location: geolocation, box: geoboundingBox } };
