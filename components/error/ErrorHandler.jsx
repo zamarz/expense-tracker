@@ -5,9 +5,8 @@ const ErrorHandler = ({ error, route, navigation }) => {
   console.log(error);
   // if(route)  const { error } = route.params;
   alert(
-    "Change this to a modal instead of a new screeen - should fix Android bug"
+    `Error: ${error} \nChange this to a modal instead of a new screeen - should fix Android bug`
   );
-  console.log(error);
   if (error.message.includes("in-use")) {
     return (
       <View>

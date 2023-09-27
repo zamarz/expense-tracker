@@ -44,7 +44,6 @@ export default function AccountsAdder({ navigation }) {
     values.id = newAccount.id;
     setIsLoading(true);
     try {
-      console.log(values);
       const res = await addDoc(collection(dbFire, "account"), values);
       if (res.type === "document") {
         dispatch({ type: "ADD_ACCOUNT", payload: values });

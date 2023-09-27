@@ -67,7 +67,6 @@ const ReceiptScanner = ({ navigation, route }) => {
         resolve(xhr.response);
       };
       xhr.onerror = function (e) {
-        console.log(e);
         reject(new TypeError("Network request failed"));
       };
       xhr.responseType = "blob";
@@ -83,8 +82,6 @@ const ReceiptScanner = ({ navigation, route }) => {
 
     return await getDownloadURL(fileRef);
   }
-
-  console.log(image, "image console");
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
