@@ -11,8 +11,8 @@ export default function ExpenseCard({ item }) {
         <Card.Title title={`Amount Spent: £${(+amount).toFixed(2)}`} />
         {/* <Card.Cover source={{ uri: receipt }} /> */}
         <Card.Content>
-          <Text variant="bodyMedoum">Merchant: {merchant}</Text>
-          <Text variant="bodyMedoum">Category: {category}</Text>
+          <Text variant="bodyMedoum">Merchant: {merchant.label}</Text>
+          <Text variant="bodyMedoum">Category: {category.label}</Text>
           <Text variant="bodyMedoum">
             Bought on: {date ? date : "Date Missing!"}
           </Text>

@@ -29,20 +29,25 @@ export const calculateTotalBudget = (accountsData) => {
 export const fetchGeoLocation = async (location) => {
   Geocoder.init(FIREBASE_API, { language: "en" });
 
-  return Geocoder.from("London,UK")
-    .then((res) => {
-      const result = {};
-      res.results.forEach((res) => {
-        result.geoLocation = res.geometry.location;
-        result.viewBox = res.geometry.bounds;
+  if (location) {
+    return Geocoder.from(location)
+      .then((res) => {
+        const result = {};
+        res.results.forEach((res) => {
+          result.geoLocation = res.geometry.location;
+          result.viewBox = res.geometry.bounds;
+        });
+        if (result.geoLocation && result.viewBox) {
+          return result;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return { error: err };
       });
-      if (result.geoLocation && result.viewBox) {
-        return result;
-      } else {
-        return { error: { message: "You can't do that!" } };
-      }
-    })
-    .catch((err) => console.log(err));
+  } else {
+    return { message: "Location not coded correctly" };
+  }
 };
 
 // Object { lat: 51.5072178, lng: -0.1275862 }

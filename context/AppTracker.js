@@ -10,20 +10,23 @@ function reducer(state, action) {
   const { type } = action;
   switch (type) {
     case "UPDATE_EXPENSES": {
+      console.log(1);
       return {
         ...state,
         expenses: [...action.payload],
       };
     }
-
     case "ADD_EXPENSE": {
+      console.log(2);
+      console.log(action.payload, "PAYLOAD##########");
+      console.log(state.expenses, "CURRSTATE##########");
       return {
         ...state,
-        expenses: [...state.expenses, ...action.payload],
+        expenses: [...state.expenses, action.payload],
       };
     }
-
     case "UPDATE_ACCOUNTS": {
+      console.log(3);
       const totalBalance = calculateTotalBalance(action.payload);
       const totalBudget = calculateTotalBudget(action.payload);
       if (totalBalance && totalBudget) {
@@ -33,10 +36,13 @@ function reducer(state, action) {
           balance: totalBalance,
           budget: totalBudget,
         };
+      } else {
+        break;
       }
     }
-
     case "ADD_ACCOUNT": {
+      console.log(4);
+
       const newAccountArray = state.accounts.concat(action.payload);
       const totalBalance = calculateTotalBalance(newAccountArray);
       const totalBudget = calculateTotalBudget(newAccountArray);
@@ -47,14 +53,19 @@ function reducer(state, action) {
           balance: totalBalance,
           budget: totalBudget,
         };
+      } else {
+        break;
       }
     }
 
     case "ADD_INCOME": {
+      console.log(5);
+      break;
+
       // return console.log("Hello!!");
-      console.log(action.payload);
-      const newAccountArray = state.accounts.concat(action.payload);
-      console.log(newAccountArray);
+      // console.log(action.payload);
+      // const newAccountArray = state.accounts.concat(action.payload);
+      // console.log(newAccountArray);
       // const totalBalance = calculateTotalBalance(newAccountArray);
       // const totalBudget = calculateTotalBudget(newAccountArray);
       // if (totalBalance && totalBudget) {
@@ -68,6 +79,8 @@ function reducer(state, action) {
     }
 
     case "DELETE_ACCOUNT": {
+      console.log(6);
+
       const totalBalance = calculateTotalBalance(action.payload);
       const totalBudget = calculateTotalBudget(action.payload);
       if (totalBalance && totalBudget) {
@@ -77,9 +90,10 @@ function reducer(state, action) {
           balance: totalBalance,
           budget: totalBudget,
         };
+      } else {
+        break;
       }
     }
-
     default:
       return state;
   }
