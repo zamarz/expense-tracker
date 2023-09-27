@@ -58,8 +58,6 @@ const ReceiptScanner = ({ navigation, route }) => {
     }
   };
 
-  //Need a timer on the next button - will implement after styling!
-
   async function uploadImageAsync(uri) {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -86,7 +84,13 @@ const ReceiptScanner = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text variant="titleMedium">Upload or take an image of your receipt</Text>
-      <View style={{ flexDirection: "row", padding: 5, justifyContent: "space-between"}}>
+      <View
+        style={{
+          flexDirection: "row",
+          padding: 5,
+          justifyContent: "space-between",
+        }}
+      >
         <Button
           mode="contained"
           title="Choose an image from your library"
