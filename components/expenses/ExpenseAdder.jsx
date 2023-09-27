@@ -21,6 +21,7 @@ import ErrorHandler from "../error/ErrorHandler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { FIREBASE_API } from "@env";
 import { ScrollView } from "react-native-gesture-handler";
+import { geolocation } from "../../utils/helpers";
 
 const ExpenseAdder = () => {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
@@ -334,6 +335,10 @@ const ExpenseAdder = () => {
           />
           <Button title="Submit" onPress={handleSubmit} mode="contained">
             Submit
+          </Button>
+          <Button mode="contained" onPress={geolocation}>
+            {" "}
+            Hit me
           </Button>
         </View>
       </View>
