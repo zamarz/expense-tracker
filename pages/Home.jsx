@@ -10,6 +10,7 @@ import { Loading } from "../components/loading/Loading";
 import ErrorHandler from "../components/error/ErrorHandler";
 import { fetchAccountsData, fetchExpensesData } from "../firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
+import { fetchGeoLocation } from "../utils/helpers";
 
 export default function Home({ navigation }) {
   const [error, setError] = useState(false);
@@ -77,6 +78,17 @@ export default function Home({ navigation }) {
           icon="cash"
         >
           Expenses List{" "}
+        </Button>
+        <Button
+          style={[styles.appButtonContainer, { marginBottom: 2, marginTop: 5 }]}
+          mode="contained"
+          onPress={() =>
+            navigation.navigate("Expense List", { screen: "Expense Adder" })
+          }
+          title="Add new expense"
+          accessibilityLabel="Add a new expense by filling in a form"
+        >
+          Add new expense
         </Button>
         <Button
           style={[styles.appButtonContainer, { marginBottom: 2 }]}

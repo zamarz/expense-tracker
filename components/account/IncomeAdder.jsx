@@ -25,22 +25,22 @@ export default function IncomeAdder({ navigation, route }) {
     incomeDate: yup.string().required(),
   });
 
-  const fetchAccounts = async () => {
-    try {
-      const q = query(
-        collection(dbFire, "account").where("userId", "==", userId)
-      );
-      const querySnapshot = await getDocs(q);
-      const accountData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setAccounts(accountData);
-      console.log(accountData);
-    } catch (error) {
-      console.console.log(error);
-    }
-  };
+  // const fetchAccounts = async () => {
+  //   try {
+  //     const q = query(
+  //       collection(dbFire, "account").where("userId", "==", userId)
+  //     );
+  //     const querySnapshot = await getDocs(q);
+  //     const accountData = querySnapshot.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+  //     setAccounts(accountData);
+  //     console.log(accountData);
+  //   } catch (error) {
+  //     console.console.log(error);
+  //   }
+  // };
 
   const handleSubmit = async (values) => {
     setIsLoading(true);

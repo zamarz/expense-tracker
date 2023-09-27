@@ -29,17 +29,17 @@ export const calculateTotalBudget = (accountsData) => {
 export const fetchGeoLocation = async (location) => {
   Geocoder.init(FIREBASE_API, { language: "en" });
 
-  return Geocoder.from(location)
-    .then((json) => {
-      let geolocation = json.results[0].geometry.location;
-
-      let geoboundingBox = json.results[0].geometry;
-
-      console.log(geolocation, "geolocation");
-      console.log(geoboundingBox, "box");
-
-      if (geolocation && geoboundingBox) {
-        return { coordinates: { location: geolocation, box: geoboundingBox } };
+  return Geocoder.from("London,UK")
+    .then((res) => {
+      const result = {};
+      res.results.forEach((res) => {
+        result.geoLocation = res.geometry.location;
+        result.viewBox = res.geometry.bounds;
+      });
+      if (result.geoLocation && result.viewBox) {
+        return result;
+      } else {
+        return { error: { message: "You can't do that!" } };
       }
     })
     .catch((err) => console.log(err));

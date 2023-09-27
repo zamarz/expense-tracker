@@ -14,10 +14,10 @@ function AccountListDropDown({ account, handleChange }) {
     return { label: acc.bank, value: acc.bank, accountId: acc.id };
   });
 
-  console.log(accountNames);
+  // console.log(accountNames);
 
-  console.log(value);
-  console.log(items);
+  // console.log(value);
+  // console.log(items);
 
   useEffect(() => {
     if (account !== value) {
