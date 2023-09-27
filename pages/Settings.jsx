@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, Button } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import Logout from "../components/buttons/Logout";
+import DeleteAccount from "../components/buttons/DeleteAccount";
 
 const Settings = () => {
   const [open, setOpen] = useState(false);
@@ -51,15 +53,8 @@ const Settings = () => {
             placeholder={"Choose a currency"}
           />
         </View>
-        <Logout />/
-        <View>
-          <Text style={styles.title}>Delete your account</Text>
-          <Button
-            title="Delete account"
-            color="red"
-            onPress={() => navigation.navigate("Delete Account")}
-          />
-        </View>
+        <Logout />
+        <DeleteAccount />
       </View>
     </SafeAreaView>
   );

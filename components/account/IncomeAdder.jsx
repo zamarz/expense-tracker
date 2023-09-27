@@ -5,8 +5,10 @@ import { addDoc, collection, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbFire } from "../../firebaseConfig";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { AppTracker } from "../../context/AppTracker";
+import { UserContext } from "../../context/UserContext";
 
-export default function IncomeAdder({ navigation, item }) {
+export default function IncomeAdder({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [incomeDate, setIncomeDate] = useState(new Date());
@@ -27,7 +29,9 @@ export default function IncomeAdder({ navigation, item }) {
 
   const fetchAccounts = async () => {
     try {
-      const q = query(collection(dbFire, "account").where("userId", "==", userId));
+      const q = query(
+        collection(dbFire, "account").where("userId", "==", userId)
+      );
       const querySnapshot = await getDocs(q);
       const accountData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
@@ -101,7 +105,7 @@ export default function IncomeAdder({ navigation, item }) {
               />
               {errors.income && <Text>{errors.income}</Text>}
             </View>
-               
+
             <View style={styles.inputRow}>
               <TextInput
                 aria-label="Source of income"
