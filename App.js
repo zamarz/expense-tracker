@@ -53,9 +53,21 @@ export default function App() {
   const AccountsNavigator = () => {
     return (
       <Stack.Navigator initialRouteName="AccountList">
-        <Stack.Screen name="Account List" component={AccountList} />
-        <Stack.Screen name="Accounts Adder" component={AccountsAdder} />
-        <Stack.Screen name="Income Adder" component={IncomeAdder} />
+        <Stack.Screen
+          name="Account List"
+          component={AccountList}
+          options={{ title: "Your accounts" }}
+        />
+        <Stack.Screen
+          name="Accounts Adder"
+          component={AccountsAdder}
+          options={{ title: "Add a new account" }}
+        />
+        <Stack.Screen
+          name="Income Adder"
+          component={IncomeAdder}
+          options={{ title: "Add a new income" }}
+        />
       </Stack.Navigator>
     );
   };
@@ -63,7 +75,11 @@ export default function App() {
   const ExpensesNavigator = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Expenses List" component={ExpenseList} />
+        <Stack.Screen
+          name="Expenses List"
+          component={ExpenseList}
+          options={{ title: "Your expenses" }}
+        />
         <Stack.Screen name="Expense Adder" component={ExpenseAdder} />
       </Stack.Navigator>
     );
@@ -91,15 +107,6 @@ export default function App() {
           }}
         />
         <Drawer.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            drawerIcon: ({ color, size }) => (
-              <Ionicons name="person" color={color} size={size} />
-            ),
-          }}
-        />
-        <Drawer.Screen
           name="Settings"
           component={Settings}
           options={{
@@ -112,7 +119,7 @@ export default function App() {
           name="Expense List"
           component={ExpensesNavigator}
           options={{
-            title: "Expenses List",
+            title: "Expenses",
             drawerIcon: ({ color, size }) => (
               <Ionicons name="list" color={color} size={size} />
             ),
@@ -122,6 +129,7 @@ export default function App() {
           name="Accounts List"
           component={AccountsNavigator}
           options={{
+            title: "Accounts",
             drawerIcon: ({ color, size }) => (
               <Ionicons name="list-circle" color={color} size={size} />
             ),
@@ -136,15 +144,7 @@ export default function App() {
             ),
           }}
         />
-        <Drawer.Screen
-          name="Receipts"
-          component={Receipts}
-          options={{
-            drawerIcon: ({ color, size }) => (
-              <Ionicons name="receipt" color={color} size={size} />
-            ),
-          }}
-        />
+
         <Drawer.Screen
           name="Map"
           component={Map}

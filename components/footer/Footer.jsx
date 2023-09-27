@@ -9,6 +9,7 @@ import Profile from "../../pages/Profle";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import { useTheme } from "react-native-paper";
+import Settings from "../../pages/Settings";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +18,11 @@ const Tab = createMaterialBottomTabNavigator();
 const ReceiptsNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Receipt ScannerS" component={ReceiptScanner} />
+      <Stack.Screen
+        name="Receipt Scanners"
+        component={ReceiptScanner}
+        options={{ title: "Scan your receipt" }}
+      />
       <Stack.Screen name="Receipt Adder" component={ReceiptAdder} />
     </Stack.Navigator>
   );
@@ -80,13 +85,13 @@ export default function Footer() {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="Settings"
+        component={Settings}
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: "Settings",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="account-settings"
+              name="account-cog"
               color={color}
               size={26}
             />
