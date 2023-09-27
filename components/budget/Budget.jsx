@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
 import { Card, useTheme } from "react-native-paper";
@@ -9,6 +9,7 @@ const Budget = () => {
   const theme = useTheme();
   const { budget } = state;
   return (
+    <View style={styles.container}>
     <Card
       style={{
         backgroundColor: theme.colors.primary,
@@ -37,7 +38,27 @@ const Budget = () => {
         </Text>
       </Card.Content>
     </Card>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  baseText: {
+    fontWeight: "bold",
+  },
+  amount: {
+    color: "red",
+  },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#F2F2F2',
+    },
+    card: {
+      width: '80%',
+      marginBottom: 20,
+    },
+  });
 
 export default Budget;

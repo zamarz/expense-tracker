@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, Button } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import DeleteAccount from "../components/buttons/Delete";
 
 const Settings = () => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "Pound £", value: "pounds" },
-    { label: "Euro €", value: "euros" },
-    { label: "Dollar $", value: "dollars" },
-  ]);
+  // const [open, setOpen] = useState(false);
+  // const [value, setValue] = useState(null);
+  // const [items, setItems] = useState([
+  //   { label: "Pound £", value: "pounds" },
+  //   { label: "Euro €", value: "euros" },
+  //   { label: "Dollar $", value: "dollars" },
+  // ]);
 
   // going to need to change the currency in state or context
 
@@ -18,28 +19,21 @@ const Settings = () => {
       <View>
         <View>
           <Text style={styles.title}>
-            Monitor how much you can spend each month
+            View account list
           </Text>
           <Button
-            title="Set Budget"
-            onPress={() => navigation.navigate("Budget")}
-          />
-        </View>
-        <View>
-          <Text style={styles.title}>Stay on top of upcoming bills</Text>
-          <Button
-            title="Set your reminders"
-            onPress={() => navigation.navigate("Reminders")}
+            title="view accounts"
+            onPress={() => navigation.navigate("Accounts List")}
           />
         </View>
         <View>
           <Text style={styles.title}>Take a look at your spending map</Text>
           <Button
-            title="View here"
+            title="View map"
             onPress={() => navigation.navigate("Map")}
           />
         </View>
-        <View>
+        {/* <View>
           <Text style={styles.title}>Set your currency</Text>
           <DropDownPicker
             open={open}
@@ -50,14 +44,9 @@ const Settings = () => {
             setItems={setItems}
             placeholder={"Choose a currency"}
           />
-        </View>
+        </View> */}
         <View>
-          <Text style={styles.title}>Delete your account</Text>
-          <Button
-            title="Delete account"
-            color="red"
-            onPress={() => navigation.navigate("Delete Account")}
-          />
+          <DeleteAccount />
         </View>
       </View>
     </SafeAreaView>

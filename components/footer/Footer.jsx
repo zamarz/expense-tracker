@@ -47,7 +47,7 @@ export default function Footer() {
         }}
       />
       <Tab.Screen
-        name="Analytics"
+        name="Analysis"
         component={Analysis}
         options={{
           tabBarLabel: "Analysis",

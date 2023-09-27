@@ -25,28 +25,26 @@ const CategoryAdderModal = ({ isVisible, setIsVisible, handleAddCategory }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={toggleModal}
-            >
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
-
             <TextInput
               onChangeText={setCatTitle}
               value={catTitle}
               placeholder="Category Title"
               style={styles.input}
             />
+            <View style={{ flexDirection: "row", padding: 5, justifyContent: "space-between", gap: 5, marginTop: 5}}>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => handleCatAdd()}
             >
               <Text style={styles.textStyle}>Add</Text>
             </Pressable>
-            <Pressable onPress={() => setIsVisible((prev) => !prev)}>
-              <Text>Cancel</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={toggleModal}
+            >
+              <Text style={styles.textStyle}>Close</Text>
             </Pressable>
+            </View>
           </View>
         </View>
       </Modal>
@@ -87,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    width: 200,
+    width: 150,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",

@@ -59,15 +59,12 @@ export default function Home({ navigation }) {
         <Text variant="headlineSmall" style={styles.title}>
           Balance: <Text>£{remainingBalance}</Text>
         </Text>
-        <Divider />
         <BudgetPlanner />
-        <Divider />
         <ExpenseListHome />
-        <Divider />
       </View>
       <ScrollView>
         <Button
-          style={[styles.appButtonContainer, { marginBottom: 2, marginTop: 5 }]}
+          style={[styles.appButtonContainer, { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" }]}
           mode="contained"
           onPress={() =>
             navigation.navigate("Expense List", { screen: "ExpenseList" })
@@ -79,7 +76,7 @@ export default function Home({ navigation }) {
           Expenses List{" "}
         </Button>
         <Button
-          style={[styles.appButtonContainer, { marginBottom: 2 }]}
+          style={[styles.appButtonContainer, { marginBottom: 2, width: 300, alignSelf: "center" }]}
           mode="contained"
           onPress={() => navigation.navigate("Accounts List")}
           title="View Accounts"
@@ -88,7 +85,7 @@ export default function Home({ navigation }) {
           View Accounts
         </Button>
         <Button
-          style={[styles.appButtonContainer, { marginBottom: 2 }]}
+          style={[styles.appButtonContainer, { marginBottom: 10, width: 300, alignSelf: "center" }]}
           mode="contained"
           onPress={() =>
             navigation.navigate("Accounts List", { screen: "Accounts Adder" })
@@ -98,7 +95,6 @@ export default function Home({ navigation }) {
         >
           Add an Account
         </Button>
-        <Divider />
         <Logout />
       </ScrollView>
     </View>
