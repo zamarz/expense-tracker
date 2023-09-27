@@ -118,7 +118,7 @@ const ReceiptAdder = ({ route, navigation }) => {
             },
           ]
         );
-        setMerchants((prev) => [...prev, { label: merchant, value: merchant }]);
+        setMerchants((prev) => [...prev, merchant]);
       })
       .catch((err) => {
         console.log(err);
