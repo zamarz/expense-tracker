@@ -1,11 +1,17 @@
 import { View, Button, StyleSheet } from "react-native";
 import React from "react";
 import { authFire } from "../../firebaseConfig";
+import { useTheme } from "react-native-paper";
 
 const Logout = () => {
+  const theme = useTheme();
   return (
-    <View style={styles.container}>
+    <View>
       <Button
+        style={[
+          styles.appButtonContainer,
+          { backgroundColor: theme.colors.error },
+        ]}
         onPress={() => {
           authFire.signOut();
         }}
@@ -16,12 +22,11 @@ const Logout = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 5,
-
-    marginLeft: 50,
-    marginRight: 50,
-    marginBottom: 20,
+  appButtonContainer: {
+    elevation: 8,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
   },
 });
 

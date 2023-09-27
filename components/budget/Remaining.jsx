@@ -3,11 +3,19 @@ import { AppTracker } from "../../context/AppTracker";
 import { Card, Text, useTheme, Divider } from "react-native-paper";
 
 const Remaining = () => {
-  const { expenses, budget } = useContext(AppTracker);
+  const { state } = useContext(AppTracker);
+  const { expenses, budget } = state;
   const theme = useTheme();
   const totalExpenses = expenses.reduce((total, item) => {
     return (total = total + +item.amount);
   }, 0);
+
+  const remainingBalance = (+budget - +totalExpenses).toFixed(2);
+
+  const textStyle = {
+    color: remainingBalance > 0 ? "green" : "red",
+  };
+
   return (
     <Card
       style={{

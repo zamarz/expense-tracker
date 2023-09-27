@@ -3,7 +3,9 @@ import React, { useContext } from "react";
 import ExpenseCard from "./ExpenseCard";
 import { AppTracker } from "../../context/AppTracker";
 
-const ExpenseListHome = ({ expenses }) => {
+const ExpenseListHome = () => {
+  const { state, dispatch } = useContext(AppTracker);
+  const { expenses } = state;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Most Recent Expenses </Text>

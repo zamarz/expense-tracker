@@ -4,10 +4,10 @@ import { AppTracker } from "../../context/AppTracker";
 import { Card, useTheme } from "react-native-paper";
 
 const Budget = () => {
-  const { budget } = useContext(AppTracker);
+  const { state } = useContext(AppTracker);
 
   const theme = useTheme();
-
+  const { budget } = state;
   return (
     <Card
       style={{

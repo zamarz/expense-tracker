@@ -9,7 +9,7 @@ export default function ExpenseCard({ item }) {
     <Card mode="contained">
       <View key={id}>
         <Card.Title title={`Amount Spent: £${(+amount).toFixed(2)}`} />
-        <Card.Cover source={{ uri: receipt }} />
+        {/* <Card.Cover source={{ uri: receipt }} /> */}
         <Card.Content>
           <Text variant="bodyMedoum">Merchant: {merchant}</Text>
           <Text variant="bodyMedoum">Category: {category}</Text>

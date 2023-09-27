@@ -5,34 +5,49 @@ import { AppTracker } from "../../context/AppTracker";
 import { Text, Button, Divider } from "react-native-paper";
 
 export default function ExpenseList({ navigation }) {
-  const { expenses } = useContext(AppTracker);
+  const { state, dispatch } = useContext(AppTracker);
+  const { expenses } = state;
   return (
     <View style={styles.container}>
-      <Text variant="headlineSmall" style={styles.title}>
+      {/* <Text variant="headlineSmall" style={styles.title}>
         Expenses List - Full List of User Expenses
-      </Text>
+      </Text> */}
       <FlatList
         data={expenses}
         renderItem={({ item }) => <ExpenseCard item={item} />}
+        ItemSeparatorComponent={() => (
+          <View
+            style={{
+              height: 5,
+            }}
+          />
+        )}
+        ListHeaderComponent={() => (
+          <View
+            style={{
+              height: 5,
+            }}
+          />
+        )}
       />
       <Button
         mode="contained"
         onPress={() => navigation.navigate("Expense Adder")}
-        title="Add a new expense"
+        title="Add new expense"
         accessibilityLabel="Add a new expense by filling in a form"
+        style={{ margin: 2 }}
       >
-        Add a new expense
+        Add new expense
       </Button>
       <Button
         mode="contained"
         onPress={() => navigation.navigate("Home")}
         title="Go back home"
         accessibilityLabel="Go back home"
+        style={{ margin: 2}}
       >
         Go back home{" "}
       </Button>
-      <Divider />
-      <Divider />
     </View>
   );
 }

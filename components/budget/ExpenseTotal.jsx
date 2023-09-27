@@ -1,10 +1,11 @@
-import {} from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useContext } from "react";
 import { AppTracker } from "../../context/AppTracker";
 import { Card, Text, useTheme } from "react-native-paper";
 
 const ExpenseTotal = () => {
-  const { expenses } = useContext(AppTracker);
+  const { state } = useContext(AppTracker);
+  const { expenses } = state;
   const theme = useTheme();
 
   const totalExpenses = expenses.reduce((total, item) => {
@@ -42,5 +43,14 @@ const ExpenseTotal = () => {
     </Card>
   );
 };
+
+const styles = StyleSheet.create({
+  baseText: {
+    fontWeight: "bold",
+  },
+  amount: {
+    color: "red",
+  },
+});
 
 export default ExpenseTotal;
