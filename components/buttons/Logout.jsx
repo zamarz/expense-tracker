@@ -7,7 +7,8 @@ const Logout = () => {
   const theme = useTheme();
   return (
     <View>
-      <Button style={[
+      <Button
+        style={[
           styles.appButtonContainer,
           { backgroundColor: theme.colors.error },
         ]}

@@ -27,6 +27,7 @@ import {
   PaperProvider,
 } from "react-native-paper";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -68,21 +69,100 @@ export default function App() {
 
   const DrawerNavigator = () => {
     return (
-      <Drawer.Navigator>
-        <Drawer.Screen name={`Home`} component={Footer} />
-        <Drawer.Screen name="Profile" component={Profile} />
-        <Drawer.Screen name="Settings" component={Settings} />
+      <Drawer.Navigator
+        drawerContentOptions={{
+          activeTintColor: "blue",
+          inactiveTintColor: "black",
+          itemStyle: { marginVertical: 5 },
+          labelStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      >
+        <Drawer.Screen
+          name={`Home`}
+          component={Footer}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="person" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="settings" color={color} size={size} />
+            ),
+          }}
+        />
         <Drawer.Screen
           name="Expense List"
           component={ExpensesNavigator}
           options={{
             title: "Expenses List",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="list" color={color} size={size} />
+            ),
           }}
         />
-        <Drawer.Screen name="Accounts List" component={AccountsNavigator} />
-        <Drawer.Screen name="Analysis" component={Analysis} />
-        <Drawer.Screen name="Receipts" component={Receipts} />
-        <Drawer.Screen name="Map" component={Map} />
+        <Drawer.Screen
+          name="Accounts List"
+          component={AccountsNavigator}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="list-circle" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Analysis"
+          component={Analysis}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="analytics" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Receipts"
+          component={Receipts}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="receipt" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Map"
+          component={Map}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="map" color={color} size={size} />
+            ),
+          }}
+        />
+        {/* <Drawer.Screen
+          name="Logout"
+          component={() => (
+            <Button
+              onPress={() => {
+                authFire.signOut();
+              }}
+              title="Logout"
+            />
+          )}
+        /> */}
       </Drawer.Navigator>
     );
   };

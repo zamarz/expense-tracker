@@ -1,16 +1,17 @@
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
 import Budget from "./Budget";
 import Remaining from "./Remaining";
 import ExpenseTotal from "./ExpenseTotal";
 import { Divider, Text } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
 
 const BudgetPlanner = () => {
   const spacingStyle = { marginBottom: 8 };
   return (
     <View>
       {/* <Text variant="titleLarge">BudgetPlanner</Text> */}
-      <View style={{ ...spacingStyle, marginTop: 5 }}>
+      {/* <View style={{ ...spacingStyle, marginTop: 5 }}>
         <Budget />
       </View>
       <View style={spacingStyle}>
@@ -19,8 +20,31 @@ const BudgetPlanner = () => {
       <View style={spacingStyle}>
         <Remaining />
       </View>
+      <View style={styles.container}> */}
+      {/* <Text variant="titleLarge">BudgetPlanner</Text> */}
+
+      <Budget />
+
+      <Remaining />
+
+      <ExpenseTotal />
+      <Divider />
     </View>
+
+    // </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    flex: 1,
+  },
+});
 
 export default BudgetPlanner;
