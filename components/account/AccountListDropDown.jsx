@@ -4,7 +4,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { AppTracker } from "../../context/AppTracker";
 // import { ScrollView } from "react-native-gesture-handler";
 
-function AccountListDropDown({ account, handleChange, handleBlur }) {
+function AccountListDropDown({ account, handleChange }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [items, setItems] = useState([]);
@@ -21,7 +21,7 @@ function AccountListDropDown({ account, handleChange, handleBlur }) {
 
   useEffect(() => {
     if (account !== value) {
-      handleChange("account")(value);
+      handleChange("account", value);
     }
     setItems(accountNames);
   }, [value, accounts]);
