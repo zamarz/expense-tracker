@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import { Button, Divider, Text, TextInput, useTheme } from "react-native-paper";
 import React, { useContext, useEffect, useState } from "react";
 import MerchantAutoComplete from "../merchants/MerchantAutoComplete";
 import MerchantAdderModal from "../merchants/MerchantAdderModal";
@@ -20,6 +20,7 @@ import { Loading } from "../loading/Loading";
 import ErrorHandler from "../error/ErrorHandler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { FIREBASE_API } from "@env";
+import { ScrollView } from "react-native-gesture-handler";
 
 const ExpenseAdder = () => {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
@@ -48,8 +49,10 @@ const ExpenseAdder = () => {
     date: date,
     merchant: merchant,
     category: category,
-    // location: location,
+    location: location,
   };
+
+  console.log(formData);
 
   useEffect(() => {
     setLoading(true);
@@ -291,7 +294,7 @@ const ExpenseAdder = () => {
           placeholder="Search location"
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
-            setLocation((location = description));
+            setLocation(data.description);
             console.log(data, details);
           }}
           query={{
@@ -304,6 +307,9 @@ const ExpenseAdder = () => {
           styles={{
             textInputContainer: {
               backgroundColor: theme.colors.primary,
+            },
+            container: {
+              flex: 0,
             },
             textInput: {
               height: 38,
