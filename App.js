@@ -11,7 +11,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import Settings from "./pages/Settings";
 import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
-import Map from "./components/map/Map";
+import Map from "./pages/Map";
 import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
 import AccountsAdder from "./components/account/AccountsAdder";
@@ -42,8 +42,16 @@ export default function App() {
   const LoginNavigator = () => {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Error" component={ErrorHandler} />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Error"
+          component={ErrorHandler}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     );
   };
@@ -54,17 +62,17 @@ export default function App() {
         <Stack.Screen
           name="Account List"
           component={AccountList}
-          options={{ title: "Your accounts" }}
+          options={{ title: "Your accounts", headerShown: false }}
         />
         <Stack.Screen
           name="Accounts Adder"
           component={AccountsAdder}
-          options={{ title: "Add a new account" }}
+          options={{ title: "Add a new account", headerShown: false }}
         />
         <Stack.Screen
           name="Income Adder"
           component={IncomeAdder}
-          options={{ title: "Add a new income" }}
+          options={{ title: "Add a new income", headerShown: false }}
         />
       </Stack.Navigator>
     );
@@ -76,9 +84,13 @@ export default function App() {
         <Stack.Screen
           name="Expenses List"
           component={ExpenseList}
-          options={{ title: "Your expenses" }}
+          options={{ title: "Your expenses", headerShown: false }}
         />
-        <Stack.Screen name="Expense Adder" component={ExpenseAdder} />
+        <Stack.Screen
+          name="Expense Adder"
+          component={ExpenseAdder}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     );
   };

@@ -5,6 +5,8 @@ import { addDoc, collection, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbFire } from "../../firebaseConfig";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { UserContext } from "../../context/UserContext";
+import { AppTracker } from "../../context/AppTracker";
 
 export default function IncomeAdder({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);

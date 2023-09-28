@@ -39,7 +39,7 @@ export default function AccountsList({ navigation }) {
         </Text>
       </View>
       <FlatList
-        contentContainerStyle={{ alignSelf: "flex-start" }}
+        contentContainerStyle={{ alignSelf: "flex-start", marginLeft: 20 }}
         showsVerticalScrollIndicator={true}
         showsHorizontalScrollIndicator={true}
         data={accounts}
@@ -97,23 +97,22 @@ export default function AccountsList({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 50,
+    paddingLeft: 50,
     flex: 1,
   },
   item: {
     padding: 20,
-    fontSize: 15,
+    fontSize: 110,
     marginTop: 5,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
+    textAlign: "center",
   },
   buttonContainer: {
-    marginBottom: 15,
-    // marginLeft: 50,
-    // marginRight: 50,
+    marginVertical: 5,
     width: "60%",
-    marginLeft: 60,
+    marginLeft: 80,
   },
 });

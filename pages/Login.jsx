@@ -72,8 +72,8 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
-        <Text variant="titleLarge" style={{ paddingBottom: 50 }}>
-          Welcome!
+        <Text variant="titleLarge" style={styles.heading}>
+          Xpesio
         </Text>
         <Text variant="titleLarge" style={{ paddingBottom: 10 }}>
           Log in or create an account.
@@ -131,6 +131,13 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "85%",
   },
+  heading: {
+    paddingTop: 20,
+    paddingBottom: 50,
+    fontFamily: "arial",
+    fontSize: 40,
+  },
+
   input: {
     backgroundColor: "white",
     paddingHorizontal: 15,

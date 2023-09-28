@@ -59,22 +59,21 @@ function reducer(state, action) {
 
     case "ADD_INCOME": {
       console.log(5);
-      break;
+      // return state;
 
       // return console.log("Hello!!");
       // console.log(action.payload);
-      // const newAccountArray = state.accounts.concat(action.payload);
-      // console.log(newAccountArray);
-      // const totalBalance = calculateTotalBalance(newAccountArray);
-      // const totalBudget = calculateTotalBudget(newAccountArray);
-      // if (totalBalance && totalBudget) {
-      //   return {
-      //     ...state,
-      //     accounts: [...newAccountArray],
-      //     balance: totalBalance,
-      //     budget: totalBudget,
-      //   };
-      // }
+      const newAccountArray = state.accounts.concat(action.payload);
+      console.log(newAccountArray);
+      const totalBalance = calculateTotalBalance(newAccountArray).then(
+        (bal) => {
+          return {
+            ...state,
+            accounts: [...newAccountArray],
+            balance: totalBalance + state.balance,
+          };
+        }
+      );
     }
 
     case "DELETE_ACCOUNT": {
