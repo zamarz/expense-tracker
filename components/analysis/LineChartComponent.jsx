@@ -1,6 +1,5 @@
 import React from "react";
 import { useContext } from "react";
-import { Text } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { AppTracker } from "../../context/AppTracker";
 
