@@ -69,10 +69,10 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
-        <Text variant="titleLarge" style={{ paddingBottom: 50, }}>
+        <Text variant="titleLarge" style={{ paddingBottom: 50 }}>
           Welcome!
         </Text>
-        <Text variant="titleLarge" style={{ paddingBottom: 10, }}>
+        <Text variant="titleLarge" style={{ paddingBottom: 10 }}>
           Log in or create an account.
         </Text>
       </View>
@@ -96,7 +96,7 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.buttonContainer}>
         <KeyboardAvoidingView behavior="padding">
-          <View >
+          <View>
             <TouchableOpacity onPress={signIn} style={styles.button}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
