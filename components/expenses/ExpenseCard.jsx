@@ -6,7 +6,7 @@ export default function ExpenseCard({ item }) {
   const { id, amount, merchant, category, date, receipt } = item;
 
   return (
-    <Card mode="contained">
+    <Card mode="contained" style={{marginTop: 5}}>
       <View key={id}>
         <Card.Title title={`Amount Spent: £${(+amount).toFixed(2)}`} />
         <Card.Content>
