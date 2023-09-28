@@ -10,25 +10,24 @@ export default function PieChartComponent() {
   const data = expenses.map((expense) => ({
     name: expense.category,
     population: +expense.amount,
-    color: `#${Math.floor(Math.random()*16777215).toString(16)}`,
+    color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
   }));
 
   return (
     <PieChart
       data={data}
-      width={300}
-      height={200}
+      width={400}
+      height={250}
       chartConfig={{
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#fb8c00",
         backgroundGradientTo: "#ffa726",
         decimalPlaces: 2,
-        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       }}
       accessor="population"
       backgroundColor="transparent"
-      paddingLeft="25"
-      absolute
+      style={{ paddingLeft: 20 }}
     />
   );
 }
