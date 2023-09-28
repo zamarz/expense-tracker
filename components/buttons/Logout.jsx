@@ -6,12 +6,12 @@ import { Button, Text, useTheme } from "react-native-paper";
 const Logout = () => {
   const theme = useTheme();
   return (
-    <View style={styles.appButtonContainer}>
+    <View style={styles.button}>
       <Button
         mode="contained"
         style={[
           styles.appButtonContainer,
-          { backgroundColor: theme.colors.error },
+          { backgroundColor: theme.colors.tertiary },
         ]}
         onPress={() => {
           authFire.signOut();
@@ -26,6 +26,7 @@ const Logout = () => {
 
 const styles = StyleSheet.create({
   appButtonContainer: {
+    maxWidth: 300,
     elevation: 8,
     borderRadius: 10,
     paddingVertical: 10,
@@ -33,9 +34,12 @@ const styles = StyleSheet.create({
     backgroundColor: "orange",
   },
   text: {
-    fontSize: 18,
+    fontSize: 14,
     color: "white",
     fontWeight: "bold",
+  },
+  button: {
+    paddingLeft: "8%",
   },
 });
 

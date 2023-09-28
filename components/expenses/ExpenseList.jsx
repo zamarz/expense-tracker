@@ -14,6 +14,7 @@ export default function ExpenseList({ navigation }) {
       </Text> */}
       <FlatList
         data={expenses}
+        extraData={expenses.id}
         renderItem={({ item }) => <ExpenseCard item={item} />}
         ItemSeparatorComponent={() => (
           <View

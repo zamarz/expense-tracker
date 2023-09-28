@@ -9,8 +9,8 @@ const ExpenseListHome = () => {
   const { expenses } = state;
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Most Recent Expenses </Text>
+      <Text style={styles.title}>Most Recent Expenses </Text>
+      <View style={styles.listWrapper}>
         <FlatList
           data={
             expenses.length > 0 && expenses.length < 4
@@ -28,9 +28,15 @@ export default ExpenseListHome;
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: "100%",
+    flex: 100,
     display: "flex",
-    justifyContent: "center",
+  },
+  listWrapper: {
+    maxWidth: "100%",
+    maxHeight: "80%",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
 
   title: {

@@ -221,6 +221,11 @@ const ExpenseAdder = ({ navigation }) => {
           setMerchant(payload);
         }
         break;
+      case "location":
+        {
+          setLocation(payload);
+        }
+        break;
       case "geolocation":
         {
           setGeolocation(payload);
@@ -318,7 +323,7 @@ const ExpenseAdder = ({ navigation }) => {
             <GooglePlacesAutocomplete
               placeholder="Search location"
               onPress={({ description }) => {
-                setLocation(description);
+                handleChange("location", description);
                 fetchGeoLocation(description).then((res) => {
                   handleChange("geolocation", res);
                 });
@@ -352,6 +357,15 @@ const ExpenseAdder = ({ navigation }) => {
           </View>
           <Button title="Submit" onPress={handleSubmit} mode="contained">
             Submit
+          </Button>
+          <Button
+            mode="contained"
+            onPress={() => navigation.navigate("Home")}
+            title="Go back home"
+            accessibilityLabel="Go back home"
+            style={{ margin: 2 }}
+          >
+            Go back home{" "}
           </Button>
         </ScrollView>
       </View>
