@@ -118,7 +118,7 @@ const ReceiptAdder = ({ route, navigation }) => {
             },
           ]
         );
-        setMerchants((prev) => [...prev, merchant]);
+        setMerchants((prev) => [...prev, { label: merchant, value: merchant }]);
       })
       .catch((err) => {
         console.log(err);
@@ -188,7 +188,7 @@ const ReceiptAdder = ({ route, navigation }) => {
           ]
         );
         dispatch({ type: "ADD_EXPENSE", payload: formData });
-        navigation.navigate("Expenses List");
+        navigation.navigate("Expense List", { screen: "ExpenseList" });
       })
       .catch((err) => {
         console.log(err);
@@ -293,7 +293,7 @@ const ReceiptAdder = ({ route, navigation }) => {
         <MerchantAutoComplete
           merchant={merchant}
           merchants={merchants}
-          setMerchant={setMerchant}
+          setMerchants={setMerchants}
           handleChange={handleChange}
         />
         <Button
