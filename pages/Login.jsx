@@ -73,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
         <Text variant="titleLarge" style={styles.heading}>
-          Xpesio
+          Xpensio
         </Text>
         <Text variant="titleLarge" style={{ paddingBottom: 10 }}>
           Log in or create an account.
@@ -134,7 +134,8 @@ const styles = StyleSheet.create({
   heading: {
     paddingTop: 20,
     paddingBottom: 50,
-    fontFamily: "arial",
+    fontFamily: "lucida grande",
+    fontStyle: "italic",
     fontSize: 40,
   },
 
