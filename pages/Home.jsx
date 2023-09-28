@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignContent: "center",
     gap: 2,
+    paddingTop: 5,
   },
   title: {
     textAlign: "center",
@@ -146,11 +147,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   appButtonContainer: {
-    minWidth: 190,
+    minWidth: 175,
     elevation: 8,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    borderRadius: 25,
+    paddingVertical: 4,
   },
   buttonText: {
     fontSize: 14,

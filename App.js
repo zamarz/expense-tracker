@@ -23,7 +23,6 @@ import {
   MD3LightTheme as DefaultTheme,
   adaptNavigationTheme,
   PaperProvider,
-  Button,
 } from "react-native-paper";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import Ionicons from "@expo/vector-icons/Ionicons";

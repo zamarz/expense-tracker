@@ -27,14 +27,15 @@ export default ExpenseListHome;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 100,
-    display: "flex",
+    flex: 2,
   },
   listWrapper: {
     maxWidth: "100%",
-    maxHeight: "80%",
+    maxHeight: "100%",
     display: "flex",
     justifyContent: "space-around",
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
   },
 
   title: {
