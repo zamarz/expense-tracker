@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import Logout from "../components/buttons/Logout";
 import ExpenseListHome from "../components/expenses/ExpenseListHome";
 import BudgetPlanner from "../components/budget/BudgetPlanner";
@@ -52,13 +52,15 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
+      
       <Text variant="headlineSmall" style={styles.title}>
         Balance: <Text>£{remainingBalance}</Text>
       </Text>
       <BudgetPlanner />
+      <ScrollView style={styles.wrapper}>
       <ExpenseListHome />
       <Divider />
-      <ScrollView style={styles.wrapper}>
+      
         <Button
           style={[
             styles.appButtonContainer,
