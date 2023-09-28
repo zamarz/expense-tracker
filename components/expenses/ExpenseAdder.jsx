@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, View } from "react-native";
 import {
   Button,
   Divider,
@@ -64,21 +64,25 @@ const ExpenseAdder = ({ navigation }) => {
 
   useEffect(() => {
     setLoading(true);
-    getCategories(uid)
-      .then((categories) => {
-        setCategories(categories);
-      })
-      .then(() => {
-        getMerchants(uid).then((merchants) => {
-          setMerchants(merchants);
+    if (!categories) {
+      getCategories(uid)
+        .then((categories) => {
+          setCategories(categories);
+        })
+        .then(() => {
+          getMerchants(uid).then((merchants) => {
+            setMerchants(merchants);
+            setLoading(false);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
           setLoading(false);
+          setError(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-        setError(err);
-      });
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   function handleAddMerchant(merchant) {
@@ -248,7 +252,7 @@ const ExpenseAdder = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <DatePickerModal
         locale="en-GB"
         mode="single"
@@ -364,7 +368,7 @@ const ExpenseAdder = ({ navigation }) => {
           </Button>
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

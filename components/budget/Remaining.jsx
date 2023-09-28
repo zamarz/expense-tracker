@@ -20,9 +20,11 @@ const Remaining = () => {
   return (
     <View style={styles.container}>
       <Card
-        style={{
-          backgroundColor: "#F2F2F2",
-        }}
+        style={
+          {
+            // backgroundColor: theme.colors.backdrop,
+          }
+        }
       >
         <Text
           style={{
@@ -38,7 +40,6 @@ const Remaining = () => {
         <Card.Content>
           <Text
             style={{
-              color: "orange",
               textAlign: "center",
               fontWeight: 700,
             }}
@@ -61,9 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     textAlign: "center",
-    // justifyContent: "center",
-    // alignItems: "center",
-    // backgroundColor: "#F2F2F2",
+    backgroundColor: "#F2F2F2",
   },
   card: {
     width: "80%",

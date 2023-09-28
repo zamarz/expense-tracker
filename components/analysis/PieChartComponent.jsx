@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext } from "react";
 import { PieChart } from "react-native-chart-kit";
 import { AppTracker } from "../../context/AppTracker";

@@ -11,7 +11,7 @@ const Logout = () => {
         mode="contained"
         style={[
           styles.appButtonContainer,
-          { backgroundColor: theme.colors.tertiary },
+          { backgroundColor: theme.colors.onSecondaryContainer },
         ]}
         onPress={() => {
           authFire.signOut();
@@ -26,14 +26,15 @@ const Logout = () => {
 
 const styles = StyleSheet.create({
   appButtonContainer: {
-    maxWidth: 190,
+    minWidth: 190,
     elevation: 8,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    marginTop: 10,
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: 18,
     color: "white",
     fontWeight: "bold",
   },

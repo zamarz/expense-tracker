@@ -15,7 +15,7 @@ const ExpenseTotal = () => {
     <View style={styles.container}>
       <Card
         style={{
-          backgroundColor: theme.colors.outlineVariant,
+          backgroundColor: theme.colors.onTertiaryContainer,
         }}
       >
         <Text
@@ -32,7 +32,7 @@ const ExpenseTotal = () => {
         <Card.Content>
           <Text
             style={{
-              color: theme.colors.error,
+              color: "#fff",
               textAlign: "center",
               fontWeight: 700,
             }}

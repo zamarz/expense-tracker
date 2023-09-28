@@ -93,7 +93,7 @@ export default function App() {
   const DrawerNavigator = () => {
     return (
       <Drawer.Navigator
-        screenOptions={{
+        drawerContentOptions={{
           activeTintColor: "blue",
           inactiveTintColor: "black",
           itemStyle: { marginVertical: 5 },
@@ -101,9 +101,10 @@ export default function App() {
             fontWeight: "bold",
           },
         }}
+        screenOptions={{}}
       >
         <Drawer.Screen
-          name={`Home`}
+          name="Home"
           component={Footer}
           options={{
             drawerIcon: ({ color, size }) => (
