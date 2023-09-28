@@ -22,7 +22,6 @@ const Budget = () => {
             fontWeight: 700,
             textAlign: "center",
             paddingTop: 12,
-            paddingBottom: 8,
           }}
         >
           Your Budget

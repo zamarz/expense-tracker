@@ -6,7 +6,7 @@ export default function ExpenseCard({ item }) {
   const { id, amount, merchant, category, date, receipt } = item;
 
   return (
-    <Card key={id} mode="contained" style={styles.button}>
+    <Card key={id} mode="outlined" style={styles.button}>
       <Card.Content>
         <Text style={styles.title}>{`Amount Spent: £${(+amount).toFixed(
           2
@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
   button: {
     width: "80%",
     alignSelf: "center",
-    borderColor: "black",
-    borderWidth: 1,
   },
   text: {
     textAlign: "center",

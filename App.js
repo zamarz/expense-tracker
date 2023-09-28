@@ -23,6 +23,7 @@ import {
   MD3LightTheme as DefaultTheme,
   adaptNavigationTheme,
   PaperProvider,
+  Button,
 } from "react-native-paper";
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -58,7 +59,7 @@ export default function App() {
 
   const AccountsNavigator = () => {
     return (
-      <Stack.Navigator initialRouteName="AccountList">
+      <Stack.Navigator initialRouteName="Account List">
         <Stack.Screen
           name="Account List"
           component={AccountList}
@@ -163,17 +164,6 @@ export default function App() {
               <Ionicons name="map" color={color} size={size} />
             ),
           }}
-        />
-        <Drawer.Screen
-          name="Logout"
-          component={() => (
-            <Button
-              onPress={() => {
-                authFire.signOut();
-              }}
-              title="Logout"
-            />
-          )}
         />
       </Drawer.Navigator>
     );

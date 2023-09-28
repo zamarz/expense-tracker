@@ -63,10 +63,10 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <BudgetPlanner navigation={navigation} />
       <Text variant="headlineSmall" style={styles.title}>
-        Balance: <Text>£{remainingBalance}</Text>
+        Total Balance: <Text style={styles.balance}>£{remainingBalance}</Text>
       </Text>
-      <BudgetPlanner />
       <ExpenseListHome />
       <View style={styles.wrapper}>
         <Button
@@ -81,6 +81,17 @@ export default function Home({ navigation }) {
         >
           Expenses List{" "}
         </Button>
+
+        <Button
+          style={styles.appButtonContainer}
+          mode="contained"
+          onPress={() => navigation.navigate("Accounts List")}
+          title="View Accounts"
+          accessibilityLabel="View a list of accounts or add a new account"
+          icon="cash"
+        >
+          Accounts List
+        </Button>
         <Button
           style={styles.appButtonContainer}
           mode="contained"
@@ -90,16 +101,7 @@ export default function Home({ navigation }) {
           title="Add new expense"
           accessibilityLabel="Add a new expense by filling in a form"
         >
-          Add new expense
-        </Button>
-        <Button
-          style={styles.appButtonContainer}
-          mode="contained"
-          onPress={() => navigation.navigate("Accounts List")}
-          title="View Accounts"
-          accessibilityLabel="View a list of accounts or add a new account"
-        >
-          View Accounts
+          Add an Expense
         </Button>
         <Button
           style={styles.appButtonContainer}
@@ -127,12 +129,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
-    gap: 5,
+    alignContent: "center",
+    gap: 2,
   },
   title: {
     textAlign: "center",
     fontWeight: "bold",
-    paddingTop: 10,
+    paddingTop: 15,
+    paddingBottom: 10,
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
   },
   separator: {
     marginBottom: 10,
@@ -150,5 +156,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "white",
     fontWeight: "bold",
+  },
+  balance: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "green",
   },
 });

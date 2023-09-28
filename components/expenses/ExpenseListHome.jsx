@@ -9,7 +9,6 @@ const ExpenseListHome = () => {
   const { expenses } = state;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Most Recent Expenses </Text>
       <View style={styles.listWrapper}>
         <FlatList
           data={

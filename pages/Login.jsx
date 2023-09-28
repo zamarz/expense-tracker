@@ -160,7 +160,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   p: {
-    paddingBottom: 20,
+    fontSize: 16,
+    paddingBottom: 5,
   },
   input: {
     backgroundColor: "white",

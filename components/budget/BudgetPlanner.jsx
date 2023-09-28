@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import Budget from "./Budget";
 import Remaining from "./Remaining";
@@ -9,7 +9,9 @@ const BudgetPlanner = () => {
   return (
     <View style={styles.container}>
       <DataTable style={styles.wrapper}>
-        <Budget />
+        <Pressable style={styles.button}>
+          <Budget />
+        </Pressable>
         <ExpenseTotal />
         <Remaining />
       </DataTable>
@@ -25,13 +27,16 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    marginTop: 8,
+    marginTop: 5,
   },
   content: {
     width: "auto",
   },
   buttonContainer: {
     flex: 1,
+  },
+  button: {
+    width: "33%",
   },
 });
 
