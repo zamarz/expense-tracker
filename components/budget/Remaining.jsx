@@ -20,24 +20,25 @@ const Remaining = () => {
   return (
     <View style={styles.container}>
       <Card
-        style={{
-          backgroundColor: theme.colors.primaryContainer,
-          width: 150,
-          height: 80,
-          margin: 10,
-        }}
+      // style={{
+      //   backgroundColor: theme.colors.primaryContainer,
+      //   width: 150,
+      //   height: 80,
+      //   margin: 10,
+      // }}
       >
         <Card.Title
-          title="Remaining Budget"
+          title="Remaining"
           titleStyle={{
             color: theme.colors.onPrimaryContainer,
             fontSize: 12,
+            textAlign: "auto",
           }}
         />
         <Card.Content>
           <Text
-            variant="titleLarge"
-            style={{ textStyle, fontSize: 18, fontWeight: "bold" }}
+          // variant="titleLarge"
+          // style={{ fontSize: 18, fontWeight: "bold" }}
           >
             <Text style={textStyle}>£{remainingBalance}</Text>
           </Text>
@@ -82,9 +83,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F2F2F2",
+    textAlign: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // backgroundColor: "#F2F2F2",
   },
   card: {
     width: "80%",
