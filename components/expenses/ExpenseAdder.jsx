@@ -158,12 +158,6 @@ const ExpenseAdder = ({ navigation }) => {
     setToggleCategoryModal((prev) => !prev);
   };
 
-  useEffect(() => {
-    if (merchant) {
-      formData.merchant = merchant.title;
-    }
-  }, [merchant]);
-
   const handleSubmit = async () => {
     setLoading(true);
     if (location !== undefined && geolocation !== undefined) {
