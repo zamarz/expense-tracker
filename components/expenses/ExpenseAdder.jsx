@@ -151,6 +151,12 @@ const ExpenseAdder = () => {
     setToggleCategoryModal((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (merchant) {
+      formData.merchant = merchant.title;
+    }
+  }, [merchant]);
+
   const handleSubmit = async () => {
     console.log(formData);
     // const data = {
