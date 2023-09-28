@@ -8,6 +8,7 @@ const Logout = () => {
   return (
     <View>
       <Button
+        mode="contained"
         style={[
           styles.appButtonContainer,
           { backgroundColor: theme.colors.error },

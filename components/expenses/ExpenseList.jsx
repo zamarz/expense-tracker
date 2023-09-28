@@ -44,7 +44,7 @@ export default function ExpenseList({ navigation }) {
         onPress={() => navigation.navigate("Home")}
         title="Go back home"
         accessibilityLabel="Go back home"
-        style={{ margin: 2}}
+        style={{ margin: 2 }}
       >
         Go back home{" "}
       </Button>
