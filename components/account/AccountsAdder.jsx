@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, View, TextInput, Text, Button } from "react-native";
+import { StyleSheet, View, TextInput, Text } from "react-native";
 import { Loading } from "../loading/Loading";
 import { addDoc, collection } from "firebase/firestore";
 import { dbFire } from "../../firebaseConfig";
@@ -7,6 +7,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { AppTracker } from "../../context/AppTracker";
 import { UserContext } from "../../context/UserContext";
+import { Button, useTheme } from "react-native-paper";
 
 export default function AccountsAdder({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +20,7 @@ export default function AccountsAdder({ navigation }) {
   const [budget, setBudget] = useState("");
 
   const { uid } = useContext(UserContext);
+  const theme = useTheme();
 
   if (isLoading) return <Loading />;
   if (isError) return <p>Something went wrong!</p>;
@@ -118,12 +120,28 @@ export default function AccountsAdder({ navigation }) {
               onPress={handleSubmit}
               title="Add account"
               accessibilityLabel="Add a new account to the accounts list"
-            ></Button>
+              style={{
+                backgroundColor: theme.colors.primary,
+
+                margin: 15,
+                width: "90%",
+              }}
+            >
+              {" "}
+              <Text style={{ color: theme.colors.onPrimary }}>ADD ACCOUNT</Text>
+            </Button>
             <Button
               onPress={() => navigation.navigate("Account List")}
               title="Go back"
               accessibilityLabel="Button to navigate to Accounts page"
-            ></Button>
+              style={{
+                backgroundColor: theme.colors.primary,
+                width: "90%",
+                marginLeft: 12,
+              }}
+            >
+              <Text style={{ color: theme.colors.onPrimary }}>GO BACK</Text>
+            </Button>
           </View>
         );
       }}
