@@ -3,23 +3,32 @@ import React from "react";
 import Budget from "./Budget";
 import Remaining from "./Remaining";
 import ExpenseTotal from "./ExpenseTotal";
+import { DataTable } from "react-native-paper";
 
 const BudgetPlanner = () => {
   return (
     <View style={styles.container}>
-      <Budget />
-      <ExpenseTotal />
-      <Remaining />
-  </View>
+      <DataTable style={styles.wrapper}>
+        <Budget />
+        <ExpenseTotal />
+        <Remaining />
+      </DataTable>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  wrapper: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 8
+    justifyContent: "space-evenly",
+    marginTop: 8,
+  },
+  content: {
+    width: "auto",
   },
   buttonContainer: {
     flex: 1,

@@ -5,21 +5,21 @@ import { LineChart } from "react-native-chart-kit";
 import { AppTracker } from "../../context/AppTracker";
 
 export default function LineChartComponent() {
-    const { state } = useContext(AppTracker);
-    const { expenses } = state;
+  const { state } = useContext(AppTracker);
+  const { expenses } = state;
 
-    const data = expenses.map((expense) => +expense.amount)
-    const labels = expenses.map((expense) => expense.merchant)
-    console.log(data);
-    console.log(labels);
+  const data = expenses.map((expense) => +expense.amount);
+  const labels = expenses.map((expense) => expense.merchant.title);
+  console.log(data);
+  console.log(labels);
 
-    return (
+  return (
     <LineChart
       data={{
         labels: labels,
-        datasets: [{ data: data }]
+        datasets: [{ data: data }],
       }}
-      width={300}
+      width="100%"
       height={200}
       yAxisSuffix=" £"
       yAxisInterval={1}
@@ -30,13 +30,13 @@ export default function LineChartComponent() {
         decimalPlaces: 2,
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         style: {
-          borderRadius: 16
-        }
+          borderRadius: 16,
+        },
       }}
       bezier
       style={{
         marginVertical: 8,
-        borderRadius: 16
+        borderRadius: 16,
       }}
     />
   );

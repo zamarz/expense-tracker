@@ -13,29 +13,24 @@ const ExpenseTotal = () => {
   }, 0);
   return (
     <View style={styles.container}>
-      <Card
-        style={{
-          backgroundColor: theme.colors.secondary,
-          width: 150,
-          height: 80,
-          margin: 10,
-        }}
-      >
+      <Card>
         <Card.Title
           title="Total Spent"
           titleStyle={{
-            color: theme.colors.onSecondary,
+            color: theme.colors.onPrimaryContainer,
             fontSize: 12,
+            textAlign: "auto",
           }}
         />
         <Card.Content>
           <Text
-            variant="titleLarge"
-            style={{
-              color: theme.colors.onSecondary,
-              fontSize: 18,
-              fontWeight: "bold",
-            }}
+            style={
+              (styles.text,
+              {
+                color: theme.colors.custom0,
+                fontWeight: "bold",
+              })
+            }
           >
             £{(+totalExpenses).toFixed(2)}
           </Text>
@@ -54,15 +49,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F2F2F2',
   },
   card: {
-    width: '80%',
+    width: "80%",
     marginBottom: 20,
   },
 });
-
 
 export default ExpenseTotal;

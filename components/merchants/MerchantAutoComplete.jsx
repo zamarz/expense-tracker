@@ -1,26 +1,14 @@
 import { useEffect, useState } from "react";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
-function MerchantAutoComplete({ merchant, merchants, handleChange }) {
-  const [open, setOpen] = useState(false);
+function MerchantList({ merchant, merchants, handleChange, setMerchants }) {
   const [value, setValue] = useState(merchant);
-  const [items, setItems] = useState([]);
-  const [finalValue, setFinalValue] = useState("");
 
   useEffect(() => {
-    console.log(value, "value!");
-    console.log(merchants);
-    if (merchant !== value && value !== null) {
-      let arrayvalues = Object.values(value);
-      console.log(arrayvalues, "array");
-      if (arrayvalues.length === 2) {
-        const desiredMerchant = arrayvalues[0];
-        setValue(desiredMerchant);
-      }
-
+    if (merchant !== value) {
       handleChange("merchant", value);
     }
-    setItems(merchants);
+    setMerchants(merchants);
   }, [value, merchants]);
 
   return (
@@ -36,4 +24,4 @@ function MerchantAutoComplete({ merchant, merchants, handleChange }) {
   );
 }
 
-export default MerchantAutoComplete;
+export default MerchantList;

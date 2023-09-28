@@ -117,27 +117,3 @@ const styles = StyleSheet.create({
     marginLeft: 60,
   },
 });
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-// justifyContent: "center",
-
-//   },
-//   title: {
-//     textAlign: "center",
-//     fontWeight: "bold",
-//     paddingTop: 6,
-//   },
-//   separator: {
-//     marginVertical: 8,
-//     borderBottomColor: "#737373",
-//     borderBottomWidth: StyleSheet.hairlineWidth,
-//   },
-//   appButtonContainer: {
-//     elevation: 8,
-//     borderRadius: 10,
-//     paddingVertical: 10,
-//     paddingHorizontal: 12,
-//     margin: 2
-//   },
-// });

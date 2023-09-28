@@ -10,34 +10,35 @@ const Budget = () => {
   const { budget } = state;
   return (
     <View style={styles.container}>
-    <Card
-      style={{
-        backgroundColor: theme.colors.primary,
-        width: 150,
-        height: 80,
-        margin: 10,
-      }}
-    >
-      <Card.Title
-        title="Your Budget"
-        titleStyle={{
-          color: theme.colors.onPrimary,
-          fontSize: 12,
-        }}
-      />
-      <Card.Content>
-        <Text
-          variant="titleLarge"
-          style={{
-            color: theme.colors.onPrimary,
-            fontSize: 18,
-            fontWeight: "bold",
+      <Card
+      // style={{
+      //   backgroundColor: theme.colors.primary,
+      //   width: 150,
+      //   height: 80,
+      //   margin: 10,
+      // }}
+      >
+        <Card.Title
+          title="Your Budget"
+          titleStyle={{
+            color: theme.colors.onPrimaryContainer,
+            fontSize: 12,
+            textAlign: "auto",
           }}
-        >
-          £{(+budget).toFixed(2)}
-        </Text>
-      </Card.Content>
-    </Card>
+        />
+        <Card.Content>
+          <Text
+          // variant="titleLarge"
+          // style={{
+          //   color: theme.colors.onPrimary,
+          //   fontSize: 18,
+          //   fontWeight: "bold",
+          // }}
+          >
+            £{(+budget).toFixed(2)}
+          </Text>
+        </Card.Content>
+      </Card>
     </View>
   );
 };
@@ -49,16 +50,16 @@ const styles = StyleSheet.create({
   amount: {
     color: "red",
   },
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#F2F2F2',
-    },
-    card: {
-      width: '80%',
-      marginBottom: 20,
-    },
-  });
+  container: {
+    flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+    // backgroundColor: "#F2F2F2",
+  },
+  card: {
+    width: "80%",
+    marginBottom: 20,
+  },
+});
 
 export default Budget;

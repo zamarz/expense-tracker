@@ -8,11 +8,9 @@ import { useState } from "react";
 import { authFire } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Profile from "./pages/Profle";
 import Settings from "./pages/Settings";
 import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
-import Receipts from "./components/receipts/ReceiptAdder";
 import Map from "./components/map/Map";
 import Footer from "./components/footer/Footer";
 import ErrorHandler from "./components/error/ErrorHandler";
@@ -230,8 +228,8 @@ export default function App() {
   });
 
   return (
-    <PaperProvider theme={theme}>
-      <UserContext.Provider value={user}>
+    <UserContext.Provider value={user}>
+      <PaperProvider theme={theme}>
         <NavigationContainer theme={LightTheme}>
           {!user ? (
             <LoginNavigator />
@@ -243,8 +241,8 @@ export default function App() {
             </AppTrackerProvider>
           )}
         </NavigationContainer>
-      </UserContext.Provider>
-    </PaperProvider>
+      </PaperProvider>
+    </UserContext.Provider>
   );
 }
 

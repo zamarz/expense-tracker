@@ -9,25 +9,16 @@ export async function getCategories(uid) {
   return await querySnapshot.docs.map((doc) => ({
     label: doc.data().category,
     value: doc.data().category,
-  }));
-}
-
-export async function getAccounts(uid) {
-  const querySnapshot = await getDocs(
-    collection(dbFire, "accounts"),
-    where("userId", "==", uid)
-  );
-  return await querySnapshot.docs.map((doc) => ({
-    label: doc.data().account,
-    value: doc.data().account,
+    id: doc.id,
   }));
 }
 
 export async function getMerchants() {
   const querySnapshot = await getDocs(collection(dbFire, "merchants"));
   return await querySnapshot.docs.map((doc) => ({
-    id: doc.data().merchant,
+    label: doc.data().merchant,
     title: doc.data().merchant,
+    id: doc.id,
   }));
 }
 

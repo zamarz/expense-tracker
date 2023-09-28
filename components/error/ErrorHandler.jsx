@@ -1,64 +1,104 @@
-import { View, Text, Button } from "react-native";
-import React from "react";
+import { StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { Button, Modal, Portal, Text, useTheme } from "react-native-paper";
 
-const ErrorHandler = ({ error, route, navigation }) => {
-  console.log(error);
-  // if(route)  const { error } = route.params;
-  alert(
-    `Error: ${error} \nChange this to a modal instead of a new screeen - should fix Android bug`
+const ErrorHandlerModal = ({ error, navigation, visible, setVisible }) => {
+  const toggleModal = () => {
+    setVisible(!visible);
+  };
+
+  const theme = useTheme();
+
+  return (
+    <Portal theme={theme}>
+      <Modal
+        animationType="slide" // You can change the animation type if needed
+        transparent={true} // Set to true for a transparent background
+        visible={visible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.titleTextStyle}>
+              An error has occurred, please try again
+            </Text>
+            {error && <Text style={styles.textStyle}>{error.message}</Text>}
+            <Button
+              style={[styles.button, styles.buttonClose]}
+              onPress={toggleModal}
+            >
+              <Text style={styles.buttonTextStyle}>Close</Text>
+            </Button>
+          </View>
+        </View>
+      </Modal>
+    </Portal>
   );
-  if (error.message.includes("in-use")) {
-    return (
-      <View>
-        <Text>Error: 400 - Bad Request</Text>
-        <Text>
-          Message: This email address is already in use, please use another one
-          or sign in / forgot your password
-        </Text>
-        <Button
-          title="Go back"
-          accessibilityLabel="Go back to Login/Register Page"
-          onPress={() => navigation.navigate("Login")}
-        />
-      </View>
-    );
-  } else if (error.message.includes("user-not-found")) {
-    return (
-      <View>
-        <Text>Error: 400 - Bad Request</Text>
-        <Text>Message: This user does not exist. Please sign up!</Text>
-        <Button
-          title="Go back"
-          accessibilityLabel="Go back to Login/Register Page"
-          onPress={() => navigation.navigate("Login")}
-        />
-      </View>
-    );
-  } else if (error.message.includes("password")) {
-    return (
-      <View>
-        <Text>Error: 400 - Bad Request</Text>
-        <Text>Message: You have entered an incorrect password</Text>
-        <Button
-          title="Go back"
-          accessibilityLabel="Go back to Login/Register Page"
-          onPress={() => navigation.navigate("Login")}
-        />
-      </View>
-    );
-  } else if (error.message.includes("email")) {
-    return (
-      <View>
-        <Text>Error: 400 - Bad Request</Text>
-        <Text>Message: You have entered an incorrect email address</Text>
-        <Button
-          onPress={() => navigation.navigate("Login")}
-          title="Go back"
-          accessibilityLabel="Go back to Login/Register Page"
-        />
-      </View>
-    );
-  }
 };
 
-export default ErrorHandler;
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  input: {
+    width: "100%",
+    height: 42,
+    marginVertical: 10,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    width: "90%",
+    height: "70%",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 200,
+  },
+  buttonClose: {
+    backgroundColor: "red",
+    marginBottom: 20,
+  },
+  textStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  titleTextStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  buttonTextStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+});
+
+export default ErrorHandlerModal;
