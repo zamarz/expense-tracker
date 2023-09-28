@@ -52,15 +52,14 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      
       <Text variant="headlineSmall" style={styles.title}>
         Balance: <Text>£{remainingBalance}</Text>
       </Text>
       <BudgetPlanner />
       <ScrollView style={styles.wrapper}>
-      <ExpenseListHome />
-      <Divider />
-      
+        <ExpenseListHome />
+        <Divider />
+
         <Button
           style={[
             styles.appButtonContainer,

@@ -9,17 +9,15 @@ const ExpenseListHome = () => {
   const { expenses } = state;
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Most Recent Expenses </Text>
-        <FlatList
-          data={
-            expenses.length > 0 && expenses.length < 4
-              ? expenses
-              : expenses.slice(0, 3)
-          }
-          renderItem={({ item }) => <ExpenseCard item={item} />}
-        />
-      </View>
+      <Text style={styles.title}>Most Recent Expenses </Text>
+      <FlatList
+        data={
+          expenses.length > 0 && expenses.length < 4
+            ? expenses
+            : expenses.slice(0, 3)
+        }
+        renderItem={({ item }) => <ExpenseCard item={item} />}
+      />
     </View>
   );
 };
