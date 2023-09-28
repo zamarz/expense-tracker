@@ -8,6 +8,11 @@ const Logout = () => {
   return (
     <View style={styles.appButtonContainer}>
       <Button
+        mode="contained"
+        style={[
+          styles.appButtonContainer,
+          { backgroundColor: theme.colors.error },
+        ]}
         onPress={() => {
           authFire.signOut();
         }}
