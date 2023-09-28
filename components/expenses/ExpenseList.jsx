@@ -29,6 +29,9 @@ export default function ExpenseList({ navigation }) {
             }}
           />
         )}
+        keyExtractor={(item) => {
+          return item.id;
+        }}
       />
       <Button
         mode="contained"

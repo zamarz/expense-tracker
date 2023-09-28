@@ -1,63 +1,37 @@
 import { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Button } from "react-native";
+import { View, SafeAreaView, StyleSheet } from "react-native";
+import { Button, Divider, Text } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
+import DeleteAccount from "../components/buttons/Delete";
 
-const Settings = () => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "Pound £", value: "pounds" },
-    { label: "Euro €", value: "euros" },
-    { label: "Dollar $", value: "dollars" },
-  ]);
-
-  // going to need to change the currency in state or context
-
+const Settings = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <View>
-          <Text style={styles.title}>
-            Monitor how much you can spend each month
-          </Text>
+        <View padding="8%">
           <Button
-            title="Set Budget"
-            onPress={() => navigation.navigate("Budget")}
-          />
+            icon="bank-check"
+            mode="contained"
+            title="view accounts"
+            onPress={() => navigation.navigate("Accounts List")}
+          >
+            See all of your accounts
+          </Button>
         </View>
-        <View>
-          <Text style={styles.title}>Stay on top of upcoming bills</Text>
+        <View padding="8%">
+          <Divider />
           <Button
-            title="Set your reminders"
-            onPress={() => navigation.navigate("Reminders")}
-          />
-        </View>
-        <View>
-          <Text style={styles.title}>Take a look at your spending map</Text>
-          <Button
-            title="View here"
+            icon="map-marker-account-outline"
+            mode="contained"
+            title="View map"
             onPress={() => navigation.navigate("Map")}
-          />
+          >
+            Take a look at your spending map{" "}
+          </Button>
         </View>
+
         <View>
-          <Text style={styles.title}>Set your currency</Text>
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            placeholder={"Choose a currency"}
-          />
-        </View>
-        <View>
-          <Text style={styles.title}>Delete your account</Text>
-          <Button
-            title="Delete account"
-            color="red"
-            onPress={() => navigation.navigate("Delete Account")}
-          />
+          <DeleteAccount />
         </View>
       </View>
     </SafeAreaView>
@@ -70,10 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 16,
   },
-  title: {
-    textAlign: "center",
-    marginVertical: 8,
-  },
+
   separator: {
     marginVertical: 8,
     borderBottomColor: "#737373",

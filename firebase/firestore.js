@@ -1,16 +1,22 @@
 import { dbFire } from "../firebaseConfig";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 
-export async function getCategories() {
-  const querySnapshot = await getDocs(collection(dbFire, "categories"));
+export async function getCategories(uid) {
+  const querySnapshot = await getDocs(
+    collection(dbFire, "categories"),
+    where("userId", "==", uid)
+  );
   return await querySnapshot.docs.map((doc) => ({
     label: doc.data().category,
     value: doc.data().category,
   }));
 }
 
-export async function getAccounts() {
-  const querySnapshot = await getDocs(collection(dbFire, "accounts"));
+export async function getAccounts(uid) {
+  const querySnapshot = await getDocs(
+    collection(dbFire, "accounts"),
+    where("userId", "==", uid)
+  );
   return await querySnapshot.docs.map((doc) => ({
     label: doc.data().account,
     value: doc.data().account,

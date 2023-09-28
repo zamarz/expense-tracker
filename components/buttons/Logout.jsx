@@ -1,12 +1,12 @@
-import { View, Button, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { authFire } from "../../firebaseConfig";
-import { useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 
 const Logout = () => {
   const theme = useTheme();
   return (
-    <View>
+    <View style={styles.appButtonContainer}>
       <Button
         mode="contained"
         style={[
@@ -17,7 +17,9 @@ const Logout = () => {
           authFire.signOut();
         }}
         title="Logout"
-      />
+      >
+        <Text style={styles.text}>Logout</Text>
+      </Button>
     </View>
   );
 };
@@ -28,6 +30,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    backgroundColor: "orange",
+  },
+  text: {
+    fontSize: 18,
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

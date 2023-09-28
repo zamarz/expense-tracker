@@ -1,24 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import {
-  StyleSheet,
-  TextInput,
-  Text,
-} from "react-native";
-import { AutocompleteDropdown } from "react-native-autocomplete-dropdown"
+import { useEffect, useState } from "react";
+import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
-export default function MerchantAutoComplete({ merchant, merchants, handleChange, handleBlur }) {
-  const merchantAsId = (merchant) => {
-    if (!merchant || !merchant.length) return;
-    const merchantObject = merchants.find((m) => m.title === merchant);
-    return merchantObject.id;
-  }
-  const [value, setValue] = useState(merchantAsId(merchant));
+function MerchantAutoComplete({ merchant, merchants, handleChange }) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(merchant);
+  const [items, setItems] = useState([]);
+  const [finalValue, setFinalValue] = useState("");
 
   useEffect(() => {
-    if (value && merchant !== value.title) {
-      handleChange("merchant")(value.title);
+    console.log(value, "value!");
+    console.log(merchants);
+    if (merchant !== value && value !== null) {
+      let arrayvalues = Object.values(value);
+      console.log(arrayvalues, "array");
+      if (arrayvalues.length === 2) {
+        const desiredMerchant = arrayvalues[0];
+        setValue(desiredMerchant);
+      }
+
+      handleChange("merchant", value);
     }
-  }, [value]);
+    setItems(merchants);
+  }, [value, merchants]);
 
   return (
     <AutocompleteDropdown
@@ -28,16 +31,9 @@ export default function MerchantAutoComplete({ merchant, merchants, handleChange
       initialValue={value}
       onSelectItem={setValue}
       dataSet={merchants}
+      onChangeText={setValue}
     />
   );
 }
 
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 5,
-  },
-});
+export default MerchantAutoComplete;

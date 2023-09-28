@@ -5,7 +5,7 @@ import { storageFire } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { Button, Divider, Text } from "react-native-paper";
+import { Button, Divider, Text, useTheme } from "react-native-paper";
 
 const ReceiptScanner = ({ navigation, route }) => {
   const [image, setImage] = useState(null);
@@ -13,6 +13,8 @@ const ReceiptScanner = ({ navigation, route }) => {
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [imageURL, setImageURL] = useState(null);
+
+  const theme = useTheme();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -58,8 +60,6 @@ const ReceiptScanner = ({ navigation, route }) => {
     }
   };
 
-  //Need a timer on the next button - will implement after styling!
-
   async function uploadImageAsync(uri) {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -85,8 +85,15 @@ const ReceiptScanner = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text variant="titleMedium">Upload or take an image of your receipt</Text>
-      <View style={{ flexDirection: "row", padding: 5, justifyContent: "space-between"}}>
+      <Text variant="titleLarge">Upload or take an image of your receipt</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          padding: 5,
+          justifyContent: "space-between",
+          width: "70%",
+        }}
+      >
         <Button
           mode="contained"
           title="Choose an image from your library"
@@ -105,10 +112,11 @@ const ReceiptScanner = ({ navigation, route }) => {
         >
           Take a photo
         </Button>
-        {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-        )}
       </View>
+      {image && (
+        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      )}
+
       <Divider />
       <Divider />
       <View style={{ flexDirection: "column", padding: 5, marginVertical: 5 }}>
@@ -117,13 +125,11 @@ const ReceiptScanner = ({ navigation, route }) => {
           onPress={handleSubmit}
           disabled={submitDisabled}
           mode="contained"
-          style={{ marginBottom: 10 }}
+          style={{ marginBottom: 10, backgroundColor: theme.colors.primary }}
         >
           Submit Image
         </Button>
 
-        <Divider />
-        <Divider />
         <Button
           mode="contained"
           title="Next"
