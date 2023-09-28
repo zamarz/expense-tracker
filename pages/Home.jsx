@@ -15,7 +15,7 @@ export default function Home({ navigation }) {
   const [loading, setLoading] = useState(true);
   const { uid } = useContext(UserContext);
   const { state, dispatch } = useContext(AppTracker);
-  const { balance } = state;
+  const { balance, expenses } = state;
 
   const theme = useTheme();
 
@@ -48,7 +48,18 @@ export default function Home({ navigation }) {
   if (loading) return <Loading />;
   if (error) return <ErrorHandler error={error} />;
 
-  const remainingBalance = (+balance).toFixed(2);
+  const totalExpenses = (bal) => {
+    let total = 0;
+    const amounts = expenses.map((exp) => {
+      return exp.amount;
+    });
+    amounts.forEach((amt) => {
+      total += +amt;
+    });
+    return bal - total;
+  };
+
+  const remainingBalance = totalExpenses(balance);
 
   return (
     <View style={styles.container}>

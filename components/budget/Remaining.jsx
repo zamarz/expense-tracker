@@ -21,7 +21,7 @@ const Remaining = () => {
     <View style={styles.container}>
       <Card
         style={{
-          backgroundColor: theme.colors.onPrimary,
+          backgroundColor: "#F2F2F2",
         }}
       >
         <Text
@@ -49,32 +49,6 @@ const Remaining = () => {
         </Card.Content>
       </Card>
     </View>
-
-    // <Card
-    // // style={{
-    // //   backgroundColor: theme.colors.primaryContainer,
-    // //   width: 150,
-    // //   height: 80,
-    // //   margin: 10,
-    // //   marginLeft: 130,
-    // // }}
-    // >
-    //   <Card.Title
-    //     title="Remaining Budget"
-    //     // titleStyle={{
-    //     //   color: theme.colors.onPrimaryContainer,
-    //     //   fontSize: 12,
-    //     // }}
-    //   />
-    //   <Card.Content>
-    //     <Text
-    //       variant="titleLarge"
-    //       // style={{ color: theme.colors.onS, fontSize: 18, fontWeight: "bold" }}
-    //     >
-    //       £{(+budget - +totalExpenses).toFixed(2)}
-    //     </Text>
-    //   </Card.Content>
-    // </Card>
   );
 };
 

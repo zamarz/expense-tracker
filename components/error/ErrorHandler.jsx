@@ -1,38 +1,65 @@
-import { StyleSheet, View } from "react-native";
-import React, { useState } from "react";
-import { Button, Modal, Portal, Text, useTheme } from "react-native-paper";
+// import { StyleSheet, View } from "react-native";
+// import React, { useState } from "react";
+// import { Button, Modal, Portal, Text, useTheme } from "react-native-paper";
 
-const ErrorHandlerModal = ({ error, navigation, visible, setVisible }) => {
-  const toggleModal = () => {
-    setVisible(!visible);
-  };
+// const ErrorHandlerModal = ({ error, navigation, visible, setVisible }) => {
+//   const toggleModal = () => {
+//     setVisible(!visible);
+//   };
 
-  const theme = useTheme();
+//   const theme = useTheme();
+
+//   return (
+//     import * as React from 'react';
+import { Modal, Portal, Text, Button, PaperProvider } from 'react-native-paper';
+
+const ErrorHandlerModal = () => {
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20};
 
   return (
-    <Portal theme={theme}>
-      <Modal
-        animationType="slide" // You can change the animation type if needed
-        transparent={true} // Set to true for a transparent background
-        visible={visible}
-        onRequestClose={toggleModal}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.titleTextStyle}>
-              An error has occurred, please try again
-            </Text>
-            {error && <Text style={styles.textStyle}>{error.message}</Text>}
-            <Button
-              style={[styles.button, styles.buttonClose]}
-              onPress={toggleModal}
-            >
-              <Text style={styles.buttonTextStyle}>Close</Text>
-            </Button>
-          </View>
-        </View>
-      </Modal>
-    </Portal>
+    <PaperProvider>
+      <Portal>
+        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+          <Text>Example Modal.  Click outside this area to dismiss.</Text>
+        </Modal>
+      </Portal>
+      <Button style={{marginTop: 30}} onPress={showModal}>
+        Show
+      </Button>
+    </PaperProvider>
+  );
+};
+
+// export default MyComponent;
+
+
+    // <Portal>
+    //   <Modal
+    //     animationType
+    //     transparent={true} // Set to true for a transparent background
+    //     visible={visible}
+    //     onRequestClose={toggleModal}
+    //   >
+    //     <View style={styles.centeredView}>
+    //       <View style={styles.modalView}>
+    //         <Text style={styles.titleTextStyle}>
+    //           An error has occurred, please try again
+    //         </Text>
+    //         {error && <Text style={styles.textStyle}>{error.message}</Text>}
+    //         <Button
+    //           style={[styles.button, styles.buttonClose]}
+    //           onPress={toggleModal}
+    //         >
+    //           <Text style={styles.buttonTextStyle}>Close</Text>
+    //         </Button>
+    //       </View>
+    //     </View>
+    //   </Modal>
+    // </Portal>
   );
 };
 

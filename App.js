@@ -164,7 +164,7 @@ export default function App() {
             ),
           }}
         />
-        {/* <Drawer.Screen
+        <Drawer.Screen
           name="Logout"
           component={() => (
             <Button
@@ -174,7 +174,7 @@ export default function App() {
               title="Logout"
             />
           )}
-        /> */}
+        />
       </Drawer.Navigator>
     );
   };

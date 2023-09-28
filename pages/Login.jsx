@@ -84,7 +84,7 @@ const LoginScreen = ({ navigation }) => {
               marginBottom: 20,
               marginLeft: 0,
               position: "absolute",
-              right: -30,
+              right: -38,
             }}
           />
           <Text variant="titleLarge" style={styles.heading}>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     position: "relative",
-    marginRight: 80,
+    marginRight: 90,
   },
 });
 export default LoginScreen;

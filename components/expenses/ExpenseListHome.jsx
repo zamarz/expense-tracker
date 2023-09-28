@@ -14,8 +14,8 @@ const ExpenseListHome = () => {
         <FlatList
           data={
             expenses.length > 0 && expenses.length < 6
-              ? expenses
-              : expenses.slice(0, 5)
+              ? expenses.sort()
+              : expenses.sort().slice(0, 5)
           }
           renderItem={({ item }) => <ExpenseCard item={item} />}
         />
