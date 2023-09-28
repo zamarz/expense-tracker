@@ -4,7 +4,7 @@ import { Button, Divider, Text } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import DeleteAccount from "../components/buttons/Delete";
 
-const Settings = () => {
+const Settings = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
