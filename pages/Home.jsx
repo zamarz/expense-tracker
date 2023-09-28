@@ -1,5 +1,5 @@
-import { View, StyleSheet } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import Logout from "../components/buttons/Logout";
 import ExpenseListHome from "../components/expenses/ExpenseListHome";
 import BudgetPlanner from "../components/budget/BudgetPlanner";
@@ -9,7 +9,6 @@ import { Button, Divider, useTheme, Text } from "react-native-paper";
 import { Loading } from "../components/loading/Loading";
 import ErrorHandler from "../components/error/ErrorHandler";
 import { fetchAccountsData, fetchExpensesData } from "../firebase/firestore";
-import { ScrollView } from "react-native-gesture-handler";
 
 export default function Home({ navigation }) {
   const [error, setError] = useState(false);
@@ -53,14 +52,13 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Text variant="headlineSmall" style={styles.title}>
+        Balance: <Text>£{remainingBalance}</Text>
+      </Text>
+      <BudgetPlanner />
+      <ExpenseListHome />
+      <Divider />
       <ScrollView style={styles.wrapper}>
-        <Text variant="headlineSmall" style={styles.title}>
-          Balance: <Text>£{remainingBalance}</Text>
-        </Text>
-        <BudgetPlanner />
-        <ExpenseListHome />
-        <Divider />
-
         <Button
           style={[
             styles.appButtonContainer,

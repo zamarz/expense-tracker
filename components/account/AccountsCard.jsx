@@ -30,7 +30,7 @@ export default function AccountsCard({ item, onDelete, navigation }) {
             {item.type}
           </Text>
         </Text>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <Button
             title="Edit budget"
             aria-label="Edit budget for the account"
@@ -48,7 +48,7 @@ export default function AccountsCard({ item, onDelete, navigation }) {
               Edit Budget
             </Text>
           </Button>
-        </View>
+        </View> */}
         <View style={styles.buttonContainer}>
           <Button
             title="Add income"
