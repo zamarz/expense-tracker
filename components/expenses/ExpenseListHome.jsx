@@ -7,7 +7,7 @@ const ExpenseListHome = () => {
   const { state, dispatch } = useContext(AppTracker);
   const { expenses } = state;
   return (
-    <View style={styles.container}>
+    <View>
       <Text style={styles.title}>Most Recent Expenses </Text>
       <FlatList
         data={

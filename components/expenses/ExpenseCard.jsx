@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
-import { Card } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
 
 export default function ExpenseCard({ item }) {
   const { id, amount, merchant, category, date, receipt } = item;
@@ -9,12 +9,13 @@ export default function ExpenseCard({ item }) {
     <Card mode="contained">
       <View key={id}>
         <Card.Title title={`Amount Spent: £${(+amount).toFixed(2)}`} />
-        {/* <Card.Cover source={{ uri: receipt }} /> */}
         <Card.Content>
-          <Text variant="bodyMedoum">Merchant: {merchant.label}</Text>
-          <Text variant="bodyMedoum">Category: {category.label}</Text>
-          <Text variant="bodyMedoum">
-            Bought on: {date ? date : "Date Missing!"}
+          {/* <Card.Cover source={{ uri: receipt }} /> */}
+          <Text variant="bodyMedium">Merchant: {merchant.label}</Text>
+          <Text variant="bodyMedium">Category: {category}</Text>
+          <Text variant="bodyMedium">
+            Bought on:{" "}
+            {date ? new Date(date).toLocaleDateString() : "Date Missing!"}
           </Text>
         </Card.Content>
       </View>

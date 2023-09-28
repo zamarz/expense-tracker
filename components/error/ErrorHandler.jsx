@@ -1,14 +1,16 @@
 import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
-import { Button, Modal, Portal, Text } from "react-native-paper";
+import { Button, Modal, Portal, Text, useTheme } from "react-native-paper";
 
 const ErrorHandlerModal = ({ error, navigation, visible, setVisible }) => {
   const toggleModal = () => {
     setVisible(!visible);
   };
 
+  const theme = useTheme();
+
   return (
-    <Portal>
+    <Portal theme={theme}>
       <Modal
         animationType="slide" // You can change the animation type if needed
         transparent={true} // Set to true for a transparent background

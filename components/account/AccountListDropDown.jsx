@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AppTracker } from "../../context/AppTracker";
-// import { ScrollView } from "react-native-gesture-handler";
 
 function AccountListDropDown({ account, handleChange }) {
   const [open, setOpen] = useState(false);
@@ -13,11 +11,6 @@ function AccountListDropDown({ account, handleChange }) {
   const accountNames = accounts.map((acc) => {
     return { label: acc.bank, value: acc.bank, accountId: acc.id };
   });
-
-  // console.log(accountNames);
-
-  // console.log(value);
-  // console.log(items);
 
   useEffect(() => {
     if (account !== value) {

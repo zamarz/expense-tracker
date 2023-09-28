@@ -205,8 +205,8 @@ const ReceiptAdder = ({ route, navigation }) => {
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
         return (
-          <ScrollView>
-            <View style={styles.container}>
+          <View style={styles.container}>
+            <ScrollView>
               <View style={styles.inputRow}>
                 <Text variant="headlineMedium">Add a new Expense</Text>
                 <Text variant="titleMedium">Amount:</Text>
@@ -294,8 +294,8 @@ const ReceiptAdder = ({ route, navigation }) => {
                 Submit{" "}
               </Button>
               <Divider />
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
         );
       }}
     </Formik>
