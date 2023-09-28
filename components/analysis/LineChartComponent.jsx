@@ -1,6 +1,5 @@
 import React from "react";
 import { useContext } from "react";
-import { Text } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { AppTracker } from "../../context/AppTracker";
 
@@ -37,6 +36,7 @@ export default function LineChartComponent() {
       style={{
         marginVertical: 8,
         borderRadius: 16,
+        paddingLeft: 25,
       }}
     />
   );
