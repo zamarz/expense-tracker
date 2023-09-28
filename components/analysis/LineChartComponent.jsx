@@ -19,7 +19,7 @@ export default function LineChartComponent() {
         labels: labels,
         datasets: [{ data: data }],
       }}
-      width="100%"
+      width={300}
       height={200}
       yAxisSuffix=" £"
       yAxisInterval={1}
