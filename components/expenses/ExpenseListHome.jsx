@@ -10,14 +10,16 @@ const ExpenseListHome = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Most Recent Expenses </Text>
-      <FlatList
-        data={
-          expenses.length > 0 && expenses.length < 4
-            ? expenses
-            : expenses.slice(0, 3)
-        }
-        renderItem={({ item }) => <ExpenseCard item={item} />}
-      />
+      <View style={styles.listWrapper}>
+        <FlatList
+          data={
+            expenses.length > 0 && expenses.length < 6
+              ? expenses
+              : expenses.slice(0, 5)
+          }
+          renderItem={({ item }) => <ExpenseCard item={item} />}
+        />
+      </View>
     </View>
   );
 };
@@ -26,9 +28,14 @@ export default ExpenseListHome;
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: "100%",
+    flex: 100,
     display: "flex",
-    justifyContent: "center",
+  },
+  listWrapper: {
+    maxWidth: "100%",
+    maxHeight: "80%",
+    display: "flex",
+    justifyContent: "space-around",
   },
 
   title: {

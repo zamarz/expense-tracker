@@ -56,15 +56,10 @@ export default function Home({ navigation }) {
         Balance: <Text>£{remainingBalance}</Text>
       </Text>
       <BudgetPlanner />
-      <ScrollView style={styles.wrapper}>
-        <ExpenseListHome />
-        <Divider />
-
+      <ExpenseListHome />
+      <View style={styles.wrapper}>
         <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
+          style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
             navigation.navigate("Expense List", { screen: "ExpenseList" })
@@ -76,10 +71,7 @@ export default function Home({ navigation }) {
           Expenses List{" "}
         </Button>
         <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
+          style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
             navigation.navigate("Expense List", { screen: "Expense Adder" })
@@ -90,10 +82,7 @@ export default function Home({ navigation }) {
           Add new expense
         </Button>
         <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
+          style={styles.appButtonContainer}
           mode="contained"
           onPress={() => navigation.navigate("Accounts List")}
           title="View Accounts"
@@ -102,10 +91,7 @@ export default function Home({ navigation }) {
           View Accounts
         </Button>
         <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 10, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
+          style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
             navigation.navigate("Accounts List", { screen: "Accounts Adder" })
@@ -115,8 +101,7 @@ export default function Home({ navigation }) {
         >
           Add an Account
         </Button>
-        <Logout />
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -128,25 +113,31 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     maxWidth: "100%",
-    paddingHorizontal: 30,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    gap: 5,
   },
   title: {
     textAlign: "center",
     fontWeight: "bold",
-    paddingTop: 6,
+    paddingTop: 10,
   },
   separator: {
-    marginVertical: 8,
+    marginBottom: 10,
     borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   appButtonContainer: {
+    minWidth: 190,
     elevation: 8,
-    borderRadius: 30,
-    padding: 5,
-    margin: 10,
-    marginLeft: 50,
-    marginRight: 50,
-    marginBottom: 20,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  buttonText: {
+    fontSize: 14,
+    color: "white",
+    fontWeight: "bold",
   },
 });

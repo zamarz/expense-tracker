@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Alert } from "react-native";
+import { View, StyleSheet, Image, Alert, SafeAreaView } from "react-native";
 import { Button, Divider, Text, TextInput, useTheme } from "react-native-paper";
 
 import { authFire, dbFire } from "../../firebaseConfig";
@@ -278,7 +278,7 @@ const ReceiptAdder = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <Text variant="headlineMedium">Add a new Expense</Text>
         <Text variant="titleMedium">Amount:</Text>
@@ -377,7 +377,7 @@ const ReceiptAdder = ({ route, navigation }) => {
           Submit
         </Button>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

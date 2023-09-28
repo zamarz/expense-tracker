@@ -3,6 +3,7 @@ import { View, SafeAreaView, StyleSheet } from "react-native";
 import { Button, Divider, Text } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import DeleteAccount from "../components/buttons/Delete";
+import Logout from "../components/buttons/Logout";
 
 const Settings = ({ navigation }) => {
   return (
@@ -29,7 +30,7 @@ const Settings = ({ navigation }) => {
             Take a look at your spending map{" "}
           </Button>
         </View>
-
+        <Logout />
         <View>
           <DeleteAccount />
         </View>

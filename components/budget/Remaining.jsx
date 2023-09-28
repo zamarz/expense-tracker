@@ -20,25 +20,29 @@ const Remaining = () => {
   return (
     <View style={styles.container}>
       <Card
-      // style={{
-      //   backgroundColor: theme.colors.primaryContainer,
-      //   width: 150,
-      //   height: 80,
-      //   margin: 10,
-      // }}
+        style={{
+          backgroundColor: theme.colors.onPrimary,
+        }}
       >
-        <Card.Title
-          title="Remaining"
-          titleStyle={{
-            color: theme.colors.onPrimaryContainer,
-            fontSize: 12,
-            textAlign: "auto",
+        <Text
+          style={{
+            color: "black",
+            fontSize: 14,
+            fontWeight: 700,
+            textAlign: "center",
+            paddingTop: 12,
+            paddingBottom: 8,
           }}
-        />
+        >
+          Remainder
+        </Text>
         <Card.Content>
           <Text
-          // variant="titleLarge"
-          // style={{ fontSize: 18, fontWeight: "bold" }}
+            style={{
+              color: "orange",
+              textAlign: "center",
+              fontWeight: 700,
+            }}
           >
             <Text style={textStyle}>£{remainingBalance}</Text>
           </Text>

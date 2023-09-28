@@ -6,29 +6,41 @@ export default function ExpenseCard({ item }) {
   const { id, amount, merchant, category, date, receipt } = item;
 
   return (
-    <Card mode="contained" style={{marginTop: 5}}>
-      <View key={id}>
-        <Card.Title title={`Amount Spent: £${(+amount).toFixed(2)}`} />
-        <Card.Content>
-          {/* <Card.Cover source={{ uri: receipt }} /> */}
-          <Text variant="bodyMedium">Merchant: {merchant.label}</Text>
-          <Text variant="bodyMedium">Category: {category}</Text>
-          <Text variant="bodyMedium">
-            Bought on:{" "}
-            {date ? new Date(date).toLocaleDateString() : "Date Missing!"}
-          </Text>
-        </Card.Content>
-      </View>
+    <Card key={id} mode="contained" style={styles.button}>
+      <Card.Content>
+        <Text style={styles.title}>{`Amount Spent: £${(+amount).toFixed(
+          2
+        )}`}</Text>
+      </Card.Content>
+      <Card.Content variant="bodyMedium">
+        <Text style={styles.text}>Merchant: {merchant.label}</Text>
+      </Card.Content>
+      <Card.Content variant="bodyMedium">
+        <Text style={styles.text}>Category: {category}</Text>
+      </Card.Content>
+      <Card.Content variant="bodyMedium">
+        <Text style={styles.text}>
+          Bought on:{" "}
+          {date ? new Date(date).toLocaleDateString() : "Date Missing!"}
+        </Text>
+      </Card.Content>
     </Card>
   );
 }
 
-//Card.Cover needs to either show a placeholder image or be disabled if receipt is null
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  button: {
+    width: "80%",
+    alignSelf: "center",
+    borderColor: "black",
+    borderWidth: 1,
+  },
+  text: {
+    textAlign: "center",
+    marginVertical: 2,
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 18,
   },
 });

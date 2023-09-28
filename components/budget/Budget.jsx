@@ -11,29 +11,29 @@ const Budget = () => {
   return (
     <View style={styles.container}>
       <Card
-      // style={{
-      //   backgroundColor: theme.colors.primary,
-      //   width: 150,
-      //   height: 80,
-      //   margin: 10,
-      // }}
+        style={{
+          backgroundColor: theme.colors.primary,
+        }}
       >
-        <Card.Title
-          title="Your Budget"
-          titleStyle={{
-            color: theme.colors.onPrimaryContainer,
-            fontSize: 12,
-            textAlign: "auto",
+        <Text
+          style={{
+            color: "white",
+            fontSize: 14,
+            fontWeight: 700,
+            textAlign: "center",
+            paddingTop: 12,
+            paddingBottom: 8,
           }}
-        />
+        >
+          Your Budget
+        </Text>
         <Card.Content>
           <Text
-          // variant="titleLarge"
-          // style={{
-          //   color: theme.colors.onPrimary,
-          //   fontSize: 18,
-          //   fontWeight: "bold",
-          // }}
+            style={{
+              color: "orange",
+              textAlign: "center",
+              fontWeight: 700,
+            }}
           >
             £{(+budget).toFixed(2)}
           </Text>
@@ -47,18 +47,12 @@ const styles = StyleSheet.create({
   baseText: {
     fontWeight: "bold",
   },
-  amount: {
-    color: "red",
-  },
+
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-    // backgroundColor: "#F2F2F2",
   },
   card: {
-    width: "80%",
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
 

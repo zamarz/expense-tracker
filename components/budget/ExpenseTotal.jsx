@@ -13,24 +13,30 @@ const ExpenseTotal = () => {
   }, 0);
   return (
     <View style={styles.container}>
-      <Card>
-        <Card.Title
-          title="Total Spent"
-          titleStyle={{
-            color: theme.colors.onPrimaryContainer,
-            fontSize: 12,
-            textAlign: "auto",
+      <Card
+        style={{
+          backgroundColor: theme.colors.onTertiaryContainer,
+        }}
+      >
+        <Text
+          style={{
+            color: "white",
+            fontSize: 14,
+            fontWeight: 700,
+            textAlign: "center",
+            paddingTop: 12,
+            paddingBottom: 8,
           }}
-        />
+        >
+          Total Spent
+        </Text>
         <Card.Content>
           <Text
-            style={
-              (styles.text,
-              {
-                color: theme.colors.custom0,
-                fontWeight: "bold",
-              })
-            }
+            style={{
+              color: theme.colors.error,
+              textAlign: "center",
+              fontWeight: 700,
+            }}
           >
             £{(+totalExpenses).toFixed(2)}
           </Text>
