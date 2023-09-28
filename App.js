@@ -47,11 +47,6 @@ export default function App() {
           component={Login}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="Error"
-          component={ErrorHandler}
-          options={{ headerShown: false }}
-        />
       </Stack.Navigator>
     );
   };
@@ -98,7 +93,7 @@ export default function App() {
   const DrawerNavigator = () => {
     return (
       <Drawer.Navigator
-        drawerContentOptions={{
+        screenOptions={{
           activeTintColor: "blue",
           inactiveTintColor: "black",
           itemStyle: { marginVertical: 5 },

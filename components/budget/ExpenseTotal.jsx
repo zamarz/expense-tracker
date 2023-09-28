@@ -15,7 +15,7 @@ const ExpenseTotal = () => {
     <View style={styles.container}>
       <Card
         style={{
-          backgroundColor: theme.colors.onTertiaryContainer,
+          backgroundColor: theme.colors.outlineVariant,
         }}
       >
         <Text

@@ -71,10 +71,8 @@ const ExpenseAdder = ({ navigation }) => {
       .then(() => {
         getMerchants(uid).then((merchants) => {
           setMerchants(merchants);
+          setLoading(false);
         });
-      })
-      .then(() => {
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -190,10 +188,7 @@ const ExpenseAdder = ({ navigation }) => {
         .catch((err) => {
           console.log(err);
           setError(err);
-          // TODO: Check
           setLoading(false);
-          // TODO: CHECK
-          // console.error("Error: Unable to add expense");
           alert("Error: Unable to add expense", [
             {
               text: "OK",
@@ -376,7 +371,7 @@ const ExpenseAdder = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignSelf: "center",
     maxWidth: "80%",
     marginHorizontal: "auto",
   },
@@ -387,7 +382,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: "center",
-    marginBottom: 10,
+    marginVertical: 10,
   },
   dateInput: {
     flexDirection: "row",
