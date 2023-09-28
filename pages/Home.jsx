@@ -24,7 +24,6 @@ export default function Home({ navigation }) {
     fetchExpensesData(uid)
       .then(({ message, expenses }) => {
         if ((message = "Success")) {
-          // console.log(expenses);
           dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
         }
         return { message };
@@ -33,7 +32,6 @@ export default function Home({ navigation }) {
         if ((message = "Success")) {
           fetchAccountsData(uid).then(({ message, accounts }) => {
             if (message === "Success") {
-              // console.log(accounts);
               if (accounts) {
                 dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
                 setLoading(false);
@@ -55,16 +53,19 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View>
+      <ScrollView style={styles.wrapper}>
         <Text variant="headlineSmall" style={styles.title}>
           Balance: <Text>£{remainingBalance}</Text>
         </Text>
         <BudgetPlanner />
         <ExpenseListHome />
-      </View>
-      <ScrollView>
+        <Divider />
+
         <Button
-          style={[styles.appButtonContainer, { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" }]}
+          style={[
+            styles.appButtonContainer,
+            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
+          ]}
           mode="contained"
           onPress={() =>
             navigation.navigate("Expense List", { screen: "ExpenseList" })
@@ -76,7 +77,24 @@ export default function Home({ navigation }) {
           Expenses List{" "}
         </Button>
         <Button
-          style={[styles.appButtonContainer, { marginBottom: 2, width: 300, alignSelf: "center" }]}
+          style={[
+            styles.appButtonContainer,
+            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
+          ]}
+          mode="contained"
+          onPress={() =>
+            navigation.navigate("Expense List", { screen: "Expense Adder" })
+          }
+          title="Add new expense"
+          accessibilityLabel="Add a new expense by filling in a form"
+        >
+          Add new expense
+        </Button>
+        <Button
+          style={[
+            styles.appButtonContainer,
+            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
+          ]}
           mode="contained"
           onPress={() => navigation.navigate("Accounts List")}
           title="View Accounts"
@@ -85,7 +103,10 @@ export default function Home({ navigation }) {
           View Accounts
         </Button>
         <Button
-          style={[styles.appButtonContainer, { marginBottom: 10, width: 300, alignSelf: "center" }]}
+          style={[
+            styles.appButtonContainer,
+            { marginBottom: 10, marginTop: 5, width: 300, alignSelf: "center" },
+          ]}
           mode="contained"
           onPress={() =>
             navigation.navigate("Accounts List", { screen: "Accounts Adder" })
@@ -106,6 +127,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+  wrapper: {
+    maxWidth: "100%",
+    paddingHorizontal: 30,
+  },
   title: {
     textAlign: "center",
     fontWeight: "bold",
@@ -119,8 +144,6 @@ const styles = StyleSheet.create({
   appButtonContainer: {
     elevation: 8,
     borderRadius: 30,
-    // paddingVertical: 10,
-    // paddingHorizontal: 10,
     padding: 5,
     margin: 10,
     marginLeft: 50,

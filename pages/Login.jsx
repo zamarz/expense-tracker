@@ -14,6 +14,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Loading } from "../components/loading/Loading";
+import ErrorHandlerModal from "../components/error/ErrorHandler";
 
 onAuthStateChanged(authFire, (user) => {
   if (user) {
@@ -28,6 +29,8 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const signIn = async () => {
     setLoading(true);
@@ -42,8 +45,8 @@ const LoginScreen = ({ navigation }) => {
           setLoading(false);
         }
       });
-    } catch (error) {
-      navigation.navigate("Error", { error: error });
+    } catch (err) {
+      setError(err);
       setLoading(false);
     }
   };
@@ -58,8 +61,8 @@ const LoginScreen = ({ navigation }) => {
       );
       const { user } = res;
       if (user) setLoading(false);
-    } catch (error) {
-      navigation.navigate("Error", { error: error });
+    } catch (err) {
+      setError(err);
       setLoading(false);
     }
   };
@@ -69,10 +72,10 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
-        <Text variant="titleLarge" style={{ paddingBottom: 50, }}>
+        <Text variant="titleLarge" style={{ paddingBottom: 50 }}>
           Welcome!
         </Text>
-        <Text variant="titleLarge" style={{ paddingBottom: 10, }}>
+        <Text variant="titleLarge" style={{ paddingBottom: 10 }}>
           Log in or create an account.
         </Text>
       </View>
@@ -93,10 +96,15 @@ const LoginScreen = ({ navigation }) => {
           secureTextEntry
         />
       </View>
-
+      <ErrorHandlerModal
+        error={error}
+        navigation={navigation}
+        visible={error}
+        setVisible={setError}
+      />
       <View style={styles.buttonContainer}>
         <KeyboardAvoidingView behavior="padding">
-          <View >
+          <View>
             <TouchableOpacity onPress={signIn} style={styles.button}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>

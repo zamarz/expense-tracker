@@ -11,28 +11,28 @@ const Budget = () => {
   return (
     <View style={styles.container}>
     <Card
-      style={{
-        backgroundColor: theme.colors.primary,
-        width: 150,
-        height: 80,
-        margin: 10,
-      }}
+    // style={{
+    //   backgroundColor: theme.colors.primary,
+    //   width: 150,
+    //   height: 80,
+    //   margin: 10,
+    // }}
     >
       <Card.Title
         title="Your Budget"
-        titleStyle={{
-          color: theme.colors.onPrimary,
-          fontSize: 12,
-        }}
+        // titleStyle={{
+        //   color: theme.colors.onPrimary,
+        //   fontSize: 12,
+        // }}
       />
       <Card.Content>
         <Text
           variant="titleLarge"
-          style={{
-            color: theme.colors.onPrimary,
-            fontSize: 18,
-            fontWeight: "bold",
-          }}
+          // style={{
+          //   color: theme.colors.onPrimary,
+          //   fontSize: 18,
+          //   fontWeight: "bold",
+          // }}
         >
           £{(+budget).toFixed(2)}
         </Text>

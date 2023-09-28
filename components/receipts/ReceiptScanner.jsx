@@ -13,6 +13,7 @@ const ReceiptScanner = ({ navigation, route }) => {
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [imageURL, setImageURL] = useState(null);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const theme = useTheme();
 
@@ -43,14 +44,17 @@ const ReceiptScanner = ({ navigation, route }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitDisabled(true);
+    setLoadingButton(true);
     try {
       setUploading(true);
 
       const uploadUrl = await uploadImageAsync(image);
-      setImageURL(uploadUrl);
-      alert("Upload successful!");
-
-      setNextDisabled(false);
+      if (uploadUrl) {
+        setImageURL(uploadUrl);
+        alert("Upload successful!");
+        setLoadingButton(false);
+        setNextDisabled(false);
+      }
     } catch (error) {
       console.log(error);
       alert("Sorry, upload failed");
@@ -124,6 +128,7 @@ const ReceiptScanner = ({ navigation, route }) => {
           title="Submit Image"
           onPress={handleSubmit}
           disabled={submitDisabled}
+          loading={loadingButton}
           mode="contained"
           style={{ marginBottom: 10, backgroundColor: theme.colors.primary }}
         >

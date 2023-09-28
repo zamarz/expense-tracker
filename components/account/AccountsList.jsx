@@ -5,7 +5,6 @@ import { dbFire } from "../../firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import { AppTracker } from "../../context/AppTracker";
 
-
 export default function AccountsList({ navigation }) {
   const { state, dispatch } = useContext(AppTracker);
   const { accounts, balance, budget } = state;
@@ -25,7 +24,7 @@ export default function AccountsList({ navigation }) {
 
   return (
     <>
-      <View >
+      <View>
         <Text style={styles.title}>
           Total Accounts Balance: £{balance.toFixed(2)}
         </Text>
@@ -90,7 +89,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 50,
     flex: 1,
-    
   },
   item: {
     padding: 20,
@@ -102,27 +100,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-// justifyContent: "center",
-    
-//   },
-//   title: {
-//     textAlign: "center",
-//     fontWeight: "bold",
-//     paddingTop: 6,
-//   },
-//   separator: {
-//     marginVertical: 8,
-//     borderBottomColor: "#737373",
-//     borderBottomWidth: StyleSheet.hairlineWidth,
-//   },
-//   appButtonContainer: {
-//     elevation: 8,
-//     borderRadius: 10,
-//     paddingVertical: 10,
-//     paddingHorizontal: 12,
-//     margin: 2
-//   },
-// });
