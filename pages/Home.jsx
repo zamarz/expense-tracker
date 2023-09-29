@@ -73,7 +73,7 @@ export default function Home({ navigation }) {
           style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
-            navigation.navigate("Expense List", { screen: "ExpenseList" })
+            navigation.navigate("Expense List", { screen: "Expenses List" })
           }
           title="Expenses List"
           accessibilityLabel="Goes to the expenses page"
