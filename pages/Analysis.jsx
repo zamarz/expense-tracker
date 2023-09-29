@@ -6,12 +6,14 @@ import { Text } from "react-native-paper";
 
 const Analysis = () => {
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Text style={styles.text}>Expenditure Analysis</Text>
       <LineChartComponent />
       <PieChartComponent />
       <ProgressCircleComponent />
     </View>
+    </ScrollView>
   );
 };
 
