@@ -11,11 +11,7 @@ const ExpenseListHome = () => {
     <View style={styles.container}>
       <View style={styles.listWrapper}>
         <FlatList
-          data={
-            expenses.length > 0 && expenses.length < 6
-              ? expenses.sort()
-              : expenses.sort().slice(0, 5)
-          }
+          data={expenses.length > 0 ? expenses : expenses.sort().slice(0, 5)}
           renderItem={({ item }) => <ExpenseCard item={item} />}
         />
       </View>

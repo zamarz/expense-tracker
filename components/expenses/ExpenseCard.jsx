@@ -3,24 +3,22 @@ import React from "react";
 import { Card, Text } from "react-native-paper";
 
 export default function ExpenseCard({ item }) {
-  const { id, amount, merchant, category, date, receipt } = item;
+  const { id, amount, merchant, category, date, receipt, location } = item;
 
   return (
     <Card key={id} mode="outlined" style={styles.button}>
       <Card.Content>
-        <Text style={styles.title}>{`Amount Spent: £${(+amount).toFixed(
-          2
-        )}`}</Text>
-      </Card.Content>
-      <Card.Content variant="bodyMedium">
-        <Text style={styles.text}>Merchant: {merchant.label}</Text>
-      </Card.Content>
-      <Card.Content variant="bodyMedium">
-        <Text style={styles.text}>Category: {category}</Text>
+        <Text style={styles.title}>{`£${(+amount).toFixed(2)}`}</Text>
       </Card.Content>
       <Card.Content variant="bodyMedium">
         <Text style={styles.text}>
-          Bought on:{" "}
+          {" "}
+          {merchant.label} - {category}
+        </Text>
+      </Card.Content>
+      <Card.Content variant="bodyMedium">
+        <Text style={styles.text}>
+          {location} -
           {date ? new Date(date).toLocaleDateString() : "Date Missing!"}
         </Text>
       </Card.Content>
@@ -40,5 +38,6 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: 18,
+    fontWeight: 700,
   },
 });

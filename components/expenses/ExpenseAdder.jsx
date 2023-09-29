@@ -264,24 +264,29 @@ const ExpenseAdder = ({ navigation }) => {
       <View style={styles.wrapper}>
         <ScrollView keyboardShouldPersistTaps={"handled"}>
           <Text style={styles.title}>Add a new Expense</Text>
+          <Text style={styles.subhead}>Amount</Text>
           <TextInput mode="outlined" value={amount} onChangeText={setAmount} />
-          <MerchantAutoComplete
-            merchant={merchant}
-            merchants={merchants}
-            handleChange={handleChange}
-            setMerchants={setMerchants}
-          />
-          <Button
-            mode="outlined"
-            onPress={() => setToggleMerchantModal((prev) => !prev)}
-          >
-            <Text>Add new Merchant</Text>
-          </Button>
+          <Text style={styles.subhead}>Merchant</Text>
+          <View style={styles.row}>
+            <MerchantAutoComplete
+              merchant={merchant}
+              merchants={merchants}
+              handleChange={handleChange}
+              setMerchants={setMerchants}
+            />
+            <Button
+              mode="contained"
+              onPress={() => setToggleMerchantModal((prev) => !prev)}
+            >
+              Add Merchant
+            </Button>
+          </View>
           <MerchantAdderModal
             isVisible={toggleMerchantModal}
             setIsVisible={setToggleMerchantModal}
             handleAddMerchant={handleAddMerchant}
           />
+          <Text style={styles.subhead}>Category</Text>
           <CategoryList
             category={"Default"}
             categories={categories}
@@ -299,10 +304,12 @@ const ExpenseAdder = ({ navigation }) => {
             setIsVisible={setToggleCategoryModal}
             handleAddCategory={handleAddCategory}
           />
+          <Text style={styles.subhead}>Bank Account</Text>
           <AccountListDropDown
             accounts={accounts}
             handleChange={handleChange}
           />
+          <Text style={styles.subhead}>Date</Text>
           <View style={styles.dateInput}>
             <Text style={styles.dateText} selectable={false}>
               {date !== undefined
@@ -318,6 +325,7 @@ const ExpenseAdder = ({ navigation }) => {
               Select date for your expense
             </IconButton>
           </View>
+          <Text style={styles.subhead}>Location</Text>
           <View>
             <GooglePlacesAutocomplete
               placeholder="Search location"
@@ -389,15 +397,27 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   dateInput: {
+    height: 50,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignContent: "center",
     borderColor: "black",
-    borderRadius: 50,
+    borderWidth: 1,
+    borderRadius: 12,
   },
   dateText: {
-    marginLeft: 10,
     fontWeight: "700",
+    justifyContent: "flex-start",
+    fontSize: 16,
+    alignSelf: "center",
+  },
+  subhead: {
+    fontSize: 18,
+    marginTop: 5,
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });
 
