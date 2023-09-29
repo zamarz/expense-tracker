@@ -20,7 +20,9 @@ $ cd expense-tracker
 $ code .
 
 ✔️ 2. INSTALL DEPENDENCIES
-NPM
+
+![image](https://github.com/zamarz/expense-tracker/assets/77305766/ff6e8570-bf72-4138-ae6a-99f51f560e95)
+
 
 $ npm install
 
