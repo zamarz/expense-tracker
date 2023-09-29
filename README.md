@@ -3,6 +3,7 @@ Xpensio is a React Native app that aims to help people keep track of their expen
 
 Users can add expenses, scan their receipts, and get a detailed breakdown of their spending through our analysis charts and maps. 
 
+__________________________________________________________________________________
 
 How to Run Xpensio Locally
 
