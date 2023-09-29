@@ -73,6 +73,12 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <ErrorHandlerModal
+        error={error}
+        navigation={navigation}
+        visible={error}
+        setVisible={setError}
+      />
       <View style={{ alignItems: "center" }}>
         <View style={styles.row}>
           <Image
@@ -113,12 +119,7 @@ const LoginScreen = ({ navigation }) => {
           secureTextEntry
         />
       </View>
-      <ErrorHandlerModal
-        error={error}
-        navigation={navigation}
-        visible={error}
-        setVisible={setError}
-      />
+
       <View style={styles.buttonContainer}>
         <KeyboardAvoidingView behavior="padding">
           <View>

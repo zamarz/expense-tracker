@@ -29,6 +29,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { FIREBASE_API } from "@env";
 import { ScrollView } from "react-native-gesture-handler";
 import { fetchGeoLocation } from "../../utils/helpers";
+import ErrorHandlerModal from "../error/ErrorHandler";
 
 const ExpenseAdder = ({ navigation }) => {
   const [toggleMerchantModal, setToggleMerchantModal] = useState(false);
@@ -64,25 +65,25 @@ const ExpenseAdder = ({ navigation }) => {
 
   useEffect(() => {
     setLoading(true);
-    if (!categories) {
-      getCategories(uid)
-        .then((categories) => {
-          setCategories(categories);
-        })
-        .then(() => {
-          getMerchants(uid).then((merchants) => {
-            setMerchants(merchants);
-            setLoading(false);
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+    // if (!categories) {
+    getCategories(uid)
+      .then((categories) => {
+        setCategories(categories);
+      })
+      .then(() => {
+        getMerchants(uid).then((merchants) => {
+          setMerchants(merchants);
           setLoading(false);
-          setError(err);
         });
-    } else {
-      setLoading(false);
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        setError(err);
+      });
+    // } else {
+    //   setLoading(false);
+    // }
   }, []);
 
   function handleAddMerchant(merchant) {
@@ -253,6 +254,12 @@ const ExpenseAdder = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ErrorHandlerModal
+        error={error}
+        navigation={navigation}
+        visible={error}
+        setVisible={setError}
+      />
       <DatePickerModal
         locale="en-GB"
         mode="single"

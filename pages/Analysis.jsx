@@ -7,7 +7,7 @@ import { Text } from "react-native-paper";
 const Analysis = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Spenditure Analysis</Text>
+      <Text style={styles.text}>Expenditure Analysis</Text>
       <LineChartComponent />
       <PieChartComponent />
       <ProgressCircleComponent />
