@@ -9,7 +9,8 @@ ________________________________________________________________________________
 
 How to Run Xpensio Locally
 
-You will need an Android Device or an emulator, such as provided by Android Studio, to run Xpensio;
+You will need an Android device or an emulator, such as provided by Android Studio, to run Xpensio.
+
 
 ✔️ **1. CLONE THE REPO**
 
@@ -37,8 +38,8 @@ $ npm install
 
 ![image](https://github.com/zamarz/expense-tracker/assets/77305766/4e48575b-1323-4bd8-9b91-7c1e7901fe28)
 
-
 Follow the steps outlined in the official documentation to set up your own connection to Firebase.
+
 
 ✔️ **4. USAGE**
 
