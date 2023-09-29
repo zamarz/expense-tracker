@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import AccountsCard from "./AccountsCard";
 import { dbFire } from "../../firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import { AppTracker } from "../../context/AppTracker";
-import { Button, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
+import BudgetPlanner from "../budget/BudgetPlanner";
 
 export default function AccountsList({ navigation }) {
   const { state, dispatch } = useContext(AppTracker);
-  const { accounts, balance, budget } = state;
+  const { accounts, balance, expenses } = state;
   const theme = useTheme();
 
   const handleDeleteAccount = async (accountId) => {
@@ -24,20 +25,28 @@ export default function AccountsList({ navigation }) {
       });
   };
 
+  const totalExpenses = (bal) => {
+    let total = 0;
+    const amounts = expenses.map((exp) => {
+      return exp.amount;
+    });
+    amounts.forEach((amt) => {
+      total += +amt;
+    });
+    return bal - total;
+  };
+
+  const remainingBalance = totalExpenses(balance);
+
   return (
     <>
       <View>
-        <Text style={styles.title}>
-          Total Accounts Balance:
-          <Text style={{ color: "green" }}> £{balance.toFixed(2)}</Text>
+        <BudgetPlanner />
+        <Text variant="headlineSmall" style={styles.title}>
+          Total Balance: <Text style={styles.balance}>£{remainingBalance}</Text>
         </Text>
       </View>
-      <View>
-        <Text style={styles.title}>
-          Total Budget:
-          <Text style={{ color: "red" }}> £{budget}</Text>
-        </Text>
-      </View>
+
       <FlatList
         contentContainerStyle={{ alignSelf: "flex-start", marginLeft: 20 }}
         showsVerticalScrollIndicator={true}
@@ -71,22 +80,39 @@ export default function AccountsList({ navigation }) {
           />
         )}
       />
-      <View style={styles.buttonContainer}>
+      <View style={styles.row}>
         <Button
           onPress={() => navigation.navigate("Accounts Adder")}
           title="Add new account"
           accessibilityLabel="Add a new account to the accounts list"
-          style={{ backgroundColor: theme.colors.primary }}
+          style={{
+            backgroundColor: theme.colors.primary,
+            minWidth: 190,
+            elevation: 8,
+            borderRadius: 10,
+            paddingVertical: 4,
+            paddingHorizontal: 12,
+            alignSelf: "center",
+            marginTop: 5,
+          }}
         >
           <Text style={{ color: theme.colors.onPrimary }}>Add New Account</Text>
         </Button>
-      </View>
-      <View style={styles.buttonContainer}>
+
         <Button
           onPress={() => navigation.navigate("Home")}
           title="Go back"
           accessibilityLabel="Button to navigate to Home page"
-          style={{ backgroundColor: theme.colors.primary }}
+          style={{
+            backgroundColor: theme.colors.primary,
+            minWidth: 190,
+            elevation: 8,
+            borderRadius: 10,
+            paddingVertical: 4,
+            paddingHorizontal: 12,
+            alignSelf: "center",
+            marginTop: 0,
+          }}
         >
           <Text style={{ color: theme.colors.onPrimary }}>Go Back</Text>
         </Button>
@@ -106,13 +132,28 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
     textAlign: "center",
+    fontWeight: "bold",
+    paddingTop: 15,
+    paddingBottom: 10,
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
   },
   buttonContainer: {
     marginVertical: 5,
     width: "60%",
     marginLeft: 80,
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    borderTopColor: "black ",
+    borderTopWidth: 2,
+  },
+  balance: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "green",
   },
 });

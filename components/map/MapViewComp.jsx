@@ -28,8 +28,8 @@ const MapViewComp = () => {
             longitude: geoViewBox.northeast.lng
               ? geoViewBox.northeast.lng
               : 0.1276,
-            latitudeDelta: 0.04,
-            longitudeDelta: 0.05,
+            latitudeDelta: 0.02,
+            longitudeDelta: 0.03,
           }}
         >
           {markerData.map((data, index) => (

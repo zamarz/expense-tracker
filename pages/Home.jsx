@@ -46,7 +46,6 @@ export default function Home({ navigation }) {
   }, []);
 
   if (loading) return <Loading />;
-  if (error) return <ErrorHandler error={error} />;
 
   const totalExpenses = (bal) => {
     let total = 0;
