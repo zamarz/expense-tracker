@@ -13,7 +13,6 @@ import ExpenseList from "./components/expenses/ExpenseList";
 import Analysis from "./pages/Analysis";
 import Map from "./pages/Map";
 import Footer from "./components/footer/Footer";
-import ErrorHandler from "./components/error/ErrorHandler";
 import AccountsAdder from "./components/account/AccountsAdder";
 import AccountList from "./components/account/AccountsList";
 import ExpenseAdder from "./components/expenses/ExpenseAdder";
@@ -27,6 +26,11 @@ import {
 import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { enGB, registerTranslation } from "react-native-paper-dates";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["Warning: ..."]);
+
+LogBox.ignoreAllLogs();
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();

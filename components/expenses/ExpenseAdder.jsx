@@ -166,7 +166,6 @@ const ExpenseAdder = ({ navigation }) => {
     if (location !== undefined && geolocation !== undefined) {
       addExpense(formData)
         .then(() => {
-          setLoading(false);
           alert(
             "Expense Added",
             `You have successfully added your expense for the amount of £${amount}`,
@@ -187,7 +186,7 @@ const ExpenseAdder = ({ navigation }) => {
           setGeolocation(undefined);
           setLocation(undefined);
           setMerchant("");
-
+          setLoading(false);
           navigation.navigate("Expense List", { screen: "ExpenseList" });
         })
         .catch((err) => {
