@@ -166,7 +166,6 @@ const ExpenseAdder = ({ navigation }) => {
     if (location !== undefined && geolocation !== undefined) {
       addExpense(formData)
         .then(() => {
-          setLoading(false);
           alert(
             "Expense Added",
             `You have successfully added your expense for the amount of £${amount}`,
@@ -177,6 +176,7 @@ const ExpenseAdder = ({ navigation }) => {
               },
             ]
           );
+          setLoading(false);
           dispatch({ type: "ADD_EXPENSE", payload: formData });
         })
         .then(() => {
@@ -373,6 +373,7 @@ const ExpenseAdder = ({ navigation }) => {
             />
           </View>
           <Button
+            disabled={!geolocation ? true : false}
             title="Submit"
             onPress={handleSubmit}
             mode="contained"
