@@ -9,14 +9,9 @@ const ExpenseListHome = () => {
   const { expenses } = state;
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Most Recent Expenses </Text>
+      <View style={styles.listWrapper}>
         <FlatList
-          data={
-            expenses.length > 0 && expenses.length < 4
-              ? expenses
-              : expenses.slice(0, 3)
-          }
+          data={expenses.length > 0 ? expenses : expenses.sort().slice(0, 5)}
           renderItem={({ item }) => <ExpenseCard item={item} />}
         />
       </View>
@@ -28,9 +23,15 @@ export default ExpenseListHome;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 2,
+  },
+  listWrapper: {
     maxWidth: "100%",
+    maxHeight: "100%",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-around",
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
   },
 
   title: {

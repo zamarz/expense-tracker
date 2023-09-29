@@ -20,57 +20,35 @@ const Remaining = () => {
   return (
     <View style={styles.container}>
       <Card
-      // style={{
-      //   backgroundColor: theme.colors.primaryContainer,
-      //   width: 150,
-      //   height: 80,
-      //   margin: 10,
-      // }}
+        style={
+          {
+            // backgroundColor: theme.colors.backdrop,
+          }
+        }
       >
-        <Card.Title
-          title="Remaining"
-          titleStyle={{
-            color: theme.colors.onPrimaryContainer,
-            fontSize: 12,
-            textAlign: "auto",
+        <Text
+          style={{
+            color: "black",
+            fontSize: 14,
+            fontWeight: 700,
+            textAlign: "center",
+            paddingTop: 12,
           }}
-        />
+        >
+          Remainder
+        </Text>
         <Card.Content>
           <Text
-          // variant="titleLarge"
-          // style={{ fontSize: 18, fontWeight: "bold" }}
+            style={{
+              textAlign: "center",
+              fontWeight: 700,
+            }}
           >
             <Text style={textStyle}>£{remainingBalance}</Text>
           </Text>
         </Card.Content>
       </Card>
     </View>
-
-    // <Card
-    // // style={{
-    // //   backgroundColor: theme.colors.primaryContainer,
-    // //   width: 150,
-    // //   height: 80,
-    // //   margin: 10,
-    // //   marginLeft: 130,
-    // // }}
-    // >
-    //   <Card.Title
-    //     title="Remaining Budget"
-    //     // titleStyle={{
-    //     //   color: theme.colors.onPrimaryContainer,
-    //     //   fontSize: 12,
-    //     // }}
-    //   />
-    //   <Card.Content>
-    //     <Text
-    //       variant="titleLarge"
-    //       // style={{ color: theme.colors.onS, fontSize: 18, fontWeight: "bold" }}
-    //     >
-    //       £{(+budget - +totalExpenses).toFixed(2)}
-    //     </Text>
-    //   </Card.Content>
-    // </Card>
   );
 };
 
@@ -84,9 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     textAlign: "center",
-    // justifyContent: "center",
-    // alignItems: "center",
-    // backgroundColor: "#F2F2F2",
+    backgroundColor: "#F2F2F2",
   },
   card: {
     width: "80%",

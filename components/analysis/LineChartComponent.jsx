@@ -9,8 +9,6 @@ export default function LineChartComponent() {
 
   const data = expenses.map((expense) => +expense.amount);
   const labels = expenses.map((expense) => expense.merchant.title);
-  console.log(data);
-  console.log(labels);
 
   return (
     <LineChart
@@ -18,7 +16,7 @@ export default function LineChartComponent() {
         labels: labels,
         datasets: [{ data: data }],
       }}
-      width={300}
+      width={350}
       height={200}
       yAxisSuffix=" £"
       yAxisInterval={1}
@@ -34,9 +32,10 @@ export default function LineChartComponent() {
       }}
       bezier
       style={{
-        marginVertical: 8,
+        flex: 1,
+        marginVertical: 10,
         borderRadius: 16,
-        paddingLeft: 25,
+        margin: 5,
       }}
     />
   );

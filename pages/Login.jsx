@@ -5,8 +5,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
-
-import { Divider, Text, TextInput } from "react-native-paper";
+import { Text, TextInput, useTheme } from "react-native-paper";
 import { authFire } from "../firebaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -15,6 +14,8 @@ import {
 } from "firebase/auth";
 import { Loading } from "../components/loading/Loading";
 import ErrorHandlerModal from "../components/error/ErrorHandler";
+import { Image } from "react-native";
+import logo from "../assets/x.png";
 
 onAuthStateChanged(authFire, (user) => {
   if (user) {
@@ -26,6 +27,7 @@ onAuthStateChanged(authFire, (user) => {
 });
 
 const LoginScreen = ({ navigation }) => {
+  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -72,27 +74,42 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
-        <Text variant="titleLarge" style={styles.heading}>
-          Xpensio
-        </Text>
-        <Text variant="titleLarge" style={{ paddingBottom: 10 }}>
-          Log in or create an account.
-        </Text>
+        <View style={styles.row}>
+          <Image
+            source={logo}
+            style={{
+              resizeMode: "contain",
+              height: 120,
+              width: 120,
+              marginBottom: 20,
+              marginLeft: 0,
+              position: "absolute",
+              right: -38,
+            }}
+          />
+          <Text variant="titleLarge" style={styles.heading}>
+            pensio
+          </Text>
+        </View>
       </View>
+
       <View style={styles.inputContainer}>
+        <Text variant="titleLarge" style={styles.p}>
+          Log in or create an account
+        </Text>
         <TextInput
           mode="outlined"
           placeholder="Email"
           value={email}
           onChangeText={(text) => setEmail(text)}
-          style={styles.input}
+          style={styles.inputText}
         />
         <TextInput
           mode="outlined"
           placeholder="Password"
           value={password}
           onChangeText={(text) => setPassword(text)}
-          style={styles.input}
+          style={styles.inputText}
           secureTextEntry
         />
       </View>
@@ -121,35 +138,44 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#fff",
   },
   inputContainer: {
     width: "85%",
+    justifyContent: "center",
+    marginTop: 150,
+    alignItems: "center",
   },
   heading: {
-    paddingTop: 20,
-    paddingBottom: 50,
-    fontFamily: "lucida grande",
+    paddingTop: 50,
+    paddingBottom: 20,
+    paddingRight: 70,
     fontStyle: "italic",
-    fontSize: 40,
+    fontSize: 50,
+    position: "absolute",
   },
-
+  p: {
+    fontSize: 16,
+    paddingBottom: 5,
+  },
   input: {
     backgroundColor: "white",
     paddingHorizontal: 15,
     paddingVertical: 2,
-    borderRadius: 10,
+    borderRadius: 20,
+  },
+  inputText: {
+    width: 300,
     marginTop: 5,
+    alignSelf: "center",
   },
   buttonContainer: {
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: 150,
     marginTop: 30,
   },
   button: {
@@ -177,4 +203,11 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 16,
   },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    position: "relative",
+    marginRight: 90,
+  },
 });
+export default LoginScreen;

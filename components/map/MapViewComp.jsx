@@ -7,15 +7,14 @@ const MapViewComp = () => {
   const { state, dispatch } = useContext(AppTracker);
   const { expenses } = state;
 
-  let markerData = [];
-  expenses.forEach((exp) => {
-    if (exp.geolocation.geoLocation) {
-      markerData.push({ lat: exp.geolocation.geoLocation.lat });
-      markerData.push({ lng: exp.geolocation.geoLocation.lng });
-    }
+  const markerData = expenses.map((exp) => {
+    return {
+      lat: exp.geolocation.geoLocation.lat,
+      lng: exp.geolocation.geoLocation.lng,
+    };
   });
 
-  const geoViewBox = expenses[1].geolocation.viewBox;
+  const geoViewBox = expenses[0].geolocation.viewBox;
 
   return (
     <View>
@@ -29,8 +28,8 @@ const MapViewComp = () => {
             longitude: geoViewBox.northeast.lng
               ? geoViewBox.northeast.lng
               : 0.1276,
-            latitudeDelta: 1,
-            longitudeDelta: 1,
+            latitudeDelta: 0.04,
+            longitudeDelta: 0.05,
           }}
         >
           {markerData.map((data, index) => (

@@ -15,7 +15,7 @@ export default function Home({ navigation }) {
   const [loading, setLoading] = useState(true);
   const { uid } = useContext(UserContext);
   const { state, dispatch } = useContext(AppTracker);
-  const { balance } = state;
+  const { balance, expenses } = state;
 
   const theme = useTheme();
 
@@ -48,24 +48,29 @@ export default function Home({ navigation }) {
   if (loading) return <Loading />;
   if (error) return <ErrorHandler error={error} />;
 
-  const remainingBalance = (+balance).toFixed(2);
+  const totalExpenses = (bal) => {
+    let total = 0;
+    const amounts = expenses.map((exp) => {
+      return exp.amount;
+    });
+    amounts.forEach((amt) => {
+      total += +amt;
+    });
+    return bal - total;
+  };
+
+  const remainingBalance = totalExpenses(balance);
 
   return (
     <View style={styles.container}>
-      
+      <BudgetPlanner navigation={navigation} />
       <Text variant="headlineSmall" style={styles.title}>
-        Balance: <Text>£{remainingBalance}</Text>
+        Total Balance: <Text style={styles.balance}>£{remainingBalance}</Text>
       </Text>
-      <BudgetPlanner />
-      <ScrollView style={styles.wrapper}>
       <ExpenseListHome />
-      <Divider />
-      
+      <View style={styles.wrapper}>
         <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
+          style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
             navigation.navigate("Expense List", { screen: "ExpenseList" })
@@ -76,11 +81,19 @@ export default function Home({ navigation }) {
         >
           Expenses List{" "}
         </Button>
+
         <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
+          style={styles.appButtonContainer}
+          mode="contained"
+          onPress={() => navigation.navigate("Accounts List")}
+          title="View Accounts"
+          accessibilityLabel="View a list of accounts or add a new account"
+          icon="cash"
+        >
+          Accounts List
+        </Button>
+        <Button
+          style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
             navigation.navigate("Expense List", { screen: "Expense Adder" })
@@ -88,25 +101,10 @@ export default function Home({ navigation }) {
           title="Add new expense"
           accessibilityLabel="Add a new expense by filling in a form"
         >
-          Add new expense
+          Add an Expense
         </Button>
         <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 2, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
-          mode="contained"
-          onPress={() => navigation.navigate("Accounts List")}
-          title="View Accounts"
-          accessibilityLabel="View a list of accounts or add a new account"
-        >
-          View Accounts
-        </Button>
-        <Button
-          style={[
-            styles.appButtonContainer,
-            { marginBottom: 10, marginTop: 5, width: 300, alignSelf: "center" },
-          ]}
+          style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
             navigation.navigate("Accounts List", { screen: "Accounts Adder" })
@@ -116,8 +114,7 @@ export default function Home({ navigation }) {
         >
           Add an Account
         </Button>
-        <Logout />
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -129,25 +126,40 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     maxWidth: "100%",
-    paddingHorizontal: 30,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    alignContent: "center",
+    gap: 2,
+    paddingTop: 5,
   },
   title: {
     textAlign: "center",
     fontWeight: "bold",
-    paddingTop: 6,
+    paddingTop: 15,
+    paddingBottom: 10,
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
   },
   separator: {
-    marginVertical: 8,
+    marginBottom: 10,
     borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   appButtonContainer: {
+    minWidth: 175,
     elevation: 8,
-    borderRadius: 30,
-    padding: 5,
-    margin: 10,
-    marginLeft: 50,
-    marginRight: 50,
-    marginBottom: 20,
+    borderRadius: 25,
+    paddingVertical: 4,
+  },
+  buttonText: {
+    fontSize: 14,
+    color: "white",
+    fontWeight: "bold",
+  },
+  balance: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "green",
   },
 });

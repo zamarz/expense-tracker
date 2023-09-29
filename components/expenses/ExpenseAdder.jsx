@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, View } from "react-native";
 import {
   Button,
   Divider,
@@ -64,23 +64,25 @@ const ExpenseAdder = ({ navigation }) => {
 
   useEffect(() => {
     setLoading(true);
-    getCategories(uid)
-      .then((categories) => {
-        setCategories(categories);
-      })
-      .then(() => {
-        getMerchants(uid).then((merchants) => {
-          setMerchants(merchants);
+    if (!categories) {
+      getCategories(uid)
+        .then((categories) => {
+          setCategories(categories);
+        })
+        .then(() => {
+          getMerchants(uid).then((merchants) => {
+            setMerchants(merchants);
+            setLoading(false);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setError(err);
         });
-      })
-      .then(() => {
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-        setError(err);
-      });
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   function handleAddMerchant(merchant) {
@@ -190,10 +192,7 @@ const ExpenseAdder = ({ navigation }) => {
         .catch((err) => {
           console.log(err);
           setError(err);
-          // TODO: Check
           setLoading(false);
-          // TODO: CHECK
-          // console.error("Error: Unable to add expense");
           alert("Error: Unable to add expense", [
             {
               text: "OK",
@@ -219,6 +218,11 @@ const ExpenseAdder = ({ navigation }) => {
       case "merchant":
         {
           setMerchant(payload);
+        }
+        break;
+      case "location":
+        {
+          setLocation(payload);
         }
         break;
       case "geolocation":
@@ -248,7 +252,7 @@ const ExpenseAdder = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <DatePickerModal
         locale="en-GB"
         mode="single"
@@ -260,24 +264,29 @@ const ExpenseAdder = ({ navigation }) => {
       <View style={styles.wrapper}>
         <ScrollView keyboardShouldPersistTaps={"handled"}>
           <Text style={styles.title}>Add a new Expense</Text>
+          <Text style={styles.subhead}>Amount</Text>
           <TextInput mode="outlined" value={amount} onChangeText={setAmount} />
-          <MerchantAutoComplete
-            merchant={merchant}
-            merchants={merchants}
-            handleChange={handleChange}
-            setMerchants={setMerchants}
-          />
-          <Button
-            mode="outlined"
-            onPress={() => setToggleMerchantModal((prev) => !prev)}
-          >
-            <Text>Add new Merchant</Text>
-          </Button>
+          <Text style={styles.subhead}>Merchant</Text>
+          <View style={styles.row}>
+            <MerchantAutoComplete
+              merchant={merchant}
+              merchants={merchants}
+              handleChange={handleChange}
+              setMerchants={setMerchants}
+            />
+            <Button
+              mode="contained"
+              onPress={() => setToggleMerchantModal((prev) => !prev)}
+            >
+              Add Merchant
+            </Button>
+          </View>
           <MerchantAdderModal
             isVisible={toggleMerchantModal}
             setIsVisible={setToggleMerchantModal}
             handleAddMerchant={handleAddMerchant}
           />
+          <Text style={styles.subhead}>Category</Text>
           <CategoryList
             category={"Default"}
             categories={categories}
@@ -295,10 +304,12 @@ const ExpenseAdder = ({ navigation }) => {
             setIsVisible={setToggleCategoryModal}
             handleAddCategory={handleAddCategory}
           />
+          <Text style={styles.subhead}>Bank Account</Text>
           <AccountListDropDown
             accounts={accounts}
             handleChange={handleChange}
           />
+          <Text style={styles.subhead}>Date</Text>
           <View style={styles.dateInput}>
             <Text style={styles.dateText} selectable={false}>
               {date !== undefined
@@ -314,11 +325,12 @@ const ExpenseAdder = ({ navigation }) => {
               Select date for your expense
             </IconButton>
           </View>
+          <Text style={styles.subhead}>Location</Text>
           <View>
             <GooglePlacesAutocomplete
               placeholder="Search location"
               onPress={({ description }) => {
-                setLocation(description);
+                handleChange("location", description);
                 fetchGeoLocation(description).then((res) => {
                   handleChange("geolocation", res);
                 });
@@ -353,16 +365,25 @@ const ExpenseAdder = ({ navigation }) => {
           <Button title="Submit" onPress={handleSubmit} mode="contained">
             Submit
           </Button>
+          <Button
+            mode="contained"
+            onPress={() => navigation.navigate("Home")}
+            title="Go back home"
+            accessibilityLabel="Go back home"
+            style={{ margin: 2 }}
+          >
+            Go back home{" "}
+          </Button>
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignSelf: "center",
     maxWidth: "80%",
     marginHorizontal: "auto",
   },
@@ -373,18 +394,30 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: "center",
-    marginBottom: 10,
+    marginVertical: 10,
   },
   dateInput: {
+    height: 50,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignContent: "center",
     borderColor: "black",
-    borderRadius: 50,
+    borderWidth: 1,
+    borderRadius: 12,
   },
   dateText: {
-    marginLeft: 10,
     fontWeight: "700",
+    justifyContent: "flex-start",
+    fontSize: 16,
+    alignSelf: "center",
+  },
+  subhead: {
+    fontSize: 18,
+    marginTop: 5,
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });
 

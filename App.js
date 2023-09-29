@@ -47,18 +47,13 @@ export default function App() {
           component={Login}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="Error"
-          component={ErrorHandler}
-          options={{ headerShown: false }}
-        />
       </Stack.Navigator>
     );
   };
 
   const AccountsNavigator = () => {
     return (
-      <Stack.Navigator initialRouteName="AccountList">
+      <Stack.Navigator initialRouteName="Account List">
         <Stack.Screen
           name="Account List"
           component={AccountList}
@@ -106,9 +101,10 @@ export default function App() {
             fontWeight: "bold",
           },
         }}
+        screenOptions={{}}
       >
         <Drawer.Screen
-          name={`Home`}
+          name="Home"
           component={Footer}
           options={{
             drawerIcon: ({ color, size }) => (
@@ -164,17 +160,6 @@ export default function App() {
             ),
           }}
         />
-        {/* <Drawer.Screen
-          name="Logout"
-          component={() => (
-            <Button
-              onPress={() => {
-                authFire.signOut();
-              }}
-              title="Logout"
-            />
-          )}
-        /> */}
       </Drawer.Navigator>
     );
   };
