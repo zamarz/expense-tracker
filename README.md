@@ -17,9 +17,10 @@ You will need an Android Device or an emulator, such as provided by Android Stud
 
 Terminal Commands:
 
-$ git clone https://github.com/zamarz/expense-tracker
+```$ git clone https://github.com/zamarz/expense-tracker
 $ cd expense-tracker
-$ code .
+$ code .```
+
 
 ✔️ 2. INSTALL DEPENDENCIES
 
