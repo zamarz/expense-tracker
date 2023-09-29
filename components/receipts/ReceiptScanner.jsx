@@ -117,12 +117,10 @@ const ReceiptScanner = ({ navigation, route }) => {
         >
           Take a photo
         </Button>
-      
+      </View>
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       )}
-      </View>
-
       <Divider />
       <Divider />
       <View style={{ flexDirection: "column", padding: 5, marginVertical: 5 }}>
