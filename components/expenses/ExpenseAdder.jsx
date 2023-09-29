@@ -267,38 +267,42 @@ const ExpenseAdder = ({ navigation }) => {
           <Text style={styles.subhead}>Amount</Text>
           <TextInput mode="outlined" value={amount} onChangeText={setAmount} />
           <Text style={styles.subhead}>Merchant</Text>
-          <View style={styles.row}>
+          <View style={styles.location}>
             <MerchantAutoComplete
               merchant={merchant}
               merchants={merchants}
               handleChange={handleChange}
               setMerchants={setMerchants}
             />
-            <Button
-              mode="contained"
-              onPress={() => setToggleMerchantModal((prev) => !prev)}
-            >
-              Add Merchant
-            </Button>
           </View>
+          <Button
+            mode="contained"
+            style={styles.button}
+            onPress={() => setToggleMerchantModal((prev) => !prev)}
+          >
+            Add Merchant
+          </Button>
           <MerchantAdderModal
             isVisible={toggleMerchantModal}
             setIsVisible={setToggleMerchantModal}
             handleAddMerchant={handleAddMerchant}
           />
           <Text style={styles.subhead}>Category</Text>
-          <CategoryList
-            category={"Default"}
-            categories={categories}
-            handleChange={handleChange}
-          />
-          <Button
-            mode="contained"
-            title="Add New Category"
-            onPress={() => setToggleCategoryModal((prev) => !prev)}
-          >
-            Add New Category
-          </Button>
+          <View>
+            <CategoryList
+              category={"Default"}
+              categories={categories}
+              handleChange={handleChange}
+            />
+            <Button
+              mode="contained"
+              style={styles.button}
+              title="Add New Category"
+              onPress={() => setToggleCategoryModal((prev) => !prev)}
+            >
+              Add Category
+            </Button>
+          </View>
           <CategoryAdderModal
             isVisible={toggleCategoryModal}
             setIsVisible={setToggleCategoryModal}
@@ -326,7 +330,7 @@ const ExpenseAdder = ({ navigation }) => {
             </IconButton>
           </View>
           <Text style={styles.subhead}>Location</Text>
-          <View>
+          <View style={styles.location}>
             <GooglePlacesAutocomplete
               placeholder="Search location"
               onPress={({ description }) => {
@@ -347,7 +351,7 @@ const ExpenseAdder = ({ navigation }) => {
                   backgroundColor: theme.colors.primary,
                 },
                 container: {
-                  flex: 0,
+                  flex: 1,
                 },
                 textInput: {
                   height: 38,
@@ -362,7 +366,12 @@ const ExpenseAdder = ({ navigation }) => {
               onNotFound={() => console.log("no results")}
             />
           </View>
-          <Button title="Submit" onPress={handleSubmit} mode="contained">
+          <Button
+            title="Submit"
+            onPress={handleSubmit}
+            mode="contained"
+            style={styles.button}
+          >
             Submit
           </Button>
           <Button
@@ -370,7 +379,7 @@ const ExpenseAdder = ({ navigation }) => {
             onPress={() => navigation.navigate("Home")}
             title="Go back home"
             accessibilityLabel="Go back home"
-            style={{ margin: 2 }}
+            style={styles.button}
           >
             Go back home{" "}
           </Button>
@@ -393,13 +402,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+    fontWeight: 700,
     textAlign: "center",
-    marginVertical: 10,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  location: {
+    borderBlockColor: "black",
+    borderWidth: 1,
+    borderRadius: 5,
   },
   dateInput: {
-    height: 50,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignContent: "center",
     borderColor: "black",
     borderWidth: 1,
@@ -418,6 +433,20 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     flexWrap: "wrap",
+  },
+  button: {
+    minWidth: 190,
+    elevation: 8,
+    borderRadius: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    alignSelf: "center",
+    marginTop: 2,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
