@@ -1,5 +1,5 @@
 
-XPensio
+Xpensio
 
 Xpensio is a React Native app that aims to help people keep track of their expenses. It was inspired by the prevailing cost of living crisis in our economy, and we thought it would be a great way to empower people to keep track of their everyday spending and improve their financial health. 
 
@@ -68,6 +68,6 @@ $ nvm use 18.0
 If you do not have this version installed, NVM will prompt you to install it and then rerun the above command.
 
 
-XPensio
+Xpensio
 
-Xpensio is a team comprised of Zach Marzouk, Isabel Popa, Sunil Krishna Yelamanchili, Pedro Ferreira and Beth Hughes.
+Xpensio is a team comprised of Zach Marzouk, Isabel Popa, Pedro Ferreira, Sunil Krishna Yelamanchili and Beth Hughes.
