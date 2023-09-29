@@ -28,8 +28,9 @@ $ code .
 
 ![image](https://github.com/zamarz/expense-tracker/assets/77305766/ff6e8570-bf72-4138-ae6a-99f51f560e95)
 
-
+```
 $ npm install
+```
 
 ✔️ 3. FIREBASE
 
@@ -46,7 +47,9 @@ Follow the steps outlined in the official documentation to set up your own conne
 
 Start your local server with:
 
+```
 expo start
+```
 
 In the CLI, a prompt will appear to go to http://localhost:19002. 
 
@@ -59,14 +62,18 @@ Node.js and Expo
 
 This project was created using:
 
+```
 $ node -v | v19.4.0
 $ expo -v | 49.0.11
+```
 
 The above commands will also enable you to check your own versions in the terminal. At the time of writing, Expo is not compatible with Node versions later than 18.0.0.
 
 If you have a later version of Node running on your computer, you can alter this:
 
+```
 $ nvm use 18.0
+```
 
 If you do not have this version installed, NVM will prompt you to install it and then rerun the above command.
 
