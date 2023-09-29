@@ -10,18 +10,17 @@ export default function AccountsCard({ item, onDelete, navigation }) {
       style={{
         marginBottom: 12,
         backgroundColor: theme.colors.surfaceVariant,
-        marginLeft: 40,
-        width: 280,
+        width: 375,
       }}
     >
-      <View>
+      <View style={styles.container}>
         <Text style={styles.item}>
           {item.bank}:{" "}
           <Text style={{ color: "green", fontWeight: "bold" }}>
             £{item.balance}
           </Text>
           {"\n"}Budget:{" "}
-          <Text style={{ color: "red", fontWeight: "bold" }}>
+          <Text style={{ color: "black", fontWeight: "bold" }}>
             {" "}
             £{item.budget}
           </Text>
@@ -49,12 +48,20 @@ export default function AccountsCard({ item, onDelete, navigation }) {
             </Text>
           </Button>
         </View> */}
-        <View style={styles.buttonContainer}>
+        <View style={styles.row}>
           <Button
             title="Add income"
             aria-label="Add an income for the account"
             style={{
               backgroundColor: theme.colors.secondary,
+              minWidth: 150,
+              elevation: 8,
+              borderRadius: 10,
+              paddingVertical: 4,
+              paddingHorizontal: 12,
+              alignSelf: "center",
+              marginTop: 0,
+              marginBottom: 10,
             }}
             onPress={() => navigation.navigate("Income Adder", { item: item })}
           >
@@ -67,12 +74,21 @@ export default function AccountsCard({ item, onDelete, navigation }) {
               Add Income
             </Text>
           </Button>
-        </View>
-        <View style={styles.buttonContainer}>
+
           <Button
             title="Delete account"
             aria-label="Delete this account from the list"
-            style={{ backgroundColor: theme.colors.onErrorContainer }}
+            style={{
+              backgroundColor: theme.colors.onErrorContainer,
+              minWidth: 150,
+              elevation: 8,
+              borderRadius: 10,
+              paddingVertical: 4,
+              paddingHorizontal: 12,
+              alignSelf: "center",
+              marginTop: 0,
+              marginBottom: 10,
+            }}
             onPress={() => onDelete(item.id)}
           >
             {" "}
@@ -96,14 +112,15 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontWeight: "bold",
     color: "black",
+    textAlign: "center",
   },
   title: {
     fontSize: 10,
   },
-  buttonContainer: {
-    marginBottom: 15,
-    width: "80%",
-
-    marginLeft: 15,
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 10,
   },
 });
