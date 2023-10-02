@@ -68,8 +68,6 @@ const ReceiptAdder = ({ route, navigation }) => {
     receipt: imageURL,
   };
 
-  console.log(formData);
-
   useEffect(() => {
     downloadText();
   }, [image]);
@@ -97,7 +95,6 @@ const ReceiptAdder = ({ route, navigation }) => {
 
   function handleAddMerchant(merchant) {
     if (!merchant.length) return;
-    console.log("Merchant Adder");
     if (exists) {
       Alert.alert(`Error: this merchant already exists!`, [
         {
@@ -193,10 +190,7 @@ const ReceiptAdder = ({ route, navigation }) => {
       .catch((err) => {
         console.log(err);
         setError(err);
-        // TODO: Check
         setLoading(false);
-        // TODO: CHECK
-        // console.error("Error: Unable to add expense");
         alert("Error: Unable to add expense", [
           {
             text: "OK",
@@ -207,8 +201,6 @@ const ReceiptAdder = ({ route, navigation }) => {
   };
 
   function handleChange(type, payload) {
-    console.log(type, "TYPE#########");
-    console.log(payload, "PAYLOAD#########");
     switch (type) {
       case "account":
         {
@@ -342,7 +334,6 @@ const ReceiptAdder = ({ route, navigation }) => {
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
             setLocation(data.description);
-            console.log(data, details);
           }}
           query={{
             key: FIREBASE_API,
