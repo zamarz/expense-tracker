@@ -49,26 +49,3 @@ export const fetchGeoLocation = async (location) => {
     return { message: "Location not coded correctly" };
   }
 };
-
-// Object { lat: 51.5072178, lng: -0.1275862 }
-// ​
-// lat: 51.5072178
-// ​
-// lng: -0.1275862
-
-// .then(({ results }) => {
-
-//   const result = results[0];
-//   const { geometry } = result;
-//   const { location, bounds } = geometry;
-
-//   const geolocation = location;
-
-//   const geoboundingBox = bounds;
-//   console.log(geoboundingBox, geolocation);
-//   if (
-//     geolocation &&
-//     geoboundingBox.contains("northwest") &&
-//     geoboundingBox.contains("southeast")
-//   ) {
-//     return { coordinates: { location: geolocation, box: geoboundingBox } };
