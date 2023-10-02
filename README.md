@@ -1,7 +1,7 @@
 **Xpensio**
 
-<img src="./assets/expense_adder.png" width="200" height="500">
-<img src="./assets/expense_map.png" width="200" height="500">
+<img src="./assets/expense_adder.png" width="200" height="400">
+<img src="./assets/expense_map.png" width="200" height="400">
 
 Xpensio is a React Native app that aims to help people keep track of their expenses. It was inspired by the prevailing cost of living crisis in our economy, and we thought it would be a great way to empower people to keep track of their everyday spending and improve their financial health.
 
@@ -63,4 +63,4 @@ $ node -v | v20.2.0
 
 **Xpensio**
 
-Xpensio is a team comprised of [Beth Hughes][https://github.com/Beth-H-coder], [Isabel Popa][https://github.com/isabelpopa], [Pedro Ferreira][https://github.com/prgf87], [Sunil Krishna Yelamanchili][https://github.com/sunilkrishna49] and [Zach Marzouk][https://github.com/zamarz].
+Xpensio is a team comprised of [Beth Hughes][https://github.com/Beth-H-coder], [Isabel Popa][https://github.com/isabelpopa], [Pedro Ferreira][https://github.com/prgf87], [Sunil Krishna Yelamanchili][https://github.com/sunilkrishna49] and [Zach Marzouk](https://github.com/zamarz).
