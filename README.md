@@ -1,7 +1,7 @@
 **Xpensio**
 
 ![a screenshot of the expense adder page](./assets/expense_adder.png =100x20)
-![a screenshot of the app's map](./assets/expense_map.png =x250)
+<img src="./assets/expense_map.png" width="200" height="200">
 
 Xpensio is a React Native app that aims to help people keep track of their expenses. It was inspired by the prevailing cost of living crisis in our economy, and we thought it would be a great way to empower people to keep track of their everyday spending and improve their financial health.
 
