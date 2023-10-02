@@ -1,6 +1,6 @@
 **Xpensio**
 
-<img src="./assets/expense_adder.png" width="200" height="400"><img src="./assets/expense_map.png" width="200" height="400">
+<img src="./assets/expense_adder.png" width="200" height="400"> <img src="./assets/expense_map.png" width="200" height="400">
 
 Xpensio is a React Native app that aims to help people keep track of their expenses. It was inspired by the prevailing cost of living crisis in our economy, and we thought it would be a great way to empower people to keep track of their everyday spending and improve their financial health.
 
@@ -40,9 +40,7 @@ You will have to set up your own connection to Firebase to use the app. See the 
 
 ✔️ **4. How to use our app**
 
-![image](https://github.com/zamarz/expense-tracker/assets/77305766/cc554db3-6a69-482a-aab7-6535f99cfc6e)
-
-To play around with our app, simply start your local server using:
+To play around with our app, simply run:
 
 ```
 npx expo start
@@ -50,9 +48,9 @@ npx expo start
 
 In your terminal, a prompt will tell you that you can view the app from your web browser, however it only works on Android phones. Simply scan the QR code that appears with the Expo Go app and it will launch the project on your mobile device.
 
-**Node.js and Expo**
+**Node.js**
 
-![image](https://github.com/zamarz/expense-tracker/assets/77305766/a754f00e-ebf4-4739-8fb6-416575562b97) ![image](https://github.com/zamarz/expense-tracker/assets/77305766/c2c8f10b-a116-4162-a57a-16e5ac45c044)
+![image](https://github.com/zamarz/expense-tracker/assets/77305766/a754f00e-ebf4-4739-8fb6-416575562b97)
 
 This project was created using:
 
