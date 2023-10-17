@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import Logout from "../components/buttons/Logout";
-import ExpenseListHome from "../components/expenses/ExpenseListHome";
-import BudgetPlanner from "../components/budget/BudgetPlanner";
-import { UserContext } from "../context/UserContext";
-import { AppTracker } from "../context/AppTracker";
-import { Button, Divider, useTheme, Text } from "react-native-paper";
-import { Loading } from "../components/loading/Loading";
-import ErrorHandler from "../components/error/ErrorHandler";
-import { fetchAccountsData, fetchExpensesData } from "../firebase/firestore";
+import React, { useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import ExpenseListHome from '../components/expenses/ExpenseListHome';
+import BudgetPlanner from '../components/budget/BudgetPlanner';
+import { UserContext } from '../context/UserContext';
+import { AppTracker } from '../context/AppTracker';
+import { Button, useTheme, Text } from 'react-native-paper';
+import { Loading } from '../components/loading/Loading';
+import { fetchAccountsData, fetchExpensesData } from '../firebase/firestore';
 
 export default function Home({ navigation }) {
   const [error, setError] = useState(false);
@@ -22,17 +20,17 @@ export default function Home({ navigation }) {
   useEffect(() => {
     fetchExpensesData(uid)
       .then(({ message, expenses }) => {
-        if ((message = "Success")) {
-          dispatch({ type: "UPDATE_EXPENSES", payload: expenses });
+        if ((message = 'Success')) {
+          dispatch({ type: 'UPDATE_EXPENSES', payload: expenses });
         }
         return { message };
       })
       .then(({ message }) => {
-        if ((message = "Success")) {
+        if ((message = 'Success')) {
           fetchAccountsData(uid).then(({ message, accounts }) => {
-            if (message === "Success") {
+            if (message === 'Success') {
               if (accounts) {
-                dispatch({ type: "UPDATE_ACCOUNTS", payload: accounts });
+                dispatch({ type: 'UPDATE_ACCOUNTS', payload: accounts });
                 setLoading(false);
               }
             }
@@ -55,6 +53,7 @@ export default function Home({ navigation }) {
     amounts.forEach((amt) => {
       total += +amt;
     });
+
     return bal - total;
   };
 
@@ -72,19 +71,19 @@ export default function Home({ navigation }) {
           style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
-            navigation.navigate("Expense List", { screen: "Expenses List" })
+            navigation.navigate('Expense List', { screen: 'Expenses List' })
           }
           title="Expenses List"
           accessibilityLabel="Goes to the expenses page"
           icon="cash"
         >
-          Expenses List{" "}
+          Expenses List{' '}
         </Button>
 
         <Button
           style={styles.appButtonContainer}
           mode="contained"
-          onPress={() => navigation.navigate("Accounts List")}
+          onPress={() => navigation.navigate('Accounts List')}
           title="View Accounts"
           accessibilityLabel="View a list of accounts or add a new account"
           icon="cash"
@@ -95,7 +94,7 @@ export default function Home({ navigation }) {
           style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
-            navigation.navigate("Expense List", { screen: "Expense Adder" })
+            navigation.navigate('Expense List', { screen: 'Expense Adder' })
           }
           title="Add new expense"
           accessibilityLabel="Add a new expense by filling in a form"
@@ -106,7 +105,7 @@ export default function Home({ navigation }) {
           style={styles.appButtonContainer}
           mode="contained"
           onPress={() =>
-            navigation.navigate("Accounts List", { screen: "Accounts Adder" })
+            navigation.navigate('Accounts List', { screen: 'Accounts Adder' })
           }
           title="Add Account"
           accessibilityLabel="Navigate here to add a new account"
@@ -121,28 +120,28 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   wrapper: {
-    maxWidth: "100%",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
-    alignContent: "center",
+    maxWidth: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignContent: 'center',
     gap: 2,
     paddingTop: 5,
   },
   title: {
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
     paddingTop: 15,
     paddingBottom: 10,
-    borderBottomColor: "black",
+    borderBottomColor: 'black',
     borderBottomWidth: 2,
   },
   separator: {
     marginBottom: 10,
-    borderBottomColor: "#737373",
+    borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   appButtonContainer: {
@@ -153,12 +152,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
   },
   balance: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "green",
+    fontWeight: '700',
+    color: 'green',
   },
 });
